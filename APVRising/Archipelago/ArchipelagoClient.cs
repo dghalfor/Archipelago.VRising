@@ -37,7 +37,7 @@ public class ArchipelagoClient
     /// </summary>
     /// <returns></returns>
     public void Connect()
-    {
+    { /*
         if (Authenticated || attemptingConnection) return;
 
         try
@@ -51,6 +51,7 @@ public class ArchipelagoClient
         }
 
         TryConnect();
+        */
     }
 
     /// <summary>

@@ -34,3 +34,7 @@ Doesn't work.
 
 - Write README
 - Get the mod to fully function
+
+## Daniel Notes
+Added archipelago.multiclient.net.dll to the plugins folder
+Added ServerLaunchFix.dll to the plugins

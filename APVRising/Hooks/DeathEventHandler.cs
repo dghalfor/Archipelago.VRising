@@ -13,6 +13,7 @@ public class DeathEventHandler
     [HarmonyPatch(typeof(DeathEventListenerSystem), "OnUpdate")]
     public static void Postfix(DeathEventListenerSystem __instance)
     {
+        Plugin.BepinLogger.LogInfo("DeathEventListenerSystem update, checking for deaths");
         NativeArray<DeathEvent> deathEvents = __instance._DeathEventQuery.ToComponentDataArray<DeathEvent>(Allocator.Temp);
         foreach (DeathEvent ev in deathEvents)
         {

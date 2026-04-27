@@ -1,13 +1,15 @@
-﻿using APVRising.Utils;
-using APVRising.Archipelago;
+﻿using APVRising.Archipelago;
+using APVRising.Utils;
 using BepInEx;
 using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
-using ProjectM.UI;
 using ProjectM;
 using ProjectM.Scripting;
+using ProjectM.UI;
 using Stunlock.Core;
+using System.Collections.Generic;
+using System.Linq;
 using Unity.Entities;
 using UnityEngine;
 using VampireCommandFramework;
@@ -43,6 +45,11 @@ public class Plugin : BasePlugin
         _harmony = new Harmony(PluginGUID);
         _harmony.PatchAll(System.Reflection.Assembly.GetExecutingAssembly());
 
+        var patched = _harmony.GetPatchedMethods().ToList();
+        BepinLogger.LogInfo($"[Harmony] Total patched methods: {patched.Count}");
+        foreach (var m in patched)
+            BepinLogger.LogInfo($"[Harmony] Patched -> {m.DeclaringType?.Name}.{m.Name}");
+
         if (IsServer)
         {
             ArchipelagoClient.Instance = new ArchipelagoClient();
@@ -52,10 +59,14 @@ public class Plugin : BasePlugin
 
             ArchipelagoConsole.LogMessage($"{ModDisplayInfo} loaded!");
         }
+        Plugin.BepinLogger.LogInfo("Do I even exist");
+        Plugin.BepinLogger.LogInfo($"Is this the server? {Application.productName}");
     }
 
     public override bool Unload()
     {
+        Plugin.BepinLogger.LogInfo("Unload");
+
         CommandRegistry.UnregisterAssembly();
         _harmony?.UnpatchSelf();
         return true;
@@ -97,4 +108,46 @@ public class Plugin : BasePlugin
 
 		return null;
 	}
+    public static readonly Dictionary<int, PrefabGUID> ResearchToRecipeMap = new();
+
+    public static void BuildResearchToRecipeMapping()
+    {
+        ResearchToRecipeMap.Clear();
+
+        var em = Server.EntityManager;
+        var prefabSystem = Server.GetExistingSystemManaged<PrefabCollectionSystem>();
+
+        int mapped = 0;
+
+        foreach (var kvp in prefabSystem._PrefabGuidToEntityMap)
+        {
+            var entity = kvp.Value;
+            if (entity.Index < 0) continue;
+
+            try
+            {
+                // We want entities that have a research requirement
+                if (!em.HasBuffer<RecipeRequirementBuffer>(entity)) continue;
+
+                var requirements = em.GetBuffer<RecipeRequirementBuffer>(entity);
+                foreach (var req in requirements)
+                {
+                    var reqName = DebugTool.GetPrefabName(req.Guid);
+                    if (reqName.Contains("Tech_") || reqName.Contains("_T_"))
+                    {
+                        // req.Guid is the researchGuid, kvp.Key is the recipe/blueprint
+                        ResearchToRecipeMap[req.Guid.GuidHash] = kvp.Key;
+                        Plugin.BepinLogger.LogInfo($"[APV] {reqName} -> {DebugTool.GetPrefabName(kvp.Key)}");
+                        mapped++;
+                        break;
+                    }
+                }
+            }
+            catch { continue; }
+        }
+
+        Plugin.BepinLogger.LogInfo($"[APV] ResearchToRecipeMap built: {mapped} entries");
+    }
+    public static bool TryGetRecipe(PrefabGUID techGuid, out PrefabGUID recipeGuid)
+        => ResearchToRecipeMap.TryGetValue(techGuid.GuidHash, out recipeGuid);
 }
