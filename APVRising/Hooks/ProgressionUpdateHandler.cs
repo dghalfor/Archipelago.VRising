@@ -13,11 +13,10 @@ namespace APVRising.Hooks;
 public static class ProgressionUpdate
 {
     /// majority of this code adapted from VampireCommandFramework @ VCF.Core/Breadstone/ChatHook.cs
-    [HarmonyPatch(typeof(ProgressionUtility), nameof(ProgressionUtility.UpdateUnlockedBuffers))]
+    [HarmonyPatch(typeof(ProgressionUtility), nameof(ProgressionUtility.UpdateUnlockedJobData))]
 	public static void Prefix(ProgressionUtility __instance)
 	{
         Plugin.BepinLogger.LogMessage("test ProgUpdate");
     }
 }
-
 */

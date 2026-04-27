@@ -22,10 +22,11 @@ internal class DiscoverResearchHandler
     [HarmonyPatch(typeof(DiscoverResearchSystem), nameof(DiscoverResearchSystem.UnlockProgression))]
     [HarmonyPrefix]
     public static bool Prefix(
+        DiscoverResearchSystem __instance,
         ResearchBuffer randomResearch, 
         FromCharacter fromCharacter, 
         EntityCommandBuffer commandBuffer, 
-        PrefabLookupMap prefabLookupMap, 
+        ref PrefabLookupMap prefabLookupMap, 
         Entity targetResearchStation, 
         Entity progressionEntity)
     {
@@ -35,23 +36,25 @@ internal class DiscoverResearchHandler
         _lastRolledResearchGuid = randomResearch.ResearchGuid;
         _lastRolledTargetStation = targetResearchStation;
         RemoveFromResearchPool(GetProgressionEntity(fromCharacter.User), randomResearch.ResearchGuid);
-        //RemoveFromResearchPool(GetProgressionEntity(fromCharacter.Character), randomResearch.ResearchGuid);
+        RemoveFromResearchPool(progressionEntity, randomResearch.ResearchGuid);
+        RemoveFromResearchPool(GetProgressionEntity(fromCharacter.Character), randomResearch.ResearchGuid);
         return true;
     }
     public static PrefabGUID _lastRolledResearchGuid = default;
     public static Entity _lastRolledTargetStation = default;
-
+    /*
     [HarmonyPatch(typeof(DiscoverResearchSystem), nameof(DiscoverResearchSystem.HandleEvent))]
     [HarmonyPostfix]
     public static void PostFix(
+        DiscoverResearchSystem __instance,
         DiscoverResearchEventV2 unlockResearchEvent, 
         FromCharacter fromCharacter, 
-        NetworkIdLookupMap networkIdToEntityMap, 
-        PrefabLookupMap prefabLookupMap, 
-        MapZoneCollection mapZoneCollection, 
+        ref NetworkIdLookupMap networkIdToEntityMap, 
+        ref PrefabLookupMap prefabLookupMap, 
+        ref MapZoneCollection mapZoneCollection, 
         EntityCommandBuffer commandBuffer)
     {
-        {
+        
             var em = Plugin.EntityManager;
 
             Plugin.BepinLogger.LogInfo($"[APV] Research intercepted: {DebugTool.GetPrefabName(_lastRolledResearchGuid)}");
@@ -67,26 +70,27 @@ internal class DiscoverResearchHandler
                     {
                         stationBuffer.RemoveAt(i);
                         Plugin.BepinLogger.LogInfo($"Removed {DebugTool.GetPrefabName(_lastRolledResearchGuid)} from research pool");
+                        break;
                     }
                 }
             }
 
-
+            
             // 2. Write to player's UnlockedProgressionElement so they can't roll it again
             var userEntity = fromCharacter.User;
             Plugin.BepinLogger.LogInfo($"[debug] post attempting to remove from player unlockedProgression");
 
-            RemoveFromResearchPool(GetProgressionEntity(fromCharacter.User), _lastRolledResearchGuid);
+            RemoveFromResearchPool(fromCharacter.User, _lastRolledResearchGuid);
            // RemoveFromResearchPool(GetProgressionEntity(fromCharacter.Character), _lastRolledResearchGuid);
-
+            
             // TODO: Send Archipelago location check
             // ArchipelagoClient.SendLocationCheck(researchGuid, fromCharacter.User);
 
             // Block vanilla — we've handled station memory manually
             return;
-        }
+        
     }
-
+    */
     public static Entity GetProgressionEntity(Entity userEntity)
     {
         var em = Plugin.EntityManager;
@@ -102,7 +106,7 @@ internal class DiscoverResearchHandler
 
         return Entity.Null;
     }
-    /*
+
     [HarmonyPatch(typeof(DiscoverResearchSystem), nameof(DiscoverResearchSystem.UnlockProgression))]
     [HarmonyPostfix]
     public static void PostFix(
@@ -129,7 +133,7 @@ internal class DiscoverResearchHandler
                     {
                         stationBuffer.RemoveAt(i);
                         Plugin.BepinLogger.LogInfo($"Removed {DebugTool.GetPrefabName(randomResearch.ResearchGuid)} from research pool");
-                        return;
+                        break;
                     }
                 }
             }
@@ -139,8 +143,8 @@ internal class DiscoverResearchHandler
             var userEntity = fromCharacter.User;
             Plugin.BepinLogger.LogInfo($"[debug] post attempting to remove from player unlockedProgression");
 
-            RemoveFromResearchPool(fromCharacter.Character, randomResearch.ResearchGuid);
-            RemoveFromResearchPool(fromCharacter.User, randomResearch.ResearchGuid);
+            RemoveFromResearchPool(GetProgressionEntity(fromCharacter.Character), randomResearch.ResearchGuid);
+            RemoveFromResearchPool(GetProgressionEntity(fromCharacter.User), randomResearch.ResearchGuid);
             RemoveFromResearchPool(progressionEntity, randomResearch.ResearchGuid);
 
             // TODO: Send Archipelago location check
@@ -149,7 +153,7 @@ internal class DiscoverResearchHandler
             // Block vanilla — we've handled station memory manually
             return;
         } 
-    }*/
+    }
     public static void RemoveFromResearchPool(Entity progressionEntity, PrefabGUID techGuid)
     {
         var em = Plugin.Server.EntityManager;
