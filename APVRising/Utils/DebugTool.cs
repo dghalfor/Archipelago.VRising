@@ -44,7 +44,7 @@ public static class DebugTool
     /// </summary>
     public static void LogPrefabGuid(PrefabGUID guid, string logPrefix = "", bool forceLog = false)
     {
-        Plugin.BepinLogger.LogInfo($"{MaybeAddSpace(logPrefix)}Prefab: {GetPrefabName(guid)} ({guid.GuidHash})");
+        Plugin.BepinLogger.LogDebug($"{MaybeAddSpace(logPrefix)}Prefab: {GetPrefabName(guid)} ({guid.GuidHash})");
     }
 
     /// <summary>
@@ -123,10 +123,10 @@ public static class DebugTool
             if (prefabCollectionSystem._PrefabGuidToEntityMap.TryGetValue(eventGuid, out var eventEntity))
             {
                 eventName = DebugTool.GetPrefabName(eventEntity);
-                Plugin.BepinLogger.LogInfo($"[APV] Unlock: {eventName}");
+                Plugin.BepinLogger.LogInfo($"[AP] Unlock: {eventName}");
             }
         
-            Plugin.BepinLogger.LogInfo($"[APV] Event {element.EventId.EventId} -> {eventName}");
+            Plugin.BepinLogger.LogInfo($"[AP] Event {element.EventId.EventId} -> {eventName}");
         }
     }
 

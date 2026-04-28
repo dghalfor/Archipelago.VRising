@@ -7,36 +7,24 @@
       "RelativeMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|solutionrelative:hooks\\progressionhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|c:\\users\\dghal\\source\\repos\\archipelago.vrising\\apvrising\\hooks\\techunlockhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|solutionrelative:hooks\\techunlockhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|c:\\users\\dghal\\source\\repos\\archipelago.vrising\\apvrising\\hooks\\researchevent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|solutionrelative:hooks\\researchevent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|c:\\users\\dghal\\source\\repos\\archipelago.vrising\\apvrising\\hooks\\discoverresearchhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|solutionrelative:hooks\\discoverresearchhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|c:\\users\\dghal\\source\\repos\\archipelago.vrising\\apvrising\\utils\\debugtool.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|solutionrelative:utils\\debugtool.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|c:\\users\\dghal\\source\\repos\\archipelago.vrising\\apvrising\\hooks\\deatheventhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|solutionrelative:hooks\\deatheventhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|c:\\users\\dghal\\source\\repos\\archipelago.vrising\\apvrising\\hooks\\techunlockhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|solutionrelative:hooks\\techunlockhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|c:\\users\\dghal\\source\\repos\\archipelago.vrising\\apvrising\\hooks\\discoverresearchhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|solutionrelative:hooks\\discoverresearchhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|c:\\users\\dghal\\source\\repos\\archipelago.vrising\\apvrising\\hooks\\buffhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|solutionrelative:hooks\\buffhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|c:\\users\\dghal\\source\\repos\\archipelago.vrising\\apvrising\\hooks\\chatmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|solutionrelative:hooks\\chatmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|c:\\users\\dghal\\source\\repos\\archipelago.vrising\\apvrising\\hooks\\startup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|solutionrelative:hooks\\startup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|c:\\users\\dghal\\source\\repos\\archipelago.vrising\\apvrising\\apvrising.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|solutionrelative:apvrising.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|c:\\users\\dghal\\source\\repos\\archipelago.vrising\\apvrising\\models\\playerdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -47,24 +35,36 @@
       "RelativeMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|solutionrelative:plugin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|c:\\users\\dghal\\source\\repos\\archipelago.vrising\\apvrising\\archipelago\\archipelagoclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|solutionrelative:archipelago\\archipelagoclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|c:\\users\\dghal\\source\\repos\\archipelago.vrising\\apvrising\\utils\\playercache.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|solutionrelative:utils\\playercache.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|c:\\users\\dghal\\source\\repos\\archipelago.vrising\\apvrising\\utils\\debugtool.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|solutionrelative:utils\\debugtool.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|c:\\users\\dghal\\source\\repos\\archipelago.vrising\\apvrising\\utils\\helper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|solutionrelative:utils\\helper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|c:\\users\\dghal\\source\\repos\\archipelago.vrising\\apvrising\\archipelago\\archipelagodata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|solutionrelative:archipelago\\archipelagodata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|c:\\users\\dghal\\source\\repos\\archipelago.vrising\\apvrising\\utils\\cache.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|solutionrelative:utils\\cache.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|c:\\users\\dghal\\source\\repos\\archipelago.vrising\\apvrising\\hooks\\chatmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|solutionrelative:hooks\\chatmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|c:\\users\\dghal\\source\\repos\\archipelago.vrising\\apvrising\\utils\\archipelagoconsole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|solutionrelative:utils\\archipelagoconsole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|c:\\users\\dghal\\source\\repos\\archipelago.vrising\\apvrising\\utils\\helper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|solutionrelative:utils\\helper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|c:\\users\\dghal\\source\\repos\\archipelago.vrising\\apvrising\\apvrising.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|solutionrelative:apvrising.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|c:\\users\\dghal\\source\\repos\\archipelago.vrising\\apvrising\\archipelago\\archipelagoclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|solutionrelative:archipelago\\archipelagoclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|c:\\users\\dghal\\source\\repos\\archipelago.vrising\\apvrising\\archipelago\\archipelagodata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2F6F272-5440-1AEA-027F-448309EDE4FD}|APVRising.csproj|solutionrelative:archipelago\\archipelagodata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -74,8 +74,34 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "PlayerCache.cs",
+              "DocumentMoniker": "C:\\Users\\dghal\\source\\repos\\Archipelago.VRising\\APVRising\\Utils\\PlayerCache.cs",
+              "RelativeDocumentMoniker": "Utils\\PlayerCache.cs",
+              "ToolTip": "C:\\Users\\dghal\\source\\repos\\Archipelago.VRising\\APVRising\\Utils\\PlayerCache.cs",
+              "RelativeToolTip": "Utils\\PlayerCache.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-28T01:26:28.736Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Cache.cs",
+              "DocumentMoniker": "C:\\Users\\dghal\\source\\repos\\Archipelago.VRising\\APVRising\\Utils\\Cache.cs",
+              "RelativeDocumentMoniker": "Utils\\Cache.cs",
+              "ToolTip": "C:\\Users\\dghal\\source\\repos\\Archipelago.VRising\\APVRising\\Utils\\Cache.cs",
+              "RelativeToolTip": "Utils\\Cache.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-28T01:26:27.259Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -84,24 +110,20 @@
               "RelativeDocumentMoniker": "Hooks\\ProgressionHandler.cs",
               "ToolTip": "C:\\Users\\dghal\\source\\repos\\Archipelago.VRising\\APVRising\\Hooks\\ProgressionHandler.cs",
               "RelativeToolTip": "Hooks\\ProgressionHandler.cs",
-              "ViewState": "AgIAAB0AAAAAAAAAAAAAAEwAAAANAAAAAAAAAA==",
+              "ViewState": "AgIAACQAAAAAAAAAAAAAAEoAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-27T23:27:50.121Z",
               "EditorCaption": ""
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{269a02dc-6af8-11d3-bdc4-00c04f688e50}"
-            },
-            {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "DiscoverResearchHandler.cs",
               "DocumentMoniker": "C:\\Users\\dghal\\source\\repos\\Archipelago.VRising\\APVRising\\Hooks\\DiscoverResearchHandler.cs",
               "RelativeDocumentMoniker": "Hooks\\DiscoverResearchHandler.cs",
               "ToolTip": "C:\\Users\\dghal\\source\\repos\\Archipelago.VRising\\APVRising\\Hooks\\DiscoverResearchHandler.cs",
               "RelativeToolTip": "Hooks\\DiscoverResearchHandler.cs",
-              "ViewState": "AgIAAFwAAAAAAAAAAAAQwHMAAAAMAAAAAAAAAA==",
+              "ViewState": "AgIAABkAAAAAAAAAAAAgwEMAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-27T18:35:57.435Z",
               "EditorCaption": ""
@@ -109,45 +131,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "ResearchEvent.cs",
-              "DocumentMoniker": "C:\\Users\\dghal\\source\\repos\\Archipelago.VRising\\APVRising\\Hooks\\ResearchEvent.cs",
-              "RelativeDocumentMoniker": "Hooks\\ResearchEvent.cs",
-              "ToolTip": "C:\\Users\\dghal\\source\\repos\\Archipelago.VRising\\APVRising\\Hooks\\ResearchEvent.cs",
-              "RelativeToolTip": "Hooks\\ResearchEvent.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-27T13:54:34.165Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Startup.cs",
-              "DocumentMoniker": "C:\\Users\\dghal\\source\\repos\\Archipelago.VRising\\APVRising\\Hooks\\Startup.cs",
-              "RelativeDocumentMoniker": "Hooks\\Startup.cs",
-              "ToolTip": "C:\\Users\\dghal\\source\\repos\\Archipelago.VRising\\APVRising\\Hooks\\Startup.cs",
-              "RelativeToolTip": "Hooks\\Startup.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-27T03:42:36.98Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
               "Title": "DeathEventHandler.cs",
               "DocumentMoniker": "C:\\Users\\dghal\\source\\repos\\Archipelago.VRising\\APVRising\\Hooks\\DeathEventHandler.cs",
               "RelativeDocumentMoniker": "Hooks\\DeathEventHandler.cs",
               "ToolTip": "C:\\Users\\dghal\\source\\repos\\Archipelago.VRising\\APVRising\\Hooks\\DeathEventHandler.cs",
               "RelativeToolTip": "Hooks\\DeathEventHandler.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-26T19:25:24.245Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 13,
               "Title": "APVRising.csproj",
               "DocumentMoniker": "C:\\Users\\dghal\\source\\repos\\Archipelago.VRising\\APVRising\\APVRising.csproj",
               "RelativeDocumentMoniker": "APVRising.csproj",
@@ -159,7 +155,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 6,
               "Title": "PlayerData.cs",
               "DocumentMoniker": "C:\\Users\\dghal\\source\\repos\\Archipelago.VRising\\APVRising\\Models\\PlayerData.cs",
               "RelativeDocumentMoniker": "Models\\PlayerData.cs",
@@ -167,11 +163,12 @@
               "RelativeToolTip": "Models\\PlayerData.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-26T13:11:15.59Z"
+              "WhenOpened": "2026-04-26T13:11:15.59Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 9,
               "Title": "Helper.cs",
               "DocumentMoniker": "C:\\Users\\dghal\\source\\repos\\Archipelago.VRising\\APVRising\\Utils\\Helper.cs",
               "RelativeDocumentMoniker": "Utils\\Helper.cs",
@@ -179,23 +176,25 @@
               "RelativeToolTip": "Utils\\Helper.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-26T12:51:18.316Z"
+              "WhenOpened": "2026-04-26T12:51:18.316Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 1,
               "Title": "DebugTool.cs",
               "DocumentMoniker": "C:\\Users\\dghal\\source\\repos\\Archipelago.VRising\\APVRising\\Utils\\DebugTool.cs",
               "RelativeDocumentMoniker": "Utils\\DebugTool.cs",
               "ToolTip": "C:\\Users\\dghal\\source\\repos\\Archipelago.VRising\\APVRising\\Utils\\DebugTool.cs",
               "RelativeToolTip": "Utils\\DebugTool.cs",
-              "ViewState": "AgIAAGkAAAAAAAAAAAAIwIYAAABNAAAAAAAAAA==",
+              "ViewState": "AgIAABgAAAAAAAAAAAArwDQAAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-26T12:50:38.655Z"
+              "WhenOpened": "2026-04-26T12:50:38.655Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 15,
               "Title": "ArchipelagoData.cs",
               "DocumentMoniker": "C:\\Users\\dghal\\source\\repos\\Archipelago.VRising\\APVRising\\Archipelago\\ArchipelagoData.cs",
               "RelativeDocumentMoniker": "Archipelago\\ArchipelagoData.cs",
@@ -207,7 +206,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 14,
               "Title": "ArchipelagoClient.cs",
               "DocumentMoniker": "C:\\Users\\dghal\\source\\repos\\Archipelago.VRising\\APVRising\\Archipelago\\ArchipelagoClient.cs",
               "RelativeDocumentMoniker": "Archipelago\\ArchipelagoClient.cs",
@@ -225,27 +224,27 @@
               "RelativeDocumentMoniker": "Hooks\\BuffHandler.cs",
               "ToolTip": "C:\\Users\\dghal\\source\\repos\\Archipelago.VRising\\APVRising\\Hooks\\BuffHandler.cs",
               "RelativeToolTip": "Hooks\\BuffHandler.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGgAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAkwB8AAAA6AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-26T01:37:38.58Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "TechUnlockHandler.cs",
               "DocumentMoniker": "C:\\Users\\dghal\\source\\repos\\Archipelago.VRising\\APVRising\\Hooks\\TechUnlockHandler.cs",
               "RelativeDocumentMoniker": "Hooks\\TechUnlockHandler.cs",
               "ToolTip": "C:\\Users\\dghal\\source\\repos\\Archipelago.VRising\\APVRising\\Hooks\\TechUnlockHandler.cs",
               "RelativeToolTip": "Hooks\\TechUnlockHandler.cs",
-              "ViewState": "AgIAACwAAAAAAAAAAAAwwCMAAAAKAAAAAAAAAA==",
+              "ViewState": "AgIAABoAAAAAAAAAAAAkwDkAAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-25T21:34:02.398Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 11,
               "Title": "ChatMessage.cs",
               "DocumentMoniker": "C:\\Users\\dghal\\source\\repos\\Archipelago.VRising\\APVRising\\Hooks\\ChatMessage.cs",
               "RelativeDocumentMoniker": "Hooks\\ChatMessage.cs",
@@ -258,27 +257,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 12,
               "Title": "ArchipelagoConsole.cs",
               "DocumentMoniker": "C:\\Users\\dghal\\source\\repos\\Archipelago.VRising\\APVRising\\Utils\\ArchipelagoConsole.cs",
               "RelativeDocumentMoniker": "Utils\\ArchipelagoConsole.cs",
               "ToolTip": "C:\\Users\\dghal\\source\\repos\\Archipelago.VRising\\APVRising\\Utils\\ArchipelagoConsole.cs",
               "RelativeToolTip": "Utils\\ArchipelagoConsole.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACYAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAGIAAAAAAAAAAAAwwCYAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-25T21:26:25.085Z"
+              "WhenOpened": "2026-04-25T21:26:25.085Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 7,
               "Title": "Plugin.cs",
               "DocumentMoniker": "C:\\Users\\dghal\\source\\repos\\Archipelago.VRising\\APVRising\\Plugin.cs",
               "RelativeDocumentMoniker": "Plugin.cs",
               "ToolTip": "C:\\Users\\dghal\\source\\repos\\Archipelago.VRising\\APVRising\\Plugin.cs",
               "RelativeToolTip": "Plugin.cs",
-              "ViewState": "AgIAAB0AAAAAAAAAAAAYwDYAAAAyAAAAAAAAAA==",
+              "ViewState": "AgIAAE8AAAAAAAAAAAA1wG4AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-25T23:10:35.782Z"
+              "WhenOpened": "2026-04-25T23:10:35.782Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{269a02dc-6af8-11d3-bdc4-00c04f688e50}"
             }
           ]
         }

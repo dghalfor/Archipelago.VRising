@@ -15,9 +15,34 @@ namespace APVRising.Hooks;
 
 [HarmonyPatch]
 public static class UnlockResearch
-{    
-    // majority of this code adapted from VampireCommandFramework @ VCF.Core/Breadstone/ChatHook.cs
-    [HarmonyPatch(typeof(UnlockResearchSystem), nameof(UnlockResearchSystem.UnlockProgression))]
+{
+	/*
+		[HarmonyPatch(typeof(UnlockResearchSystem), nameof(UnlockResearchSystem.HandleEvent))]
+		[HarmonyPrefix]
+		public static bool Prefix(
+			UnlockResearchSystem __instance,
+			UnlockResearchEvent unlockResearchEvent,
+			FromCharacter fromCharacter,
+			ref NetworkIdLookupMap networkIdToEntityMap,
+			ref PrefabLookupMap prefabLookupMap,
+			ref MapZoneCollection mapZoneCollection,
+			EntityCommandBuffer commandBuffer)
+		{
+			var researchGuid = unlockResearchEvent.ResearchGUID;
+			Plugin.BepinLogger.LogInfo($"[APV] HandleEvent intercepted: {DebugTool.GetPrefabName(researchGuid)}");
+			if (networkIdToEntityMap.TryGetValue(unlockResearchEvent.Researchstation, out var stationEntity)) {
+				_lastResearchStation = stationEntity;
+			} else {
+				_lastResearchStation = Entity.Null;
+			}
+			return true;
+		}
+	
+
+	public static Entity _lastResearchStation = default;
+	*/
+	// majority of this code adapted from VampireCommandFramework @ VCF.Core/Breadstone/ChatHook.cs
+	[HarmonyPatch(typeof(UnlockResearchSystem), nameof(UnlockResearchSystem.UnlockProgression))]
     [HarmonyPrefix]
     public static bool Prefix(
     EntityManager entityManager,
@@ -30,98 +55,41 @@ public static class UnlockResearch
     bool logOnDuplicate = true)
     {
         var name = DebugTool.GetPrefabName(researchGuid);
-        Plugin.BepinLogger.LogInfo($"[APV] UnlockProgression: {name} ({researchGuid.GuidHash})");
-        //DebugTool.LogFullEntityDebugInfo(user);
-        // Remove from the learn pool so it can't be rolled again
-        //RemoveFromResearchPool(user, researchGuid);
+        Plugin.BepinLogger.LogInfo($"[AP] UnlockProgression: {DebugTool.GetPrefabName(researchGuid)}");
         return true;
     }
-    
-    [HarmonyPatch(typeof(UnlockResearchSystem), nameof(UnlockResearchSystem.HandleEvent))]
-    [HarmonyPostfix]
-    public static void Postfix(
-   UnlockResearchSystem __instance,
-   UnlockResearchEvent unlockResearchEvent,
-   FromCharacter fromCharacter,
-   ref NetworkIdLookupMap networkIdToEntityMap,
-   ref PrefabLookupMap prefabLookupMap,
-   ref MapZoneCollection mapZoneCollection,
-   EntityCommandBuffer commandBuffer)
-    {
-        var researchGuid = unlockResearchEvent.ResearchGUID;
-        var em = Plugin.EntityManager;
+	/*
+	[HarmonyPatch(typeof(UnlockResearchSystem), nameof(UnlockResearchSystem.UnlockProgression))]
+	[HarmonyPostfix]
+	public static void Postfix(
+		EntityManager entityManager,
+		UpdateUnlockedJobData progressionJobData,
+		PrefabGUID researchGuid,
+		Entity user,
+		EntityCommandBuffer commandBuffer,
+		PrefabLookupMap prefabMapping,
+		Entity progressionEntity,
+		bool logOnDuplicate = true)
+	{
+		// We don't have direct access to the station entity here,
+		// but we stored it from the Prefix
 
-        Plugin.BepinLogger.LogInfo($"[APV] Research intercepted: {DebugTool.GetPrefabName(researchGuid)}");
-        //DebugTool.LogFullEntityDebugInfo(fromCharacter.User);
+		if (_lastResearchStation == Entity.Null) return;
 
-        // 1. Remove from station's ResearchBuffer
-        if (networkIdToEntityMap.TryGetValue(unlockResearchEvent.Researchstation, out var stationEntity))
-        {
-            if (em.HasBuffer<ResearchBuffer>(stationEntity))
-            {
-                var stationBuffer = em.GetBuffer<ResearchBuffer>(stationEntity);
+		var em = Plugin.EntityManager;
+		if (!em.HasBuffer<ResearchBuffer>(_lastResearchStation)) return;
 
-                for (int i = stationBuffer.Length - 1; i >= 0; i--)
-                {
-                    if (stationBuffer[i].ResearchGuid == researchGuid)
-                    {
-                        stationBuffer.RemoveAt(i);
-                        Plugin.BepinLogger.LogInfo($"Removed {DebugTool.GetPrefabName(researchGuid)} from research pool");
-                        break;
-                    }
-                }
-            }
-        }
+		var stationBuffer = em.GetBuffer<ResearchBuffer>(_lastResearchStation);
+		for (int i = stationBuffer.Length - 1; i >= 0; i--)
+		{
 
-        // 2. Write to player's UnlockedProgressionElement so they can't roll it again
-        //var userEntity = fromCharacter.User;
-        //Plugin.BepinLogger.LogInfo($"[debug] attempting to remove from player unlockedProgression");
-
-        //RemoveFromResearchPool(userEntity, researchGuid); // Remove from research pool so it can't be rolled again
-        
-
-        // TODO: Send Archipelago location check
-        // ArchipelagoClient.SendLocationCheck(researchGuid, fromCharacter.User);
-
-        // Block vanilla — we've handled station memory manually
-        return;
-    }
-    
-    public static Entity GetProgressionEntity(Entity userEntity)
-    {
-        var em = Plugin.EntityManager;
-
-        if (em.TryGetComponentData<ProgressionMapper>(userEntity, out var progressionMapper))
-        {
-            return progressionMapper.ProgressionEntity._Entity;
-        }
-
-        return Entity.Null;
-    }
-
-    public static void RemoveFromResearchPool(Entity progressionEntity, PrefabGUID techGuid)
-        {
-           var em = Plugin.Server.EntityManager;
-
-           if (!em.HasBuffer<UnlockedProgressionElement>(progressionEntity))
-           {
-               Plugin.BepinLogger.LogInfo("No UnlockedProgressionElement buffer found");
-               return;
-           }
-
-           var buffer = em.GetBuffer<UnlockedProgressionElement>(progressionEntity);
-
-           for (int i = buffer.Length - 1; i >= 0; i--)
-           {
-               if (buffer[i].UnlockedPrefab._Value == techGuid._Value)
-               {
-                   buffer.RemoveAt(i);
-                   Plugin.BepinLogger.LogInfo($"Removed {DebugTool.GetPrefabName(techGuid)} from research pool");
-                   return;
-               }
-           }
-
-           Plugin.BepinLogger.LogInfo($"{DebugTool.GetPrefabName(techGuid)} not found in UnlockedProgressionElement");
-        }
-    
-    }
+			if (stationBuffer[i].ResearchGuid == researchGuid)
+			{
+				stationBuffer.RemoveAt(i);
+				Plugin.BepinLogger.LogInfo($"[APV] Removed {DebugTool.GetPrefabName(researchGuid)} from station buffer");
+				break;
+			}
+		}
+		_lastResearchStation = Entity.Null;
+	}*/
+}

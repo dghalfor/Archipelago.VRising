@@ -80,74 +80,32 @@ public class Plugin : BasePlugin
     public static UnitSpawnerUpdateSystem UnitSpawnerUpdateSystem => Server.GetExistingSystemManaged<UnitSpawnerUpdateSystem>();
     public static ServerScriptMapper ServerScriptMapper => Server.GetExistingSystemManaged<ServerScriptMapper>();
 
-	/// <summary>
-	/// Return the Unity ECS World instance used on the server build of VRising.
-	/// </summary>
-	public static World Server
-	{
-		get
-		{
-			if (_serverWorld != null) return _serverWorld;
-
-			_serverWorld = GetWorld("Server")
-				?? throw new System.Exception("There is no Server world (yet). Did you install a server mod on the client?");
-			return _serverWorld;
-		}
-	}
-
-	private static World GetWorld(string name)
-	{
-		foreach (var world in World.s_AllWorlds)
-		{
-			if (world.Name == name)
-			{
-				_serverWorld = world;
-				return world;
-			}
-		}
-
-		return null;
-	}
-    public static readonly Dictionary<int, PrefabGUID> ResearchToRecipeMap = new();
-
-    public static void BuildResearchToRecipeMapping()
+    /// <summary>
+    /// Return the Unity ECS World instance used on the server build of VRising.
+    /// </summary>
+    public static World Server
     {
-        ResearchToRecipeMap.Clear();
-
-        var em = Server.EntityManager;
-        var prefabSystem = Server.GetExistingSystemManaged<PrefabCollectionSystem>();
-
-        int mapped = 0;
-
-        foreach (var kvp in prefabSystem._PrefabGuidToEntityMap)
+        get
         {
-            var entity = kvp.Value;
-            if (entity.Index < 0) continue;
+            if (_serverWorld != null) return _serverWorld;
 
-            try
+            _serverWorld = GetWorld("Server")
+                ?? throw new System.Exception("There is no Server world (yet). Did you install a server mod on the client?");
+            return _serverWorld;
+        }
+    }
+
+    private static World GetWorld(string name)
+    {
+        foreach (var world in World.s_AllWorlds)
+        {
+            if (world.Name == name)
             {
-                // We want entities that have a research requirement
-                if (!em.HasBuffer<RecipeRequirementBuffer>(entity)) continue;
-
-                var requirements = em.GetBuffer<RecipeRequirementBuffer>(entity);
-                foreach (var req in requirements)
-                {
-                    var reqName = DebugTool.GetPrefabName(req.Guid);
-                    if (reqName.Contains("Tech_") || reqName.Contains("_T_"))
-                    {
-                        // req.Guid is the researchGuid, kvp.Key is the recipe/blueprint
-                        ResearchToRecipeMap[req.Guid.GuidHash] = kvp.Key;
-                        Plugin.BepinLogger.LogInfo($"[APV] {reqName} -> {DebugTool.GetPrefabName(kvp.Key)}");
-                        mapped++;
-                        break;
-                    }
-                }
+                _serverWorld = world;
+                return world;
             }
-            catch { continue; }
         }
 
-        Plugin.BepinLogger.LogInfo($"[APV] ResearchToRecipeMap built: {mapped} entries");
+        return null;
     }
-    public static bool TryGetRecipe(PrefabGUID techGuid, out PrefabGUID recipeGuid)
-        => ResearchToRecipeMap.TryGetValue(techGuid.GuidHash, out recipeGuid);
 }

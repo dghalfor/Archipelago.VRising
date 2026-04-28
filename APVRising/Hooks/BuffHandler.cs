@@ -29,9 +29,7 @@ public class BuffSystemSpawnServerPatch
         var entities = __instance.__query_401358634_0.ToEntityArray(Allocator.Temp);
         foreach (var entity in entities)
         {
-
             var prefabGuid = DebugTool.GetAndLogPrefabGuid(entity, "BuffSystem_Spawn_Server:", true);
-
             switch (prefabGuid.GuidHash)
             {
                 case (int)Effects.AB_FeedBoss_03_Complete_Trigger:
@@ -39,7 +37,7 @@ public class BuffSystemSpawnServerPatch
                     var em = __instance.EntityManager;
                     if (em.HasBuffer<CreateGameplayEventsOnSpawn>(entity))
                     {
-                        Plugin.BepinLogger.LogInfo($"BuffSystem_Spawn_Server: Vblood kill triggered a spawn with the same buff, likely the blood pool. Entity: {entity}");
+                        Plugin.BepinLogger.LogDebug($"BuffSystem_Spawn_Server: Vblood kill triggered a spawn with the same buff, likely the blood pool. Entity: {entity}");
                         em.GetBuffer<CreateGameplayEventsOnSpawn>(entity).Clear();
                         _bossEntitiesToDestroy = entity;
 
@@ -64,23 +62,22 @@ public class BuffSystemSpawnServerPatch
 
             if (em.TryGetComponentData<VBloodConsumeSource>(bossEntity, out var consumeSource))
             {
-                Plugin.BepinLogger.LogInfo($"[APV] VBloodConsumeSource: School {consumeSource.SpellSchool}, Tier {consumeSource.Tier}, SchoolPoints {consumeSource.SpellSchoolPoints}, passivePoints {consumeSource.PassivePoints}");
+                Plugin.BepinLogger.LogDebug($"VBloodConsumeSource: School {consumeSource.SpellSchool}, Tier {consumeSource.Tier}, SchoolPoints {consumeSource.SpellSchoolPoints}, passivePoints {consumeSource.PassivePoints}");
             }
 
             // Log VBloodUnlockTechBuffer buffer contents
             if (em.HasBuffer<VBloodUnlockTechBuffer>(bossEntity))
             {
                 var techBuffer = em.GetBuffer<VBloodUnlockTechBuffer>(bossEntity);
-                Plugin.BepinLogger.LogInfo($"[APV] VBloodUnlockTechBuffer length: {techBuffer.Length}");
+                Plugin.BepinLogger.LogDebug($"[AP] VBloodUnlockTechBuffer length: {techBuffer.Length}");
                 for (int i = 0; i < techBuffer.Length; i++)
                 {
                     var tech = techBuffer[i];
-                    Plugin.BepinLogger.LogInfo($"[APV] Tech[{i}]: {tech.Guid}");
-                    // If tech has a named field, try:
-                    // Plugin.BepinLogger.LogInfo($"[APV] Tech[{i}]: {DebugTool.GetPrefabName(tech.TechPrefabGuid)}");
+
+                    Plugin.BepinLogger.LogInfo($"[AP] Unlock Progression: {DebugTool.GetPrefabName(tech.Guid)}");
                 }
             }
-            Plugin.BepinLogger.LogInfo($"BuffSystem_Spawn_Server Postfix: Attempting to destroy boss entity {bossEntity} associated with buff entity {_bossEntitiesToDestroy}");
+            Plugin.BepinLogger.LogDebug($"BuffSystem_Spawn_Server Postfix: Attempting to destroy boss entity {bossEntity} associated with buff entity {_bossEntitiesToDestroy}");
             DestroyUtility.Destroy(__instance.EntityManager, bossEntity);
         }
 
