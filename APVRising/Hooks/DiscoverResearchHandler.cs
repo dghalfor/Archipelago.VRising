@@ -35,9 +35,8 @@ internal class DiscoverResearchHandler
 
         _lastRolledResearchGuid = randomResearch.ResearchGuid;
         _lastRolledTargetStation = targetResearchStation;
-        RemoveFromResearchPool(GetProgressionEntity(fromCharacter.User), randomResearch.ResearchGuid);
-        RemoveFromResearchPool(progressionEntity, randomResearch.ResearchGuid);
-        RemoveFromResearchPool(GetProgressionEntity(fromCharacter.Character), randomResearch.ResearchGuid);
+        //RemoveFromResearchPool(GetProgressionEntity(fromCharacter.User), randomResearch.ResearchGuid);
+        //RemoveFromResearchPool(progressionEntity, randomResearch.ResearchGuid);
         return true;
     }
     public static PrefabGUID _lastRolledResearchGuid = default;
@@ -95,18 +94,14 @@ internal class DiscoverResearchHandler
     {
         var em = Plugin.EntityManager;
 
-        if (!em.HasBuffer<AttachedBuffer>(userEntity)) return Entity.Null;
-
-        var attached = em.GetBuffer<AttachedBuffer>(userEntity);
-        foreach (var attachment in attached)
+        if (em.TryGetComponentData<ProgressionMapper>(userEntity, out var progressionMapper))
         {
-            if (em.HasBuffer<UnlockedProgressionElement>(attachment.Entity))
-                return attachment.Entity;
+            return progressionMapper.ProgressionEntity._Entity;
         }
 
         return Entity.Null;
     }
-
+    
     [HarmonyPatch(typeof(DiscoverResearchSystem), nameof(DiscoverResearchSystem.UnlockProgression))]
     [HarmonyPostfix]
     public static void PostFix(
@@ -140,12 +135,12 @@ internal class DiscoverResearchHandler
 
 
             // 2. Write to player's UnlockedProgressionElement so they can't roll it again
-            var userEntity = fromCharacter.User;
-            Plugin.BepinLogger.LogInfo($"[debug] post attempting to remove from player unlockedProgression");
+            //var userEntity = fromCharacter.User;
+            //Plugin.BepinLogger.LogInfo($"[debug] post attempting to remove from player unlockedProgression");
 
-            RemoveFromResearchPool(GetProgressionEntity(fromCharacter.Character), randomResearch.ResearchGuid);
-            RemoveFromResearchPool(GetProgressionEntity(fromCharacter.User), randomResearch.ResearchGuid);
-            RemoveFromResearchPool(progressionEntity, randomResearch.ResearchGuid);
+            //RemoveFromResearchPool(GetProgressionEntity(fromCharacter.Character), randomResearch.ResearchGuid);
+            //RemoveFromResearchPool(GetProgressionEntity(fromCharacter.User), randomResearch.ResearchGuid);
+            //RemoveFromResearchPool(progressionEntity, randomResearch.ResearchGuid);
 
             // TODO: Send Archipelago location check
             // ArchipelagoClient.SendLocationCheck(researchGuid, fromCharacter.User);

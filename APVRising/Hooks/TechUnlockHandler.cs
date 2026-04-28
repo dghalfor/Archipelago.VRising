@@ -9,6 +9,7 @@ using Stunlock.Core;
 using Unity.Collections;
 using Unity.Entities;
 using static ProjectM.ProgressionUtility;
+using static VCF.Core.Basics.RoleCommands;
 
 namespace APVRising.Hooks;
 
@@ -32,10 +33,10 @@ public static class UnlockResearch
         Plugin.BepinLogger.LogInfo($"[APV] UnlockProgression: {name} ({researchGuid.GuidHash})");
         //DebugTool.LogFullEntityDebugInfo(user);
         // Remove from the learn pool so it can't be rolled again
-        RemoveFromResearchPool(user, researchGuid);
+        //RemoveFromResearchPool(user, researchGuid);
         return true;
     }
-
+    
     [HarmonyPatch(typeof(UnlockResearchSystem), nameof(UnlockResearchSystem.HandleEvent))]
     [HarmonyPostfix]
     public static void Postfix(
@@ -51,6 +52,7 @@ public static class UnlockResearch
         var em = Plugin.EntityManager;
 
         Plugin.BepinLogger.LogInfo($"[APV] Research intercepted: {DebugTool.GetPrefabName(researchGuid)}");
+        //DebugTool.LogFullEntityDebugInfo(fromCharacter.User);
 
         // 1. Remove from station's ResearchBuffer
         if (networkIdToEntityMap.TryGetValue(unlockResearchEvent.Researchstation, out var stationEntity))
@@ -65,17 +67,17 @@ public static class UnlockResearch
                     {
                         stationBuffer.RemoveAt(i);
                         Plugin.BepinLogger.LogInfo($"Removed {DebugTool.GetPrefabName(researchGuid)} from research pool");
-                        return;
+                        break;
                     }
                 }
             }
         }
 
         // 2. Write to player's UnlockedProgressionElement so they can't roll it again
-        var userEntity = fromCharacter.User;
-        Plugin.BepinLogger.LogInfo($"[debug] attempting to remove from player unlockedProgression");
+        //var userEntity = fromCharacter.User;
+        //Plugin.BepinLogger.LogInfo($"[debug] attempting to remove from player unlockedProgression");
 
-        RemoveFromResearchPool(userEntity, researchGuid); // Remove from research pool so it can't be rolled again
+        //RemoveFromResearchPool(userEntity, researchGuid); // Remove from research pool so it can't be rolled again
         
 
         // TODO: Send Archipelago location check
@@ -83,6 +85,18 @@ public static class UnlockResearch
 
         // Block vanilla — we've handled station memory manually
         return;
+    }
+    
+    public static Entity GetProgressionEntity(Entity userEntity)
+    {
+        var em = Plugin.EntityManager;
+
+        if (em.TryGetComponentData<ProgressionMapper>(userEntity, out var progressionMapper))
+        {
+            return progressionMapper.ProgressionEntity._Entity;
+        }
+
+        return Entity.Null;
     }
 
     public static void RemoveFromResearchPool(Entity progressionEntity, PrefabGUID techGuid)

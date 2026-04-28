@@ -22,19 +22,7 @@ public static class UnlockResearchSystemPatch
     {
         var researchGuid = unlockResearchEvent.ResearchGUID;
         Plugin.BepinLogger.LogInfo($"[APV] HandleEvent intercepted: {DebugTool.GetPrefabName(researchGuid)}");
-
-        // Resolve the station NetworkId to an entity
-        if (networkIdToEntityMap.TryGetValue(unlockResearchEvent.Researchstation, out var stationEntity))
-        {
-            Plugin.BepinLogger.LogInfo($"[APV] Station entity: {stationEntity}");
-
-            // Dump station buffers on first call to find shared memory
-            var em = Plugin.EntityManager;
-            var bufferTypes = em.GetComponentTypes(stationEntity);
-            foreach (var b in bufferTypes)
-                Plugin.BepinLogger.LogInfo($"[APV] Station buffer: {b}");
-        }
-
+        
         // TODO: Send Archipelago location check
         // Return false to block both UnlockProgression AND station memory write
         return false;
