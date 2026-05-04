@@ -1,0 +1,145 @@
+﻿using APVRising;
+using APVRising.Archipelago;
+using APVRising.Utils;
+using BepInEx.Logging;
+using HarmonyLib;
+using ProjectM;
+using ProjectM.CastleBuilding;
+using ProjectM.Network;
+using Stunlock.Core;
+using Unity.Collections;
+using Unity.Entities;
+using static ProjectM.ProgressionUtility;
+using static VCF.Core.Basics.RoleCommands;
+
+namespace APVRising.Hooks;
+
+[HarmonyPatch]
+public static class UnlockResearch
+{
+	// majority of this code adapted from VampireCommandFramework @ VCF.Core/Breadstone/ChatHook.cs
+	[HarmonyPatch(typeof(UnlockResearchSystem), nameof(UnlockResearchSystem.UnlockProgression))]
+    [HarmonyPrefix]
+    public static bool Prefix(
+    EntityManager entityManager,
+    UpdateUnlockedJobData progressionJobData,
+    PrefabGUID researchGuid,
+    Entity user,
+    EntityCommandBuffer commandBuffer,
+    PrefabLookupMap prefabMapping,
+    Entity progressionEntity,
+    bool logOnDuplicate = true)
+    {
+        var name = DebugTool.GetPrefabName(researchGuid);
+        Plugin.BepinLogger.LogInfo($"[AP] UnlockProgression: {DebugTool.GetPrefabName(researchGuid)}");
+        return true;
+    }
+
+    //ResearchEntry is a gridSelectionEntry which is part of the research station
+}
+
+[HarmonyPatch]
+public static class UpdateCraftingSystemPatch
+{
+    [HarmonyPatch(typeof(UpdateCraftingSystem), nameof(UpdateCraftingSystem.OnCreate))]
+    [HarmonyPrefix]
+    public static void OnCreatePrefix(UpdateCraftingSystem __instance)
+    {
+        Plugin.BepinLogger.LogInfo("[AP] UpdateCraftingSystem.OnCreate [PREFIX]");
+        CheckStationEntitiesForRecipes(__instance);
+    }
+
+    [HarmonyPatch(typeof(UpdateCraftingSystem), nameof(UpdateCraftingSystem.OnCreate))]
+    [HarmonyPostfix]
+    public static void OnCreatePostfix(UpdateCraftingSystem __instance)
+    {
+        Plugin.BepinLogger.LogInfo("[AP] UpdateCraftingSystem.OnCreate [POSTFIX]");
+        CheckStationEntitiesForRecipes(__instance);
+    }
+
+    [HarmonyPatch(typeof(UpdateCraftingSystem), nameof(UpdateCraftingSystem.OnUpdate))]
+    [HarmonyPrefix]
+    public static void OnUpdatePrefix(UpdateCraftingSystem __instance)
+    {
+        Plugin.BepinLogger.LogInfo("[AP] UpdateCraftingSystem.OnUpdate [PREFIX]");
+        CheckStationEntitiesForRecipes(__instance);
+    }
+
+    [HarmonyPatch(typeof(UpdateCraftingSystem), nameof(UpdateCraftingSystem.OnUpdate))]
+    [HarmonyPostfix]
+    public static void OnUpdatePostfix(UpdateCraftingSystem __instance)
+    {
+        Plugin.BepinLogger.LogInfo("[AP] UpdateCraftingSystem.OnUpdate [POSTFIX]");
+        CheckStationEntitiesForRecipes(__instance);
+    }
+
+    private static void CheckStationEntitiesForRecipes(UpdateCraftingSystem __instance)
+    {
+        var em = Plugin.EntityManager;
+        var query = em.CreateEntityQuery(ComponentType.ReadOnly<CraftingStationType>());
+
+        if (query.IsEmpty)
+        {
+            Plugin.BepinLogger.LogDebug("[AP] UpdateCraftingSystem: No crafting stations found");
+            return;
+        }
+
+        var stations = query.ToEntityArray(Allocator.Temp);
+        Plugin.BepinLogger.LogDebug($"[AP] UpdateCraftingSystem: Checking {stations.Length} station entities for recipes");
+
+        foreach (var station in stations)
+        {
+            if (em.HasBuffer<CraftingRecipeBuffer>(station))
+            {
+                var recipeBuffer = em.GetBuffer<CraftingRecipeBuffer>(station);
+                Plugin.BepinLogger.LogDebug($"[AP] UpdateCraftingSystem: Station has {recipeBuffer.Length} recipes");
+            }
+        }
+    }
+}
+
+[HarmonyPatch]
+public static class CastleBuildingWorkstationSystemPatch
+{
+    [HarmonyPatch(typeof(CastleBuildingWorkstationsSystem), nameof(CastleBuildingWorkstationsSystem.OnCreate))]
+    [HarmonyPrefix]
+    public static void OnCreatePrefix(CastleBuildingWorkstationsSystem __instance)
+    {
+        Plugin.BepinLogger.LogInfo("[AP] CastleBuildingWorkstationSystem.OnCreate [PREFIX]");
+    }
+
+    [HarmonyPatch(typeof(CastleBuildingWorkstationsSystem), nameof(CastleBuildingWorkstationsSystem.OnCreate))]
+    [HarmonyPostfix]
+    public static void OnCreatePostfix(CastleBuildingWorkstationsSystem __instance)
+    {
+        Plugin.BepinLogger.LogInfo("[AP] CastleBuildingWorkstationSystem.OnCreate [POSTFIX]");
+    }
+
+    [HarmonyPatch(typeof(CastleBuildingWorkstationsSystem), nameof(CastleBuildingWorkstationsSystem.OnUpdate))]
+    [HarmonyPrefix]
+    public static void OnUpdatePrefix(CastleBuildingWorkstationsSystem __instance)
+    {
+        Plugin.BepinLogger.LogInfo("[AP] CastleBuildingWorkstationSystem.OnUpdate [PREFIX]");
+    }
+
+    [HarmonyPatch(typeof(CastleBuildingWorkstationsSystem), nameof(CastleBuildingWorkstationsSystem.OnUpdate))]
+    [HarmonyPostfix]
+    public static void OnUpdatePostfix(CastleBuildingWorkstationsSystem __instance)
+    {
+        Plugin.BepinLogger.LogInfo("[AP] CastleBuildingWorkstationSystem.OnUpdate [POSTFIX]");
+    }
+
+    [HarmonyPatch(typeof(CastleBuildingWorkstationsSystem), nameof(CastleBuildingWorkstationsSystem.AddWorkstationEntity))]
+    [HarmonyPrefix]
+    public static void AddWorkstationEntityPrefix(CastleBuildingWorkstationsSystem __instance)
+    {
+        Plugin.BepinLogger.LogInfo("[AP] CastleBuildingWorkstationSystem.AddWorkstationEntity [PREFIX]");
+    }
+
+    [HarmonyPatch(typeof(CastleBuildingWorkstationsSystem), nameof(CastleBuildingWorkstationsSystem.AddWorkstationEntity))]
+    [HarmonyPostfix]
+    public static void AddWorkstationEntityPostfix(CastleBuildingWorkstationsSystem __instance)
+    {
+        Plugin.BepinLogger.LogInfo("[AP] CastleBuildingWorkstationSystem.AddWorkstationEntity [POSTFIX]");
+    }
+}

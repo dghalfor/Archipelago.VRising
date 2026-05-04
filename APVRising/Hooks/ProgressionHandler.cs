@@ -3,6 +3,7 @@ using APVRising.Utils;
 using HarmonyLib;
 using ProjectM;
 using ProjectM.Network;
+using Stunlock.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,35 +14,7 @@ using Unity.Entities;
 using static ProjectM.ProgressionUtility;
 
 namespace APVRising.Hooks;
-/*
-[HarmonyPatch]public static class UpdateUnlockedBuffersPatchv 
-{
-    [HarmonyPatch(typeof(ProgressionUtility), nameof(ProgressionUtility.UpdateUnlockedBuffers),
-        new Type[]
-        {
-            typeof(Entity),
-            typeof(DynamicBuffer<UnlockedProgressionElement>),
-            typeof(UpdateUnlockedJobData)
-        },
-        new ArgumentType[]
-        {
-            ArgumentType.Normal,
-            ArgumentType.Normal,
-            ArgumentType.Ref
-        })]
-    [HarmonyPrefix]
-    public static bool Prefix(
-        Entity progressionEntity,
-        DynamicBuffer<UnlockedProgressionElement> unlockedProgressionElements,
-        ref UpdateUnlockedJobData jobData)
-    {
-        Plugin.BepinLogger.LogInfo($"[AP] UpdateUnlockedBuffers (3 param): {progressionEntity} Length: {unlockedProgressionElements.Length}");
-        foreach (var element in unlockedProgressionElements)
-            Plugin.BepinLogger.LogInfo($"[AP]   Unlock: {DebugTool.GetPrefabName(element.UnlockedPrefab)}");
-        return false;
-    }
-}
-*/
+
 [HarmonyPatch]
 public static class UpdateUnlockedBuffersPatch
 {
@@ -49,6 +22,7 @@ public static class UpdateUnlockedBuffersPatch
     [HarmonyPostfix]
     public static void ManageProgressionElements(TriggerPersistenceSaveSystem __instance)
     {
+        /*
         var em = Plugin.EntityManager;
 
         // Query for User entities which have ProgressionMapper
@@ -66,25 +40,23 @@ public static class UpdateUnlockedBuffersPatch
             {
                 //UnlockedRecipeElement, UnlockedBlueprintElement, UnlockedVBlood, (maybe) UnlockedSpellBookAbility
                 var buffer = em.GetBuffer<UnlockedProgressionElement>(entity);
-                for (int i = buffer.Length - 1; i >= 0; i--)
-                {
-                    if (DebugTool.GetPrefabName(buffer[i].UnlockedPrefab).Contains("Weapon"))
-                    {
-                       // buffer.RemoveAt(i);
-                    }
-                }
+                var unlockedTechHashes = new List<int>();
+                unlockedTechHashes.Add(507915220);
+                unlockedTechHashes.Add(-54738837);
+                unlockedTechHashes.Add(-2012042353);
+
+                // Sync tech unlocks with recipe unlocks directly on the buffer
+                TechToRecipeMapping.SyncUnlockedTechs(buffer, unlockedTechHashes);
                 var recipeBuffer = em.GetBuffer<UnlockedRecipeElement>(entity);
 
-                for (int i = recipeBuffer.Length - 1; i >= 0; i--)
-                {
-                    if (DebugTool.GetPrefabName(recipeBuffer[i].UnlockedRecipe).Contains("Weapon"))
-                    {
-                        recipeBuffer.RemoveAt(i);
-                    }
+                // TODO Read archipelago progression data and sync with game progression
+                
 
-                }
+                // Sync tech unlocks with recipe unlocks directly on the buffer
+                TechToRecipeMapping.SyncTechRecipes(recipeBuffer, unlockedTechHashes);
             }
             entities.Dispose();
         }
+        */
     }
 }

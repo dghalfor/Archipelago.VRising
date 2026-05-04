@@ -1,0 +1,2622 @@
+﻿{
+    "Tech_Ability_CommandingForm":  {
+                                        "recipe":  "Tech_Ability_CommandingForm",
+                                        "recipe_guid":  -1301155150,
+                                        "tech_guid":  -1301155150,
+                                        "status":  "imprecise_match",
+                                        "note":  "Partial name match - may not be accurate"
+                                    },
+    "Tech_Ability_PsychicForm":  {
+                                     "recipe":  "Tech_Ability_PsychicForm",
+                                     "recipe_guid":  -647200166,
+                                     "tech_guid":  -647200166,
+                                     "status":  "imprecise_match",
+                                     "note":  "Partial name match - may not be accurate"
+                                 },
+    "Tech_Armor_Boots_T04_Brute":  {
+                                       "recipe":  "Item_Ingredient_Book_Armor_Boots_T04_Brute",
+                                       "recipe_guid":  362386181,
+                                       "tech_guid":  676266407,
+                                       "status":  "imprecise_match",
+                                       "note":  "Partial name match - may not be accurate"
+                                   },
+    "Tech_Armor_Boots_T04_Rogue":  {
+                                       "recipe":  "Item_Ingredient_Book_Armor_Boots_T04_Rogue",
+                                       "recipe_guid":  -383004511,
+                                       "tech_guid":  2120172621,
+                                       "status":  "imprecise_match",
+                                       "note":  "Partial name match - may not be accurate"
+                                   },
+    "Tech_Armor_Boots_T04_Scholar":  {
+                                         "recipe":  "Item_Ingredient_Book_Armor_Boots_T04_Scholar",
+                                         "recipe_guid":  -1601304786,
+                                         "tech_guid":  1906599762,
+                                         "status":  "imprecise_match",
+                                         "note":  "Partial name match - may not be accurate"
+                                     },
+    "Tech_Armor_Boots_T04_Warrior":  {
+                                         "recipe":  "Item_Ingredient_Book_Armor_Boots_T04_Warrior",
+                                         "recipe_guid":  -668460646,
+                                         "tech_guid":  1879028083,
+                                         "status":  "imprecise_match",
+                                         "note":  "Partial name match - may not be accurate"
+                                     },
+    "Tech_Armor_Boots_T06_Brute":  {
+                                       "recipe":  "Item_Ingredient_Book_Armor_Boots_T06_Brute",
+                                       "recipe_guid":  1529216919,
+                                       "tech_guid":  -867568357,
+                                       "status":  "imprecise_match",
+                                       "note":  "Partial name match - may not be accurate"
+                                   },
+    "Tech_Armor_Boots_T06_Rogue":  {
+                                       "recipe":  "Item_Ingredient_Book_Armor_Boots_T06_Rogue",
+                                       "recipe_guid":  762038154,
+                                       "tech_guid":  399247086,
+                                       "status":  "imprecise_match",
+                                       "note":  "Partial name match - may not be accurate"
+                                   },
+    "Tech_Armor_Boots_T06_Scholar":  {
+                                         "recipe":  "Item_Ingredient_Book_Armor_Boots_T06_Scholar",
+                                         "recipe_guid":  -1147510581,
+                                         "tech_guid":  -2051781325,
+                                         "status":  "imprecise_match",
+                                         "note":  "Partial name match - may not be accurate"
+                                     },
+    "Tech_Armor_Boots_T06_Warrior":  {
+                                         "recipe":  "Item_Ingredient_Book_Armor_Boots_T06_Warrior",
+                                         "recipe_guid":  -1788912715,
+                                         "tech_guid":  -2023969604,
+                                         "status":  "imprecise_match",
+                                         "note":  "Partial name match - may not be accurate"
+                                     },
+    "Tech_Armor_Boots_T08_Brute":  {
+                                       "recipe":  "Item_Ingredient_Book_Armor_Boots_T08_Brute",
+                                       "recipe_guid":  -534142437,
+                                       "tech_guid":  1941997114,
+                                       "status":  "imprecise_match",
+                                       "note":  "Partial name match - may not be accurate"
+                                   },
+    "Tech_Armor_Boots_T08_Rogue":  {
+                                       "recipe":  "Item_Ingredient_Book_Armor_Boots_T08_Rogue",
+                                       "recipe_guid":  -706178162,
+                                       "tech_guid":  -592100304,
+                                       "status":  "imprecise_match",
+                                       "note":  "Partial name match - may not be accurate"
+                                   },
+    "Tech_Armor_Boots_T08_Scholar":  {
+                                         "recipe":  "Item_Ingredient_Book_Armor_Boots_T08_Scholar",
+                                         "recipe_guid":  -1958602686,
+                                         "tech_guid":  -1816818535,
+                                         "status":  "imprecise_match",
+                                         "note":  "Partial name match - may not be accurate"
+                                     },
+    "Tech_Armor_Boots_T08_Warrior":  {
+                                         "recipe":  "Item_Ingredient_Book_Armor_Boots_T08_Warrior",
+                                         "recipe_guid":  1192629421,
+                                         "tech_guid":  1673193738,
+                                         "status":  "imprecise_match",
+                                         "note":  "Partial name match - may not be accurate"
+                                     },
+    "Tech_Armor_Chest_T04_Brute":  {
+                                       "recipe":  "Item_Ingredient_Book_Armor_Chest_T04_Brute",
+                                       "recipe_guid":  1850873910,
+                                       "tech_guid":  -178432582,
+                                       "status":  "imprecise_match",
+                                       "note":  "Partial name match - may not be accurate"
+                                   },
+    "Tech_Armor_Chest_T04_Rogue":  {
+                                       "recipe":  "Item_Ingredient_Book_Armor_Chest_T04_Rogue",
+                                       "recipe_guid":  -849449432,
+                                       "tech_guid":  1868487918,
+                                       "status":  "imprecise_match",
+                                       "note":  "Partial name match - may not be accurate"
+                                   },
+    "Tech_Armor_Chest_T04_Scholar":  {
+                                         "recipe":  "Item_Ingredient_Book_Armor_Chest_T04_Scholar",
+                                         "recipe_guid":  2025615662,
+                                         "tech_guid":  755372402,
+                                         "status":  "imprecise_match",
+                                         "note":  "Partial name match - may not be accurate"
+                                     },
+    "Tech_Armor_Chest_T04_Warrior":  {
+                                         "recipe":  "Item_Ingredient_Book_Armor_Chest_T04_Warrior",
+                                         "recipe_guid":  1753801067,
+                                         "tech_guid":  657926195,
+                                         "status":  "imprecise_match",
+                                         "note":  "Partial name match - may not be accurate"
+                                     },
+    "Tech_Armor_Chest_T06_Brute":  {
+                                       "recipe":  "Item_Ingredient_Book_Armor_Chest_T06_Brute",
+                                       "recipe_guid":  626083889,
+                                       "tech_guid":  320958383,
+                                       "status":  "imprecise_match",
+                                       "note":  "Partial name match - may not be accurate"
+                                   },
+    "Tech_Armor_Chest_T06_Rogue":  {
+                                       "recipe":  "Item_Ingredient_Book_Armor_Chest_T06_Rogue",
+                                       "recipe_guid":  -1595316636,
+                                       "tech_guid":  -962794065,
+                                       "status":  "imprecise_match",
+                                       "note":  "Partial name match - may not be accurate"
+                                   },
+    "Tech_Armor_Chest_T06_Scholar":  {
+                                         "recipe":  "Item_Ingredient_Book_Armor_Chest_T06_Scholar",
+                                         "recipe_guid":  -2066262923,
+                                         "tech_guid":  1291904224,
+                                         "status":  "imprecise_match",
+                                         "note":  "Partial name match - may not be accurate"
+                                     },
+    "Tech_Armor_Chest_T06_Warrior":  {
+                                         "recipe":  "Item_Ingredient_Book_Armor_Chest_T06_Warrior",
+                                         "recipe_guid":  1561721357,
+                                         "tech_guid":  -1191678823,
+                                         "status":  "imprecise_match",
+                                         "note":  "Partial name match - may not be accurate"
+                                     },
+    "Tech_Armor_Chest_T08_Brute":  {
+                                       "recipe":  "Item_Ingredient_Book_Armor_Chest_T08_Brute",
+                                       "recipe_guid":  -1261118965,
+                                       "tech_guid":  750468260,
+                                       "status":  "imprecise_match",
+                                       "note":  "Partial name match - may not be accurate"
+                                   },
+    "Tech_Armor_Chest_T08_Rogue":  {
+                                       "recipe":  "Item_Ingredient_Book_Armor_Chest_T08_Rogue",
+                                       "recipe_guid":  502133568,
+                                       "tech_guid":  -1170753047,
+                                       "status":  "imprecise_match",
+                                       "note":  "Partial name match - may not be accurate"
+                                   },
+    "Tech_Armor_Chest_T08_Scholar":  {
+                                         "recipe":  "Item_Ingredient_Book_Armor_Chest_T08_Scholar",
+                                         "recipe_guid":  -1840162782,
+                                         "tech_guid":  1188570352,
+                                         "status":  "imprecise_match",
+                                         "note":  "Partial name match - may not be accurate"
+                                     },
+    "Tech_Armor_Chest_T08_Warrior":  {
+                                         "recipe":  "Item_Ingredient_Book_Armor_Chest_T08_Warrior",
+                                         "recipe_guid":  -1161279574,
+                                         "tech_guid":  -1435202677,
+                                         "status":  "imprecise_match",
+                                         "note":  "Partial name match - may not be accurate"
+                                     },
+    "Tech_Armor_Gloves_T04_Brute":  {
+                                        "recipe":  "Item_Ingredient_Book_Armor_Gloves_T04_Brute",
+                                        "recipe_guid":  -764630320,
+                                        "tech_guid":  935228271,
+                                        "status":  "imprecise_match",
+                                        "note":  "Partial name match - may not be accurate"
+                                    },
+    "Tech_Armor_Gloves_T04_Rogue":  {
+                                        "recipe":  "Item_Ingredient_Book_Armor_Gloves_T04_Rogue",
+                                        "recipe_guid":  1014370193,
+                                        "tech_guid":  1577296935,
+                                        "status":  "imprecise_match",
+                                        "note":  "Partial name match - may not be accurate"
+                                    },
+    "Tech_Armor_Gloves_T04_Scholar":  {
+                                          "recipe":  "Item_Ingredient_Book_Armor_Gloves_T04_Scholar",
+                                          "recipe_guid":  1840869087,
+                                          "tech_guid":  -1611749320,
+                                          "status":  "imprecise_match",
+                                          "note":  "Partial name match - may not be accurate"
+                                      },
+    "Tech_Armor_Gloves_T04_Warrior":  {
+                                          "recipe":  "Item_Ingredient_Book_Armor_Gloves_T04_Warrior",
+                                          "recipe_guid":  -1242910338,
+                                          "tech_guid":  2125292818,
+                                          "status":  "imprecise_match",
+                                          "note":  "Partial name match - may not be accurate"
+                                      },
+    "Tech_Armor_Gloves_T06_Brute":  {
+                                        "recipe":  "Item_Ingredient_Book_Armor_Gloves_T06_Brute",
+                                        "recipe_guid":  -1344118299,
+                                        "tech_guid":  1232232420,
+                                        "status":  "imprecise_match",
+                                        "note":  "Partial name match - may not be accurate"
+                                    },
+    "Tech_Armor_Gloves_T06_Rogue":  {
+                                        "recipe":  "Item_Ingredient_Book_Armor_Gloves_T06_Rogue",
+                                        "recipe_guid":  735880687,
+                                        "tech_guid":  -1831064302,
+                                        "status":  "imprecise_match",
+                                        "note":  "Partial name match - may not be accurate"
+                                    },
+    "Tech_Armor_Gloves_T06_Scholar":  {
+                                          "recipe":  "Item_Ingredient_Book_Armor_Gloves_T06_Scholar",
+                                          "recipe_guid":  -46006079,
+                                          "tech_guid":  -2034432336,
+                                          "status":  "imprecise_match",
+                                          "note":  "Partial name match - may not be accurate"
+                                      },
+    "Tech_Armor_Gloves_T06_Warrior":  {
+                                          "recipe":  "Item_Ingredient_Book_Armor_Gloves_T06_Warrior",
+                                          "recipe_guid":  -777417289,
+                                          "tech_guid":  -215891793,
+                                          "status":  "imprecise_match",
+                                          "note":  "Partial name match - may not be accurate"
+                                      },
+    "Tech_Armor_Gloves_T08_Brute":  {
+                                        "recipe":  "Item_Ingredient_Book_Armor_Gloves_T08_Brute",
+                                        "recipe_guid":  2020764183,
+                                        "tech_guid":  -371547835,
+                                        "status":  "imprecise_match",
+                                        "note":  "Partial name match - may not be accurate"
+                                    },
+    "Tech_Armor_Gloves_T08_Rogue":  {
+                                        "recipe":  "Item_Ingredient_Book_Armor_Gloves_T08_Rogue",
+                                        "recipe_guid":  1485993952,
+                                        "tech_guid":  693752504,
+                                        "status":  "imprecise_match",
+                                        "note":  "Partial name match - may not be accurate"
+                                    },
+    "Tech_Armor_Gloves_T08_Scholar":  {
+                                          "recipe":  "Item_Ingredient_Book_Armor_Gloves_T08_Scholar",
+                                          "recipe_guid":  -1512099553,
+                                          "tech_guid":  -2038786647,
+                                          "status":  "imprecise_match",
+                                          "note":  "Partial name match - may not be accurate"
+                                      },
+    "Tech_Armor_Gloves_T08_Warrior":  {
+                                          "recipe":  "Item_Ingredient_Book_Armor_Gloves_T08_Warrior",
+                                          "recipe_guid":  -196284663,
+                                          "tech_guid":  -1696823248,
+                                          "status":  "imprecise_match",
+                                          "note":  "Partial name match - may not be accurate"
+                                      },
+    "Tech_Armor_Legs_T04_Brute":  {
+                                      "recipe":  "Item_Ingredient_Book_Armor_Legs_T04_Brute",
+                                      "recipe_guid":  1172935197,
+                                      "tech_guid":  352798374,
+                                      "status":  "imprecise_match",
+                                      "note":  "Partial name match - may not be accurate"
+                                  },
+    "Tech_Armor_Legs_T04_Rogue":  {
+                                      "recipe":  "Item_Ingredient_Book_Armor_Legs_T04_Rogue",
+                                      "recipe_guid":  1364444719,
+                                      "tech_guid":  -366570135,
+                                      "status":  "imprecise_match",
+                                      "note":  "Partial name match - may not be accurate"
+                                  },
+    "Tech_Armor_Legs_T04_Scholar":  {
+                                        "recipe":  "Item_Ingredient_Book_Armor_Legs_T04_Scholar",
+                                        "recipe_guid":  -117205517,
+                                        "tech_guid":  -1510681319,
+                                        "status":  "imprecise_match",
+                                        "note":  "Partial name match - may not be accurate"
+                                    },
+    "Tech_Armor_Legs_T04_Warrior":  {
+                                        "recipe":  "Item_Ingredient_Book_Armor_Legs_T04_Warrior",
+                                        "recipe_guid":  347441899,
+                                        "tech_guid":  -466068499,
+                                        "status":  "imprecise_match",
+                                        "note":  "Partial name match - may not be accurate"
+                                    },
+    "Tech_Armor_Legs_T06_Brute":  {
+                                      "recipe":  "Item_Ingredient_Book_Armor_Legs_T06_Brute",
+                                      "recipe_guid":  1328323768,
+                                      "tech_guid":  754248969,
+                                      "status":  "imprecise_match",
+                                      "note":  "Partial name match - may not be accurate"
+                                  },
+    "Tech_Armor_Legs_T06_Rogue":  {
+                                      "recipe":  "Item_Ingredient_Book_Armor_Legs_T06_Rogue",
+                                      "recipe_guid":  1912738568,
+                                      "tech_guid":  1811127257,
+                                      "status":  "imprecise_match",
+                                      "note":  "Partial name match - may not be accurate"
+                                  },
+    "Tech_Armor_Legs_T06_Scholar":  {
+                                        "recipe":  "Item_Ingredient_Book_Armor_Legs_T06_Scholar",
+                                        "recipe_guid":  -595456862,
+                                        "tech_guid":  -1857837378,
+                                        "status":  "imprecise_match",
+                                        "note":  "Partial name match - may not be accurate"
+                                    },
+    "Tech_Armor_Legs_T06_Warrior":  {
+                                        "recipe":  "Item_Ingredient_Book_Armor_Legs_T06_Warrior",
+                                        "recipe_guid":  -1718233147,
+                                        "tech_guid":  -1866364260,
+                                        "status":  "imprecise_match",
+                                        "note":  "Partial name match - may not be accurate"
+                                    },
+    "Tech_Armor_Legs_T08_Brute":  {
+                                      "recipe":  "Item_Ingredient_Book_Armor_Legs_T08_Brute",
+                                      "recipe_guid":  -996201260,
+                                      "tech_guid":  -996734096,
+                                      "status":  "imprecise_match",
+                                      "note":  "Partial name match - may not be accurate"
+                                  },
+    "Tech_Armor_Legs_T08_Rogue":  {
+                                      "recipe":  "Item_Ingredient_Book_Armor_Legs_T08_Rogue",
+                                      "recipe_guid":  -1260890289,
+                                      "tech_guid":  419994007,
+                                      "status":  "imprecise_match",
+                                      "note":  "Partial name match - may not be accurate"
+                                  },
+    "Tech_Armor_Legs_T08_Scholar":  {
+                                        "recipe":  "Item_Ingredient_Book_Armor_Legs_T08_Scholar",
+                                        "recipe_guid":  -2049321404,
+                                        "tech_guid":  1190578873,
+                                        "status":  "imprecise_match",
+                                        "note":  "Partial name match - may not be accurate"
+                                    },
+    "Tech_Armor_Legs_T08_Warrior":  {
+                                        "recipe":  "Item_Ingredient_Book_Armor_Legs_T08_Warrior",
+                                        "recipe_guid":  -2104396934,
+                                        "tech_guid":  1738492884,
+                                        "status":  "imprecise_match",
+                                        "note":  "Partial name match - may not be accurate"
+                                    },
+    "Tech_Collection_Armor_T01_BoneAll":  {
+                                              "recipe":  "Tech_Collection_Armor_T01_BoneAll",
+                                              "recipe_guid":  -347160774,
+                                              "tech_guid":  -347160774,
+                                              "status":  "imprecise_match",
+                                              "note":  "Partial name match - may not be accurate"
+                                          },
+    "Tech_Collection_Armor_T01_BoneLower":  {
+                                                "recipe":  "Tech_Collection_Armor_T01_BoneLower",
+                                                "recipe_guid":  376701344,
+                                                "tech_guid":  376701344,
+                                                "status":  "imprecise_match",
+                                                "note":  "Partial name match - may not be accurate"
+                                            },
+    "Tech_Collection_Armor_T01_BoneUpper_Salve":  {
+                                                      "recipe":  "Tech_Collection_Armor_T01_BoneUpper_Salve",
+                                                      "recipe_guid":  -1657036518,
+                                                      "tech_guid":  -1657036518,
+                                                      "status":  "imprecise_match",
+                                                      "note":  "Partial name match - may not be accurate"
+                                                  },
+    "Tech_Collection_ArtisansCorner":  {
+                                           "recipe":  "Tech_Collection_ArtisansCorner",
+                                           "recipe_guid":  2022418671,
+                                           "tech_guid":  2022418671,
+                                           "status":  "imprecise_match",
+                                           "note":  "Partial name match - may not be accurate"
+                                       },
+    "Tech_Collection_BloodTracking":  {
+                                          "recipe":  "Tech_Collection_BloodTracking",
+                                          "recipe_guid":  1396665832,
+                                          "tech_guid":  1396665832,
+                                          "status":  "imprecise_match",
+                                          "note":  "Partial name match - may not be accurate"
+                                      },
+    "Tech_Collection_Brazier_01":  {
+                                       "recipe":  "Tech_Collection_Brazier_01",
+                                       "recipe_guid":  1789166952,
+                                       "tech_guid":  1789166952,
+                                       "status":  "imprecise_match",
+                                       "note":  "Partial name match - may not be accurate"
+                                   },
+    "Tech_Collection_Braziers02":  {
+                                       "recipe":  "Tech_Collection_Braziers02",
+                                       "recipe_guid":  1928348865,
+                                       "tech_guid":  1928348865,
+                                       "status":  "imprecise_match",
+                                       "note":  "Partial name match - may not be accurate"
+                                   },
+    "Tech_Collection_Braziers03":  {
+                                       "recipe":  "Tech_Collection_Braziers03",
+                                       "recipe_guid":  -1841292034,
+                                       "tech_guid":  -1841292034,
+                                       "status":  "imprecise_match",
+                                       "note":  "Partial name match - may not be accurate"
+                                   },
+    "Tech_Collection_BustStatues_Vampire":  {
+                                                "recipe":  "Tech_Collection_BustStatues_Vampire",
+                                                "recipe_guid":  -1045980026,
+                                                "tech_guid":  -1045980026,
+                                                "status":  "imprecise_match",
+                                                "note":  "Partial name match - may not be accurate"
+                                            },
+    "Tech_Collection_Candles_T02":  {
+                                        "recipe":  "Tech_Collection_Candles_T02",
+                                        "recipe_guid":  1982396745,
+                                        "tech_guid":  1982396745,
+                                        "status":  "imprecise_match",
+                                        "note":  "Partial name match - may not be accurate"
+                                    },
+    "Tech_Collection_CandleStands_T01":  {
+                                             "recipe":  "Tech_Collection_CandleStands_T01",
+                                             "recipe_guid":  -1032220214,
+                                             "tech_guid":  -1032220214,
+                                             "status":  "imprecise_match",
+                                             "note":  "Partial name match - may not be accurate"
+                                         },
+    "Tech_Collection_CandleStands_T02":  {
+                                             "recipe":  "Tech_Collection_CandleStands_T02",
+                                             "recipe_guid":  1186146964,
+                                             "tech_guid":  1186146964,
+                                             "status":  "imprecise_match",
+                                             "note":  "Partial name match - may not be accurate"
+                                         },
+    "Tech_Collection_Carpet_Ostenstatious":  {
+                                                 "recipe":  "Tech_Collection_Carpet_Ostenstatious",
+                                                 "recipe_guid":  377882346,
+                                                 "tech_guid":  377882346,
+                                                 "status":  "imprecise_match",
+                                                 "note":  "Partial name match - may not be accurate"
+                                             },
+    "Tech_Collection_Carpet_Stately":  {
+                                           "recipe":  "Tech_Collection_Carpet_Stately",
+                                           "recipe_guid":  -1363487077,
+                                           "tech_guid":  -1363487077,
+                                           "status":  "imprecise_match",
+                                           "note":  "Partial name match - may not be accurate"
+                                       },
+    "Tech_Collection_Carpet_T01":  {
+                                       "recipe":  "Tech_Collection_Carpet_T01",
+                                       "recipe_guid":  971588976,
+                                       "tech_guid":  971588976,
+                                       "status":  "imprecise_match",
+                                       "note":  "Partial name match - may not be accurate"
+                                   },
+    "Tech_Collection_Carpet_T02":  {
+                                       "recipe":  "Tech_Collection_Carpet_T02",
+                                       "recipe_guid":  -59044434,
+                                       "tech_guid":  -59044434,
+                                       "status":  "imprecise_match",
+                                       "note":  "Partial name match - may not be accurate"
+                                   },
+    "Tech_Collection_Carpet_T03":  {
+                                       "recipe":  "Tech_Collection_Carpet_T03",
+                                       "recipe_guid":  -166104992,
+                                       "tech_guid":  -166104992,
+                                       "status":  "imprecise_match",
+                                       "note":  "Partial name match - may not be accurate"
+                                   },
+    "Tech_Collection_Castle_Paintings":  {
+                                             "recipe":  "Tech_Collection_Castle_Paintings",
+                                             "recipe_guid":  698575581,
+                                             "tech_guid":  698575581,
+                                             "status":  "imprecise_match",
+                                             "note":  "Partial name match - may not be accurate"
+                                         },
+    "Tech_Collection_Castle_Windows_T01":  {
+                                               "recipe":  "Tech_Collection_Castle_Windows_T01",
+                                               "recipe_guid":  -1270150309,
+                                               "tech_guid":  -1270150309,
+                                               "status":  "imprecise_match",
+                                               "note":  "Partial name match - may not be accurate"
+                                           },
+    "Tech_Collection_Clocks":  {
+                                   "recipe":  "Tech_Collection_Clocks",
+                                   "recipe_guid":  -1847627135,
+                                   "tech_guid":  -1847627135,
+                                   "status":  "imprecise_match",
+                                   "note":  "Partial name match - may not be accurate"
+                               },
+    "Tech_Collection_CoatOfArms":  {
+                                       "recipe":  "Tech_Collection_CoatOfArms",
+                                       "recipe_guid":  -1637580865,
+                                       "tech_guid":  -1637580865,
+                                       "status":  "imprecise_match",
+                                       "note":  "Partial name match - may not be accurate"
+                                   },
+    "Tech_Collection_Dracula_Armor_Boots":  {
+                                                "recipe":  "Tech_Collection_Dracula_Armor_Boots",
+                                                "recipe_guid":  -1000381969,
+                                                "tech_guid":  -1000381969,
+                                                "status":  "imprecise_match",
+                                                "note":  "Partial name match - may not be accurate"
+                                            },
+    "Tech_Collection_Dracula_Armor_Chest":  {
+                                                "recipe":  "Tech_Collection_Dracula_Armor_Chest",
+                                                "recipe_guid":  -784761022,
+                                                "tech_guid":  -784761022,
+                                                "status":  "imprecise_match",
+                                                "note":  "Partial name match - may not be accurate"
+                                            },
+    "Tech_Collection_Dracula_Armor_Gloves":  {
+                                                 "recipe":  "Tech_Collection_Dracula_Armor_Gloves",
+                                                 "recipe_guid":  1518908715,
+                                                 "tech_guid":  1518908715,
+                                                 "status":  "imprecise_match",
+                                                 "note":  "Partial name match - may not be accurate"
+                                             },
+    "Tech_Collection_Dracula_Armor_Legs":  {
+                                               "recipe":  "Tech_Collection_Dracula_Armor_Legs",
+                                               "recipe_guid":  -997181076,
+                                               "tech_guid":  -997181076,
+                                               "status":  "imprecise_match",
+                                               "note":  "Partial name match - may not be accurate"
+                                           },
+    "Tech_Collection_Fence_Rural":  {
+                                        "recipe":  "Tech_Collection_Fence_Rural",
+                                        "recipe_guid":  1194397556,
+                                        "tech_guid":  1194397556,
+                                        "status":  "imprecise_match",
+                                        "note":  "Partial name match - may not be accurate"
+                                    },
+    "Tech_Collection_Fence_Verdant":  {
+                                          "recipe":  "Tech_Collection_Fence_Verdant",
+                                          "recipe_guid":  -4950312,
+                                          "tech_guid":  -4950312,
+                                          "status":  "imprecise_match",
+                                          "note":  "Partial name match - may not be accurate"
+                                      },
+    "Tech_Collection_FenceFountain_Noble_T02":  {
+                                                    "recipe":  "Tech_Collection_FenceFountain_Noble_T02",
+                                                    "recipe_guid":  -1776617088,
+                                                    "tech_guid":  -1776617088,
+                                                    "status":  "imprecise_match",
+                                                    "note":  "Partial name match - may not be accurate"
+                                                },
+    "Tech_Collection_Fireplaces":  {
+                                       "recipe":  "Tech_Collection_Fireplaces",
+                                       "recipe_guid":  -820554605,
+                                       "tech_guid":  -820554605,
+                                       "status":  "imprecise_match",
+                                       "note":  "Partial name match - may not be accurate"
+                                   },
+    "Tech_Collection_FlyingCandles_T03":  {
+                                              "recipe":  "Tech_Collection_FlyingCandles_T03",
+                                              "recipe_guid":  1863270378,
+                                              "tech_guid":  1863270378,
+                                              "status":  "imprecise_match",
+                                              "note":  "Partial name match - may not be accurate"
+                                          },
+    "Tech_Collection_Fountain_T03":  {
+                                         "recipe":  "Tech_Collection_Fountain_T03",
+                                         "recipe_guid":  -1296064423,
+                                         "tech_guid":  -1296064423,
+                                         "status":  "imprecise_match",
+                                         "note":  "Partial name match - may not be accurate"
+                                     },
+    "Tech_Collection_Framework_CastleHeart":  {
+                                                  "recipe":  "Tech_Collection_Framework_CastleHeart",
+                                                  "recipe_guid":  -1377692981,
+                                                  "tech_guid":  -1377692981,
+                                                  "status":  "imprecise_match",
+                                                  "note":  "Partial name match - may not be accurate"
+                                              },
+    "Tech_Collection_Framework_Gargoyles_and_DLC":  {
+                                                        "recipe":  "Tech_Collection_Framework_Gargoyles_and_DLC",
+                                                        "recipe_guid":  -2118176472,
+                                                        "tech_guid":  -2118176472,
+                                                        "status":  "imprecise_match",
+                                                        "note":  "Partial name match - may not be accurate"
+                                                    },
+    "Tech_Collection_Framework_T01_Wood_Foundation":  {
+                                                          "recipe":  "Tech_Collection_Framework_T01_Wood_Foundation",
+                                                          "recipe_guid":  -219528846,
+                                                          "tech_guid":  -219528846,
+                                                          "status":  "imprecise_match",
+                                                          "note":  "Partial name match - may not be accurate"
+                                                      },
+    "Tech_Collection_Framework_T01_Wood_Structures":  {
+                                                          "recipe":  "Tech_Collection_Framework_T01_Wood_Structures",
+                                                          "recipe_guid":  -1010843571,
+                                                          "tech_guid":  -1010843571,
+                                                          "status":  "imprecise_match",
+                                                          "note":  "Partial name match - may not be accurate"
+                                                      },
+    "Tech_Collection_Framework_T02_Stone":  {
+                                                "recipe":  "Tech_Collection_Framework_T02_Stone",
+                                                "recipe_guid":  1908774048,
+                                                "tech_guid":  1908774048,
+                                                "status":  "imprecise_match",
+                                                "note":  "Partial name match - may not be accurate"
+                                            },
+    "Tech_Collection_Framework_T02_Stone_DLC_Dracula":  {
+                                                            "recipe":  "Tech_Collection_Framework_T02_Stone_DLC_Dracula",
+                                                            "recipe_guid":  -447888984,
+                                                            "tech_guid":  -447888984,
+                                                            "status":  "imprecise_match",
+                                                            "note":  "Partial name match - may not be accurate"
+                                                        },
+    "Tech_Collection_Framework_T02_Stone_DLC_Gloomrot":  {
+                                                             "recipe":  "Tech_Collection_Framework_T02_Stone_DLC_Gloomrot",
+                                                             "recipe_guid":  -1485413430,
+                                                             "tech_guid":  -1485413430,
+                                                             "status":  "imprecise_match",
+                                                             "note":  "Partial name match - may not be accurate"
+                                                         },
+    "Tech_Collection_Framework_T02_Stone_DLC_ProjectK":  {
+                                                             "recipe":  "Tech_Collection_Framework_T02_Stone_DLC_ProjectK",
+                                                             "recipe_guid":  763319653,
+                                                             "tech_guid":  763319653,
+                                                             "status":  "imprecise_match",
+                                                             "note":  "Partial name match - may not be accurate"
+                                                         },
+    "Tech_Collection_Framework_T02_Stone_DLC_Strongblade":  {
+                                                                "recipe":  "Tech_Collection_Framework_T02_Stone_DLC_Strongblade",
+                                                                "recipe_guid":  -2146477131,
+                                                                "tech_guid":  -2146477131,
+                                                                "status":  "imprecise_match",
+                                                                "note":  "Partial name match - may not be accurate"
+                                                            },
+    "Tech_Collection_Framework_T02_Stone_Halloween2022":  {
+                                                              "recipe":  "Tech_Collection_Framework_T02_Stone_Halloween2022",
+                                                              "recipe_guid":  -729522822,
+                                                              "tech_guid":  -729522822,
+                                                              "status":  "imprecise_match",
+                                                              "note":  "Partial name match - may not be accurate"
+                                                          },
+    "Tech_Collection_FrayedDecor":  {
+                                        "recipe":  "Tech_Collection_FrayedDecor",
+                                        "recipe_guid":  524373519,
+                                        "tech_guid":  524373519,
+                                        "status":  "imprecise_match",
+                                        "note":  "Partial name match - may not be accurate"
+                                    },
+    "Tech_Collection_Furniture_Chairs_T02":  {
+                                                 "recipe":  "Tech_Collection_Furniture_Chairs_T02",
+                                                 "recipe_guid":  -1393827852,
+                                                 "tech_guid":  -1393827852,
+                                                 "status":  "imprecise_match",
+                                                 "note":  "Partial name match - may not be accurate"
+                                             },
+    "Tech_Collection_Furniture_Desk_Chairs_T02":  {
+                                                      "recipe":  "Tech_Collection_Furniture_Desk_Chairs_T02",
+                                                      "recipe_guid":  -398123938,
+                                                      "tech_guid":  -398123938,
+                                                      "status":  "imprecise_match",
+                                                      "note":  "Partial name match - may not be accurate"
+                                                  },
+    "Tech_Collection_Furniture_Desks_T02":  {
+                                                "recipe":  "Tech_Collection_Furniture_Desks_T02",
+                                                "recipe_guid":  -1949258784,
+                                                "tech_guid":  -1949258784,
+                                                "status":  "imprecise_match",
+                                                "note":  "Partial name match - may not be accurate"
+                                            },
+    "Tech_Collection_Furniture_DressingTables_T03":  {
+                                                         "recipe":  "Tech_Collection_Furniture_DressingTables_T03",
+                                                         "recipe_guid":  -1708158238,
+                                                         "tech_guid":  -1708158238,
+                                                         "status":  "imprecise_match",
+                                                         "note":  "Partial name match - may not be accurate"
+                                                     },
+    "Tech_Collection_Furniture_Simple_T01":  {
+                                                 "recipe":  "Tech_Collection_Furniture_Simple_T01",
+                                                 "recipe_guid":  1549360318,
+                                                 "tech_guid":  1549360318,
+                                                 "status":  "imprecise_match",
+                                                 "note":  "Partial name match - may not be accurate"
+                                             },
+    "Tech_Collection_Furniture_Sofas_T03":  {
+                                                "recipe":  "Tech_Collection_Furniture_Sofas_T03",
+                                                "recipe_guid":  1333706297,
+                                                "tech_guid":  1333706297,
+                                                "status":  "imprecise_match",
+                                                "note":  "Partial name match - may not be accurate"
+                                            },
+    "Tech_Collection_Furniture_Tables_T02":  {
+                                                 "recipe":  "Tech_Collection_Furniture_Tables_T02",
+                                                 "recipe_guid":  1970685025,
+                                                 "tech_guid":  1970685025,
+                                                 "status":  "imprecise_match",
+                                                 "note":  "Partial name match - may not be accurate"
+                                             },
+    "Tech_Collection_Garden_Furniture_Lanterns_T02":  {
+                                                          "recipe":  "Tech_Collection_Garden_Furniture_Lanterns_T02",
+                                                          "recipe_guid":  -547241268,
+                                                          "tech_guid":  -547241268,
+                                                          "status":  "imprecise_match",
+                                                          "note":  "Partial name match - may not be accurate"
+                                                      },
+    "Tech_Collection_Garden_Hedges_T02":  {
+                                              "recipe":  "Tech_Collection_Garden_Hedges_T02",
+                                              "recipe_guid":  1158190765,
+                                              "tech_guid":  1158190765,
+                                              "status":  "imprecise_match",
+                                              "note":  "Partial name match - may not be accurate"
+                                          },
+    "Tech_Collection_Garden_PlantersDecor_T01":  {
+                                                     "recipe":  "Tech_Collection_Garden_PlantersDecor_T01",
+                                                     "recipe_guid":  -3886426,
+                                                     "tech_guid":  -3886426,
+                                                     "status":  "imprecise_match",
+                                                     "note":  "Partial name match - may not be accurate"
+                                                 },
+    "Tech_Collection_Garden_PlantersDecor_T02":  {
+                                                     "recipe":  "Tech_Collection_Garden_PlantersDecor_T02",
+                                                     "recipe_guid":  1643488994,
+                                                     "tech_guid":  1643488994,
+                                                     "status":  "imprecise_match",
+                                                     "note":  "Partial name match - may not be accurate"
+                                                 },
+    "Tech_Collection_Garden_PlantersDecor_T03":  {
+                                                     "recipe":  "Tech_Collection_Garden_PlantersDecor_T03",
+                                                     "recipe_guid":  303243522,
+                                                     "tech_guid":  303243522,
+                                                     "status":  "imprecise_match",
+                                                     "note":  "Partial name match - may not be accurate"
+                                                 },
+    "Tech_Collection_HangingLanterns_T02":  {
+                                                "recipe":  "Tech_Collection_HangingLanterns_T02",
+                                                "recipe_guid":  -986883360,
+                                                "tech_guid":  -986883360,
+                                                "status":  "imprecise_match",
+                                                "note":  "Partial name match - may not be accurate"
+                                            },
+    "Tech_Collection_Light_GardenLampPosts_T03":  {
+                                                      "recipe":  "Tech_Collection_Light_GardenLampPosts_T03",
+                                                      "recipe_guid":  -732367543,
+                                                      "tech_guid":  -732367543,
+                                                      "status":  "imprecise_match",
+                                                      "note":  "Partial name match - may not be accurate"
+                                                  },
+    "Tech_Collection_Mirrors":  {
+                                    "recipe":  "Tech_Collection_Mirrors",
+                                    "recipe_guid":  437493175,
+                                    "tech_guid":  437493175,
+                                    "status":  "imprecise_match",
+                                    "note":  "Partial name match - may not be accurate"
+                                },
+    "Tech_Collection_Mirrors_Halloween2022":  {
+                                                  "recipe":  "Tech_Collection_Mirrors_Halloween2022",
+                                                  "recipe_guid":  153177445,
+                                                  "tech_guid":  153177445,
+                                                  "status":  "imprecise_match",
+                                                  "note":  "Partial name match - may not be accurate"
+                                              },
+    "Tech_Collection_Ornaments_Banners_T02":  {
+                                                  "recipe":  "Tech_Collection_Ornaments_Banners_T02",
+                                                  "recipe_guid":  2134771043,
+                                                  "tech_guid":  2134771043,
+                                                  "status":  "imprecise_match",
+                                                  "note":  "Partial name match - may not be accurate"
+                                              },
+    "Tech_Collection_Ornaments_Stone_T01":  {
+                                                "recipe":  "Tech_Collection_Ornaments_Stone_T01",
+                                                "recipe_guid":  498212120,
+                                                "tech_guid":  498212120,
+                                                "status":  "imprecise_match",
+                                                "note":  "Partial name match - may not be accurate"
+                                            },
+    "Tech_Collection_Outdoor_Floors":  {
+                                           "recipe":  "Tech_Collection_Outdoor_Floors",
+                                           "recipe_guid":  1426681031,
+                                           "tech_guid":  1426681031,
+                                           "status":  "imprecise_match",
+                                           "note":  "Partial name match - may not be accurate"
+                                       },
+    "Tech_Collection_Pavement_Cobblestone":  {
+                                                 "recipe":  "Tech_Collection_Pavement_Cobblestone",
+                                                 "recipe_guid":  1029462093,
+                                                 "tech_guid":  1029462093,
+                                                 "status":  "imprecise_match",
+                                                 "note":  "Partial name match - may not be accurate"
+                                             },
+    "Tech_Collection_Pavement_Dirt":  {
+                                          "recipe":  "Tech_Collection_Pavement_Dirt",
+                                          "recipe_guid":  2080238877,
+                                          "tech_guid":  2080238877,
+                                          "status":  "imprecise_match",
+                                          "note":  "Partial name match - may not be accurate"
+                                      },
+    "Tech_Collection_Salve":  {
+                                  "recipe":  "Tech_Collection_Salve",
+                                  "recipe_guid":  -1279942095,
+                                  "tech_guid":  -1279942095,
+                                  "status":  "imprecise_match",
+                                  "note":  "Partial name match - may not be accurate"
+                              },
+    "Tech_Collection_Stables_Furnishing":  {
+                                               "recipe":  "Tech_Collection_Stables_Furnishing",
+                                               "recipe_guid":  2128476081,
+                                               "tech_guid":  2128476081,
+                                               "status":  "imprecise_match",
+                                               "note":  "Partial name match - may not be accurate"
+                                           },
+    "Tech_Collection_Statues_Vampire":  {
+                                            "recipe":  "Tech_Collection_Statues_Vampire",
+                                            "recipe_guid":  192335890,
+                                            "tech_guid":  192335890,
+                                            "status":  "imprecise_match",
+                                            "note":  "Partial name match - may not be accurate"
+                                        },
+    "Tech_Collection_Structures_T01":  {
+                                           "recipe":  "Tech_Collection_Structures_T01",
+                                           "recipe_guid":  -998624122,
+                                           "tech_guid":  -998624122,
+                                           "status":  "imprecise_match",
+                                           "note":  "Partial name match - may not be accurate"
+                                       },
+    "Tech_Collection_Vases01":  {
+                                    "recipe":  "Tech_Collection_Vases01",
+                                    "recipe_guid":  1449355366,
+                                    "tech_guid":  1449355366,
+                                    "status":  "imprecise_match",
+                                    "note":  "Partial name match - may not be accurate"
+                                },
+    "Tech_Collection_VBlood_ArenaDecorations":  {
+                                                    "recipe":  "Tech_Collection_VBlood_ArenaDecorations",
+                                                    "recipe_guid":  959981888,
+                                                    "tech_guid":  959981888,
+                                                    "status":  "imprecise_match",
+                                                    "note":  "Partial name match - may not be accurate"
+                                                },
+    "Tech_Collection_VBlood_CrystalLamp":  {
+                                               "recipe":  "Tech_Collection_VBlood_CrystalLamp",
+                                               "recipe_guid":  1120119195,
+                                               "tech_guid":  1120119195,
+                                               "status":  "imprecise_match",
+                                               "note":  "Partial name match - may not be accurate"
+                                           },
+    "Tech_Collection_VBlood_JewelsT04":  {
+                                             "recipe":  "Tech_Collection_VBlood_JewelsT04",
+                                             "recipe_guid":  514472877,
+                                             "tech_guid":  514472877,
+                                             "status":  "imprecise_match",
+                                             "note":  "Partial name match - may not be accurate"
+                                         },
+    "Tech_Collection_VBlood_T02_AlphaWolf":  {
+                                                 "recipe":  "Tech_Collection_VBlood_T02_AlphaWolf",
+                                                 "recipe_guid":  -1031733757,
+                                                 "tech_guid":  -1031733757,
+                                                 "status":  "imprecise_match",
+                                                 "note":  "Partial name match - may not be accurate"
+                                             },
+    "Tech_Collection_VBlood_T02_Keely_Armor":  {
+                                                   "recipe":  "Tech_Collection_VBlood_T02_Keely_Armor",
+                                                   "recipe_guid":  537293692,
+                                                   "tech_guid":  537293692,
+                                                   "status":  "imprecise_match",
+                                                   "note":  "Partial name match - may not be accurate"
+                                               },
+    "Tech_Collection_VBlood_T02_KeelyFrostArrow":  {
+                                                       "recipe":  "Tech_Collection_VBlood_T02_KeelyFrostArrow",
+                                                       "recipe_guid":  792292662,
+                                                       "tech_guid":  792292662,
+                                                       "status":  "imprecise_match",
+                                                       "note":  "Partial name match - may not be accurate"
+                                                   },
+    "Tech_Collection_VBlood_T02_KeelyFrostArrow_Canteen":  {
+                                                               "recipe":  "Tech_Collection_VBlood_T02_KeelyFrostArrow_Canteen",
+                                                               "recipe_guid":  1500994622,
+                                                               "tech_guid":  1500994622,
+                                                               "status":  "imprecise_match",
+                                                               "note":  "Partial name match - may not be accurate"
+                                                           },
+    "Tech_Collection_VBlood_T02_LidiaChaosArrow":  {
+                                                       "recipe":  "Tech_Collection_VBlood_T02_LidiaChaosArrow",
+                                                       "recipe_guid":  873587326,
+                                                       "tech_guid":  873587326,
+                                                       "status":  "imprecise_match",
+                                                       "note":  "Partial name match - may not be accurate"
+                                                   },
+    "Tech_Collection_VBlood_T02_LidiaChaosArrow_Longbow":  {
+                                                               "recipe":  "Tech_Collection_VBlood_T02_LidiaChaosArrow_Longbow",
+                                                               "recipe_guid":  -272307342,
+                                                               "tech_guid":  -272307342,
+                                                               "status":  "imprecise_match",
+                                                               "note":  "Partial name match - may not be accurate"
+                                                           },
+    "Tech_Collection_VBlood_T02_RufusForeman":  {
+                                                    "recipe":  "Tech_Collection_VBlood_T02_RufusForeman",
+                                                    "recipe_guid":  -1375294270,
+                                                    "tech_guid":  -1375294270,
+                                                    "status":  "imprecise_match",
+                                                    "note":  "Partial name match - may not be accurate"
+                                                },
+    "Tech_Collection_VBlood_T02_RufusForeman_Crossbow":  {
+                                                             "recipe":  "Tech_Collection_VBlood_T02_RufusForeman_Crossbow",
+                                                             "recipe_guid":  1080245850,
+                                                             "tech_guid":  1080245850,
+                                                             "status":  "imprecise_match",
+                                                             "note":  "Partial name match - may not be accurate"
+                                                         },
+    "Tech_Collection_VBlood_T02_StoneBreaker":  {
+                                                    "recipe":  "Tech_Collection_VBlood_T02_StoneBreaker",
+                                                    "recipe_guid":  -1230635663,
+                                                    "tech_guid":  -1230635663,
+                                                    "status":  "imprecise_match",
+                                                    "note":  "Partial name match - may not be accurate"
+                                                },
+    "Tech_Collection_VBlood_T02_StoneBreaker_CopperWeapons":  {
+                                                                  "recipe":  "Tech_Collection_VBlood_T02_StoneBreaker_CopperWeapons",
+                                                                  "recipe_guid":  -681604451,
+                                                                  "tech_guid":  -681604451,
+                                                                  "status":  "imprecise_match",
+                                                                  "note":  "Partial name match - may not be accurate"
+                                                              },
+    "Tech_Collection_VBlood_T03_Fisherman":  {
+                                                 "recipe":  "Tech_Collection_VBlood_T03_Fisherman",
+                                                 "recipe_guid":  -1955769660,
+                                                 "tech_guid":  -1955769660,
+                                                 "status":  "imprecise_match",
+                                                 "note":  "Partial name match - may not be accurate"
+                                             },
+    "Tech_Collection_VBlood_T03_Goreswine":  {
+                                                 "recipe":  "Tech_Collection_VBlood_T03_Goreswine",
+                                                 "recipe_guid":  503108272,
+                                                 "tech_guid":  503108272,
+                                                 "status":  "imprecise_match",
+                                                 "note":  "Partial name match - may not be accurate"
+                                             },
+    "Tech_Collection_VBlood_T03_Goreswine_MagicSource":  {
+                                                             "recipe":  "Tech_Collection_VBlood_T03_Goreswine_MagicSource",
+                                                             "recipe_guid":  -934771037,
+                                                             "tech_guid":  -934771037,
+                                                             "status":  "imprecise_match",
+                                                             "note":  "Partial name match - may not be accurate"
+                                                         },
+    "Tech_Collection_VBlood_T03_Goreswine_Units":  {
+                                                       "recipe":  "Tech_Collection_VBlood_T03_Goreswine_Units",
+                                                       "recipe_guid":  1226331752,
+                                                       "tech_guid":  1226331752,
+                                                       "status":  "imprecise_match",
+                                                       "note":  "Partial name match - may not be accurate"
+                                                   },
+    "Tech_Collection_VBlood_T03_GoreswineFence":  {
+                                                      "recipe":  "Tech_Collection_VBlood_T03_GoreswineFence",
+                                                      "recipe_guid":  -1852229711,
+                                                      "tech_guid":  -1852229711,
+                                                      "status":  "imprecise_match",
+                                                      "note":  "Partial name match - may not be accurate"
+                                                  },
+    "Tech_Collection_VBlood_T03_Grayson":  {
+                                               "recipe":  "Tech_Collection_VBlood_T03_Grayson",
+                                               "recipe_guid":  -819263071,
+                                               "tech_guid":  -819263071,
+                                               "status":  "imprecise_match",
+                                               "note":  "Partial name match - may not be accurate"
+                                           },
+    "Tech_Collection_VBlood_T03_Grayson_Floors":  {
+                                                      "recipe":  "Tech_Collection_VBlood_T03_Grayson_Floors",
+                                                      "recipe_guid":  613260763,
+                                                      "tech_guid":  613260763,
+                                                      "status":  "imprecise_match",
+                                                      "note":  "Partial name match - may not be accurate"
+                                                  },
+    "Tech_Collection_VBlood_T03_Grayson_TargetDummies":  {
+                                                             "recipe":  "Tech_Collection_VBlood_T03_Grayson_TargetDummies",
+                                                             "recipe_guid":  -1484059874,
+                                                             "tech_guid":  -1484059874,
+                                                             "status":  "imprecise_match",
+                                                             "note":  "Partial name match - may not be accurate"
+                                                         },
+    "Tech_Collection_VBlood_T03_PutridRat":  {
+                                                 "recipe":  "Tech_Collection_VBlood_T03_PutridRat",
+                                                 "recipe_guid":  -482440851,
+                                                 "tech_guid":  -482440851,
+                                                 "status":  "imprecise_match",
+                                                 "note":  "Partial name match - may not be accurate"
+                                             },
+    "Tech_Collection_VBlood_T04_Ball_Cosmetic":  {
+                                                     "recipe":  "Tech_Collection_VBlood_T04_Ball_Cosmetic",
+                                                     "recipe_guid":  -1140095741,
+                                                     "tech_guid":  -1140095741,
+                                                     "status":  "imprecise_match",
+                                                     "note":  "Partial name match - may not be accurate"
+                                                 },
+    "Tech_Collection_VBlood_T04_CliveTheFirestarter":  {
+                                                           "recipe":  "Tech_Collection_VBlood_T04_CliveTheFirestarter",
+                                                           "recipe_guid":  1165734787,
+                                                           "tech_guid":  1165734787,
+                                                           "status":  "imprecise_match",
+                                                           "note":  "Partial name match - may not be accurate"
+                                                       },
+    "Tech_Collection_VBlood_T04_FrostGuard":  {
+                                                  "recipe":  "Tech_Collection_VBlood_T04_FrostGuard",
+                                                  "recipe_guid":  627388312,
+                                                  "tech_guid":  627388312,
+                                                  "status":  "imprecise_match",
+                                                  "note":  "Partial name match - may not be accurate"
+                                              },
+    "Tech_Collection_VBlood_T04_FrostGuard_PrisonFramework":  {
+                                                                  "recipe":  "Tech_Collection_VBlood_T04_FrostGuard_PrisonFramework",
+                                                                  "recipe_guid":  1286356808,
+                                                                  "tech_guid":  1286356808,
+                                                                  "status":  "imprecise_match",
+                                                                  "note":  "Partial name match - may not be accurate"
+                                                              },
+    "Tech_Collection_VBlood_T04_NicholausTheFallen":  {
+                                                          "recipe":  "Tech_Collection_VBlood_T04_NicholausTheFallen",
+                                                          "recipe_guid":  656825307,
+                                                          "tech_guid":  656825307,
+                                                          "status":  "imprecise_match",
+                                                          "note":  "Partial name match - may not be accurate"
+                                                      },
+    "Tech_Collection_VBlood_T04_NicholausTheFallen_MagicSource":  {
+                                                                      "recipe":  "Tech_Collection_VBlood_T04_NicholausTheFallen_MagicSource",
+                                                                      "recipe_guid":  189289255,
+                                                                      "tech_guid":  189289255,
+                                                                      "status":  "imprecise_match",
+                                                                      "note":  "Partial name match - may not be accurate"
+                                                                  },
+    "Tech_Collection_VBlood_T04_Poloma":  {
+                                              "recipe":  "Tech_Collection_VBlood_T04_Poloma",
+                                              "recipe_guid":  -1138769053,
+                                              "tech_guid":  -1138769053,
+                                              "status":  "imprecise_match",
+                                              "note":  "Partial name match - may not be accurate"
+                                          },
+    "Tech_Collection_VBlood_T04_PolomaGardenFloors":  {
+                                                          "recipe":  "Tech_Collection_VBlood_T04_PolomaGardenFloors",
+                                                          "recipe_guid":  196684992,
+                                                          "tech_guid":  196684992,
+                                                          "status":  "imprecise_match",
+                                                          "note":  "Partial name match - may not be accurate"
+                                                      },
+    "Tech_Collection_VBlood_T04_PolomaPlantersExterior":  {
+                                                              "recipe":  "Tech_Collection_VBlood_T04_PolomaPlantersExterior",
+                                                              "recipe_guid":  35536792,
+                                                              "tech_guid":  35536792,
+                                                              "status":  "imprecise_match",
+                                                              "note":  "Partial name match - may not be accurate"
+                                                          },
+    "Tech_Collection_VBlood_T04_PolomaPlantersInterior":  {
+                                                              "recipe":  "Tech_Collection_VBlood_T04_PolomaPlantersInterior",
+                                                              "recipe_guid":  6233001,
+                                                              "tech_guid":  6233001,
+                                                              "status":  "imprecise_match",
+                                                              "note":  "Partial name match - may not be accurate"
+                                                          },
+    "Tech_Collection_VBlood_T04_Quincey":  {
+                                               "recipe":  "Tech_Collection_VBlood_T04_Quincey",
+                                               "recipe_guid":  798280158,
+                                               "tech_guid":  798280158,
+                                               "status":  "imprecise_match",
+                                               "note":  "Partial name match - may not be accurate"
+                                           },
+    "Tech_Collection_VBlood_T04_Quincey_CottonArmor":  {
+                                                           "recipe":  "Tech_Collection_VBlood_T04_Quincey_CottonArmor",
+                                                           "recipe_guid":  981172472,
+                                                           "tech_guid":  981172472,
+                                                           "status":  "imprecise_match",
+                                                           "note":  "Partial name match - may not be accurate"
+                                                       },
+    "Tech_Collection_VBlood_T04_Quincey_Decoration":  {
+                                                          "recipe":  "Tech_Collection_VBlood_T04_Quincey_Decoration",
+                                                          "recipe_guid":  -1204804925,
+                                                          "tech_guid":  -1204804925,
+                                                          "status":  "imprecise_match",
+                                                          "note":  "Partial name match - may not be accurate"
+                                                      },
+    "Tech_Collection_VBlood_T04_Quincey_IronWeapons":  {
+                                                           "recipe":  "Tech_Collection_VBlood_T04_Quincey_IronWeapons",
+                                                           "recipe_guid":  1452185822,
+                                                           "tech_guid":  1452185822,
+                                                           "status":  "imprecise_match",
+                                                           "note":  "Partial name match - may not be accurate"
+                                                       },
+    "Tech_Collection_VBlood_T04_Tailor":  {
+                                              "recipe":  "Tech_Collection_VBlood_T04_Tailor",
+                                              "recipe_guid":  1748243393,
+                                              "tech_guid":  1748243393,
+                                              "status":  "imprecise_match",
+                                              "note":  "Partial name match - may not be accurate"
+                                          },
+    "Tech_Collection_VBlood_T04_Tailor_Curtains":  {
+                                                       "recipe":  "Tech_Collection_VBlood_T04_Tailor_Curtains",
+                                                       "recipe_guid":  -1291119657,
+                                                       "tech_guid":  -1291119657,
+                                                       "status":  "imprecise_match",
+                                                       "note":  "Partial name match - may not be accurate"
+                                                   },
+    "Tech_Collection_VBlood_T04_VampireHunter":  {
+                                                     "recipe":  "Tech_Collection_VBlood_T04_VampireHunter",
+                                                     "recipe_guid":  1812666586,
+                                                     "tech_guid":  1812666586,
+                                                     "status":  "imprecise_match",
+                                                     "note":  "Partial name match - may not be accurate"
+                                                 },
+    "Tech_Collection_VBlood_T04_VampireHunter_GreatSword":  {
+                                                                "recipe":  "Tech_Collection_VBlood_T04_VampireHunter_GreatSword",
+                                                                "recipe_guid":  2076894288,
+                                                                "tech_guid":  2076894288,
+                                                                "status":  "imprecise_match",
+                                                                "note":  "Partial name match - may not be accurate"
+                                                            },
+    "Tech_Collection_VBlood_T04_Wendigo":  {
+                                               "recipe":  "Tech_Collection_VBlood_T04_Wendigo",
+                                               "recipe_guid":  43505638,
+                                               "tech_guid":  43505638,
+                                               "status":  "imprecise_match",
+                                               "note":  "Partial name match - may not be accurate"
+                                           },
+    "Tech_Collection_VBlood_T04_Wendigo_Claws":  {
+                                                     "recipe":  "Tech_Collection_VBlood_T04_Wendigo_Claws",
+                                                     "recipe_guid":  803940486,
+                                                     "tech_guid":  803940486,
+                                                     "status":  "imprecise_match",
+                                                     "note":  "Partial name match - may not be accurate"
+                                                 },
+    "Tech_Collection_VBlood_T05_ArenaChampion":  {
+                                                     "recipe":  "Tech_Collection_VBlood_T05_ArenaChampion",
+                                                     "recipe_guid":  -2144827499,
+                                                     "tech_guid":  -2144827499,
+                                                     "status":  "imprecise_match",
+                                                     "note":  "Partial name match - may not be accurate"
+                                                 },
+    "Tech_Collection_VBlood_T05_ArenaChampion_TwinBlades":  {
+                                                                "recipe":  "Tech_Collection_VBlood_T05_ArenaChampion_TwinBlades",
+                                                                "recipe_guid":  1469248266,
+                                                                "tech_guid":  1469248266,
+                                                                "status":  "imprecise_match",
+                                                                "note":  "Partial name match - may not be accurate"
+                                                            },
+    "Tech_Collection_VBlood_T05_BishopOfShadow":  {
+                                                      "recipe":  "Tech_Collection_VBlood_T05_BishopOfShadow",
+                                                      "recipe_guid":  1795449585,
+                                                      "tech_guid":  1795449585,
+                                                      "status":  "imprecise_match",
+                                                      "note":  "Partial name match - may not be accurate"
+                                                  },
+    "Tech_Collection_VBlood_T05_Fabian":  {
+                                              "recipe":  "Tech_Collection_VBlood_T05_Fabian",
+                                              "recipe_guid":  -1659396939,
+                                              "tech_guid":  -1659396939,
+                                              "status":  "imprecise_match",
+                                              "note":  "Partial name match - may not be accurate"
+                                          },
+    "Tech_Collection_VBlood_T05_FerociousBear":  {
+                                                     "recipe":  "Tech_Collection_VBlood_T05_FerociousBear",
+                                                     "recipe_guid":  1481816999,
+                                                     "tech_guid":  1481816999,
+                                                     "status":  "imprecise_match",
+                                                     "note":  "Partial name match - may not be accurate"
+                                                 },
+    "Tech_Collection_VBlood_T05_FerociousBear_Rugs":  {
+                                                          "recipe":  "Tech_Collection_VBlood_T05_FerociousBear_Rugs",
+                                                          "recipe_guid":  -979296135,
+                                                          "tech_guid":  -979296135,
+                                                          "status":  "imprecise_match",
+                                                          "note":  "Partial name match - may not be accurate"
+                                                      },
+    "Tech_Collection_VBlood_T05_GlassBlower":  {
+                                                   "recipe":  "Tech_Collection_VBlood_T05_GlassBlower",
+                                                   "recipe_guid":  836932829,
+                                                   "tech_guid":  836932829,
+                                                   "status":  "imprecise_match",
+                                                   "note":  "Partial name match - may not be accurate"
+                                               },
+    "Tech_Collection_VBlood_T05_Golem":  {
+                                             "recipe":  "Tech_Collection_VBlood_T05_Golem",
+                                             "recipe_guid":  292267578,
+                                             "tech_guid":  292267578,
+                                             "status":  "imprecise_match",
+                                             "note":  "Partial name match - may not be accurate"
+                                         },
+    "Tech_Collection_VBlood_T05_GolemGems":  {
+                                                 "recipe":  "Tech_Collection_VBlood_T05_GolemGems",
+                                                 "recipe_guid":  -1074691879,
+                                                 "tech_guid":  -1074691879,
+                                                 "status":  "imprecise_match",
+                                                 "note":  "Partial name match - may not be accurate"
+                                             },
+    "Tech_Collection_VBlood_T05_GolemObsidian":  {
+                                                     "recipe":  "Tech_Collection_VBlood_T05_GolemObsidian",
+                                                     "recipe_guid":  -318857592,
+                                                     "tech_guid":  -318857592,
+                                                     "status":  "imprecise_match",
+                                                     "note":  "Partial name match - may not be accurate"
+                                                 },
+    "Tech_Collection_VBlood_T05_HolyNun":  {
+                                               "recipe":  "Tech_Collection_VBlood_T05_HolyNun",
+                                               "recipe_guid":  1509833074,
+                                               "tech_guid":  1509833074,
+                                               "status":  "imprecise_match",
+                                               "note":  "Partial name match - may not be accurate"
+                                           },
+    "Tech_Collection_VBlood_T05_IceRanger":  {
+                                                 "recipe":  "Tech_Collection_VBlood_T05_IceRanger",
+                                                 "recipe_guid":  -1286478056,
+                                                 "tech_guid":  -1286478056,
+                                                 "status":  "imprecise_match",
+                                                 "note":  "Partial name match - may not be accurate"
+                                             },
+    "Tech_Collection_VBlood_T05_Infiltrator":  {
+                                                   "recipe":  "Tech_Collection_VBlood_T05_Infiltrator",
+                                                   "recipe_guid":  1499385606,
+                                                   "tech_guid":  1499385606,
+                                                   "status":  "imprecise_match",
+                                                   "note":  "Partial name match - may not be accurate"
+                                               },
+    "Tech_Collection_VBlood_T05_Infiltrator_Daggers":  {
+                                                           "recipe":  "Tech_Collection_VBlood_T05_Infiltrator_Daggers",
+                                                           "recipe_guid":  1521034384,
+                                                           "tech_guid":  1521034384,
+                                                           "status":  "imprecise_match",
+                                                           "note":  "Partial name match - may not be accurate"
+                                                       },
+    "Tech_Collection_VBlood_T05_Meredith":  {
+                                                "recipe":  "Tech_Collection_VBlood_T05_Meredith",
+                                                "recipe_guid":  -124171135,
+                                                "tech_guid":  -124171135,
+                                                "status":  "imprecise_match",
+                                                "note":  "Partial name match - may not be accurate"
+                                            },
+    "Tech_Collection_VBlood_T05_Scribe":  {
+                                              "recipe":  "Tech_Collection_VBlood_T05_Scribe",
+                                              "recipe_guid":  1096972300,
+                                              "tech_guid":  1096972300,
+                                              "status":  "imprecise_match",
+                                              "note":  "Partial name match - may not be accurate"
+                                          },
+    "Tech_Collection_VBlood_T05_UndeadLeader":  {
+                                                    "recipe":  "Tech_Collection_VBlood_T05_UndeadLeader",
+                                                    "recipe_guid":  684401761,
+                                                    "tech_guid":  684401761,
+                                                    "status":  "imprecise_match",
+                                                    "note":  "Partial name match - may not be accurate"
+                                                },
+    "Tech_Collection_VBlood_T05_UndeadLeader_Bells":  {
+                                                          "recipe":  "Tech_Collection_VBlood_T05_UndeadLeader_Bells",
+                                                          "recipe_guid":  -1062774694,
+                                                          "tech_guid":  -1062774694,
+                                                          "status":  "imprecise_match",
+                                                          "note":  "Partial name match - may not be accurate"
+                                                      },
+    "Tech_Collection_VBlood_T05_UndeadLeader_Reaper":  {
+                                                           "recipe":  "Tech_Collection_VBlood_T05_UndeadLeader_Reaper",
+                                                           "recipe_guid":  -1631949089,
+                                                           "tech_guid":  -1631949089,
+                                                           "status":  "imprecise_match",
+                                                           "note":  "Partial name match - may not be accurate"
+                                                       },
+    "Tech_Collection_VBlood_T06_Armor_Silk":  {
+                                                  "recipe":  "Tech_Collection_VBlood_T06_Armor_Silk",
+                                                  "recipe_guid":  574648849,
+                                                  "tech_guid":  574648849,
+                                                  "status":  "imprecise_match",
+                                                  "note":  "Partial name match - may not be accurate"
+                                              },
+    "Tech_Collection_VBlood_T06_Castleman":  {
+                                                 "recipe":  "Tech_Collection_VBlood_T06_Castleman",
+                                                 "recipe_guid":  963388509,
+                                                 "tech_guid":  963388509,
+                                                 "status":  "imprecise_match",
+                                                 "note":  "Partial name match - may not be accurate"
+                                             },
+    "Tech_Collection_VBlood_T06_Castleman_SanguineWhip":  {
+                                                              "recipe":  "Tech_Collection_VBlood_T06_Castleman_SanguineWhip",
+                                                              "recipe_guid":  499979034,
+                                                              "tech_guid":  499979034,
+                                                              "status":  "imprecise_match",
+                                                              "note":  "Partial name match - may not be accurate"
+                                                          },
+    "Tech_Collection_VBlood_T06_CursedWanderer":  {
+                                                      "recipe":  "Tech_Collection_VBlood_T06_CursedWanderer",
+                                                      "recipe_guid":  -608704270,
+                                                      "tech_guid":  -608704270,
+                                                      "status":  "imprecise_match",
+                                                      "note":  "Partial name match - may not be accurate"
+                                                  },
+    "Tech_Collection_VBlood_T06_HeadlessHorseman":  {
+                                                        "recipe":  "Tech_Collection_VBlood_T06_HeadlessHorseman",
+                                                        "recipe_guid":  1993827563,
+                                                        "tech_guid":  1993827563,
+                                                        "status":  "imprecise_match",
+                                                        "note":  "Partial name match - may not be accurate"
+                                                    },
+    "Tech_Collection_VBlood_T06_HighLord":  {
+                                                "recipe":  "Tech_Collection_VBlood_T06_HighLord",
+                                                "recipe_guid":  2003830913,
+                                                "tech_guid":  2003830913,
+                                                "status":  "imprecise_match",
+                                                "note":  "Partial name match - may not be accurate"
+                                            },
+    "Tech_Collection_VBlood_T06_Iva":  {
+                                           "recipe":  "Tech_Collection_VBlood_T06_Iva",
+                                           "recipe_guid":  -1168862239,
+                                           "tech_guid":  -1168862239,
+                                           "status":  "imprecise_match",
+                                           "note":  "Partial name match - may not be accurate"
+                                       },
+    "Tech_Collection_VBlood_T06_Jade":  {
+                                            "recipe":  "Tech_Collection_VBlood_T06_Jade",
+                                            "recipe_guid":  -1809787416,
+                                            "tech_guid":  -1809787416,
+                                            "status":  "imprecise_match",
+                                            "note":  "Partial name match - may not be accurate"
+                                        },
+    "Tech_Collection_VBlood_T06_Jade_Pistols":  {
+                                                    "recipe":  "Tech_Collection_VBlood_T06_Jade_Pistols",
+                                                    "recipe_guid":  -1329550886,
+                                                    "tech_guid":  -1329550886,
+                                                    "status":  "imprecise_match",
+                                                    "note":  "Partial name match - may not be accurate"
+                                                },
+    "Tech_Collection_VBlood_T06_MilitiaCommander":  {
+                                                        "recipe":  "Tech_Collection_VBlood_T06_MilitiaCommander",
+                                                        "recipe_guid":  -1747434949,
+                                                        "tech_guid":  -1747434949,
+                                                        "status":  "imprecise_match",
+                                                        "note":  "Partial name match - may not be accurate"
+                                                    },
+    "Tech_Collection_VBlood_T06_MilitiaCommander_GreatSword":  {
+                                                                   "recipe":  "Tech_Collection_VBlood_T06_MilitiaCommander_GreatSword",
+                                                                   "recipe_guid":  1430937326,
+                                                                   "tech_guid":  1430937326,
+                                                                   "status":  "imprecise_match",
+                                                                   "note":  "Partial name match - may not be accurate"
+                                                               },
+    "Tech_Collection_VBlood_T06_MilitiaCommander_Weapons":  {
+                                                                "recipe":  "Tech_Collection_VBlood_T06_MilitiaCommander_Weapons",
+                                                                "recipe_guid":  252901819,
+                                                                "tech_guid":  252901819,
+                                                                "status":  "imprecise_match",
+                                                                "note":  "Partial name match - may not be accurate"
+                                                            },
+    "Tech_Collection_VBlood_T06_MilitiaCommander_WideGate":  {
+                                                                 "recipe":  "Tech_Collection_VBlood_T06_MilitiaCommander_WideGate",
+                                                                 "recipe_guid":  2053355293,
+                                                                 "tech_guid":  2053355293,
+                                                                 "status":  "imprecise_match",
+                                                                 "note":  "Partial name match - may not be accurate"
+                                                             },
+    "Tech_Collection_VBlood_T06_Purifier":  {
+                                                "recipe":  "Tech_Collection_VBlood_T06_Purifier",
+                                                "recipe_guid":  -794945828,
+                                                "tech_guid":  -794945828,
+                                                "status":  "imprecise_match",
+                                                "note":  "Partial name match - may not be accurate"
+                                            },
+    "Tech_Collection_VBlood_T06_Purifier_Gruel":  {
+                                                      "recipe":  "Tech_Collection_VBlood_T06_Purifier_Gruel",
+                                                      "recipe_guid":  -513542593,
+                                                      "tech_guid":  -513542593,
+                                                      "status":  "imprecise_match",
+                                                      "note":  "Partial name match - may not be accurate"
+                                                  },
+    "Tech_Collection_VBlood_T06_Raziel":  {
+                                              "recipe":  "Tech_Collection_VBlood_T06_Raziel",
+                                              "recipe_guid":  177893377,
+                                              "tech_guid":  177893377,
+                                              "status":  "imprecise_match",
+                                              "note":  "Partial name match - may not be accurate"
+                                          },
+    "Tech_Collection_VBlood_T06_Raziel_Armor":  {
+                                                    "recipe":  "Tech_Collection_VBlood_T06_Raziel_Armor",
+                                                    "recipe_guid":  1383473060,
+                                                    "tech_guid":  1383473060,
+                                                    "status":  "imprecise_match",
+                                                    "note":  "Partial name match - may not be accurate"
+                                                },
+    "Tech_Collection_VBlood_T06_Raziel_Decoration":  {
+                                                         "recipe":  "Tech_Collection_VBlood_T06_Raziel_Decoration",
+                                                         "recipe_guid":  961368319,
+                                                         "tech_guid":  961368319,
+                                                         "status":  "imprecise_match",
+                                                         "note":  "Partial name match - may not be accurate"
+                                                     },
+    "Tech_Collection_VBlood_T06_Raziel_MagicSource":  {
+                                                          "recipe":  "Tech_Collection_VBlood_T06_Raziel_MagicSource",
+                                                          "recipe_guid":  1008496220,
+                                                          "tech_guid":  1008496220,
+                                                          "status":  "imprecise_match",
+                                                          "note":  "Partial name match - may not be accurate"
+                                                      },
+    "Tech_Collection_VBlood_T06_SpiderQueen":  {
+                                                   "recipe":  "Tech_Collection_VBlood_T06_SpiderQueen",
+                                                   "recipe_guid":  693361325,
+                                                   "tech_guid":  693361325,
+                                                   "status":  "imprecise_match",
+                                                   "note":  "Partial name match - may not be accurate"
+                                               },
+    "Tech_Collection_VBlood_T06_ToadKing":  {
+                                                "recipe":  "Tech_Collection_VBlood_T06_ToadKing",
+                                                "recipe_guid":  1846992402,
+                                                "tech_guid":  1846992402,
+                                                "status":  "imprecise_match",
+                                                "note":  "Partial name match - may not be accurate"
+                                            },
+    "Tech_Collection_VBlood_T06_ToadKing_Coins":  {
+                                                      "recipe":  "Tech_Collection_VBlood_T06_ToadKing_Coins",
+                                                      "recipe_guid":  -837551957,
+                                                      "tech_guid":  -837551957,
+                                                      "status":  "imprecise_match",
+                                                      "note":  "Partial name match - may not be accurate"
+                                                  },
+    "Tech_Collection_VBlood_T06_Voltage":  {
+                                               "recipe":  "Tech_Collection_VBlood_T06_Voltage",
+                                               "recipe_guid":  228678537,
+                                               "tech_guid":  228678537,
+                                               "status":  "imprecise_match",
+                                               "note":  "Partial name match - may not be accurate"
+                                           },
+    "Tech_Collection_VBlood_T06_Voltage_Teleporters":  {
+                                                           "recipe":  "Tech_Collection_VBlood_T06_Voltage_Teleporters",
+                                                           "recipe_guid":  902743573,
+                                                           "tech_guid":  902743573,
+                                                           "status":  "imprecise_match",
+                                                           "note":  "Partial name match - may not be accurate"
+                                                       },
+    "Tech_Collection_VBlood_T06_Werewolf":  {
+                                                "recipe":  "Tech_Collection_VBlood_T06_Werewolf",
+                                                "recipe_guid":  -330347291,
+                                                "tech_guid":  -330347291,
+                                                "status":  "imprecise_match",
+                                                "note":  "Partial name match - may not be accurate"
+                                            },
+    "Tech_Collection_VBlood_T06_Whip":  {
+                                            "recipe":  "Tech_Collection_VBlood_T06_Whip",
+                                            "recipe_guid":  142799020,
+                                            "tech_guid":  142799020,
+                                            "status":  "imprecise_match",
+                                            "note":  "Partial name match - may not be accurate"
+                                        },
+    "Tech_Collection_VBlood_T06_Yeti":  {
+                                            "recipe":  "Tech_Collection_VBlood_T06_Yeti",
+                                            "recipe_guid":  -1435750586,
+                                            "tech_guid":  -1435750586,
+                                            "status":  "imprecise_match",
+                                            "note":  "Partial name match - may not be accurate"
+                                        },
+    "Tech_Collection_VBlood_T07_Archmage":  {
+                                                "recipe":  "Tech_Collection_VBlood_T07_Archmage",
+                                                "recipe_guid":  26064539,
+                                                "tech_guid":  26064539,
+                                                "status":  "imprecise_match",
+                                                "note":  "Partial name match - may not be accurate"
+                                            },
+    "Tech_Collection_VBlood_T07_Archmage_JewelsT03":  {
+                                                          "recipe":  "Tech_Collection_VBlood_T07_Archmage_JewelsT03",
+                                                          "recipe_guid":  -942401074,
+                                                          "tech_guid":  -942401074,
+                                                          "status":  "imprecise_match",
+                                                          "note":  "Partial name match - may not be accurate"
+                                                      },
+    "Tech_Collection_VBlood_T07_CardinalPriest":  {
+                                                      "recipe":  "Tech_Collection_VBlood_T07_CardinalPriest",
+                                                      "recipe_guid":  1270259509,
+                                                      "tech_guid":  1270259509,
+                                                      "status":  "imprecise_match",
+                                                      "note":  "Partial name match - may not be accurate"
+                                                  },
+    "Tech_Collection_VBlood_T07_Carver":  {
+                                              "recipe":  "Tech_Collection_VBlood_T07_Carver",
+                                              "recipe_guid":  1092543000,
+                                              "tech_guid":  1092543000,
+                                              "status":  "imprecise_match",
+                                              "note":  "Partial name match - may not be accurate"
+                                          },
+    "Tech_Collection_VBlood_T07_Carver_Coating":  {
+                                                      "recipe":  "Tech_Collection_VBlood_T07_Carver_Coating",
+                                                      "recipe_guid":  -1318816407,
+                                                      "tech_guid":  -1318816407,
+                                                      "status":  "imprecise_match",
+                                                      "note":  "Partial name match - may not be accurate"
+                                                  },
+    "Tech_Collection_VBlood_T07_CursedSmith":  {
+                                                   "recipe":  "Tech_Collection_VBlood_T07_CursedSmith",
+                                                   "recipe_guid":  -1633289177,
+                                                   "tech_guid":  -1633289177,
+                                                   "status":  "imprecise_match",
+                                                   "note":  "Partial name match - may not be accurate"
+                                               },
+    "Tech_Collection_VBlood_T07_CursedSmith_MagicSource":  {
+                                                               "recipe":  "Tech_Collection_VBlood_T07_CursedSmith_MagicSource",
+                                                               "recipe_guid":  -778842690,
+                                                               "tech_guid":  -778842690,
+                                                               "status":  "imprecise_match",
+                                                               "note":  "Partial name match - may not be accurate"
+                                                           },
+    "Tech_Collection_VBlood_T07_Gerard":  {
+                                              "recipe":  "Tech_Collection_VBlood_T07_Gerard",
+                                              "recipe_guid":  701618642,
+                                              "tech_guid":  701618642,
+                                              "status":  "imprecise_match",
+                                              "note":  "Partial name match - may not be accurate"
+                                          },
+    "Tech_Collection_VBlood_T07_Harpy":  {
+                                             "recipe":  "Tech_Collection_VBlood_T07_Harpy",
+                                             "recipe_guid":  56158045,
+                                             "tech_guid":  56158045,
+                                             "status":  "imprecise_match",
+                                             "note":  "Partial name match - may not be accurate"
+                                         },
+    "Tech_Collection_VBlood_T07_HarpyGems":  {
+                                                 "recipe":  "Tech_Collection_VBlood_T07_HarpyGems",
+                                                 "recipe_guid":  -477566763,
+                                                 "tech_guid":  -477566763,
+                                                 "status":  "imprecise_match",
+                                                 "note":  "Partial name match - may not be accurate"
+                                             },
+    "Tech_Collection_VBlood_T07_Livith":  {
+                                              "recipe":  "Tech_Collection_VBlood_T07_Livith",
+                                              "recipe_guid":  1851932061,
+                                              "tech_guid":  1851932061,
+                                              "status":  "imprecise_match",
+                                              "note":  "Partial name match - may not be accurate"
+                                          },
+    "Tech_Collection_VBlood_T07_Livith_Slashers":  {
+                                                       "recipe":  "Tech_Collection_VBlood_T07_Livith_Slashers",
+                                                       "recipe_guid":  1262310143,
+                                                       "tech_guid":  1262310143,
+                                                       "status":  "imprecise_match",
+                                                       "note":  "Partial name match - may not be accurate"
+                                                   },
+    "Tech_Collection_VBlood_T07_Lucie":  {
+                                             "recipe":  "Tech_Collection_VBlood_T07_Lucie",
+                                             "recipe_guid":  -1642797098,
+                                             "tech_guid":  -1642797098,
+                                             "status":  "imprecise_match",
+                                             "note":  "Partial name match - may not be accurate"
+                                         },
+    "Tech_Collection_VBlood_T07_Lucie_Elixirs":  {
+                                                     "recipe":  "Tech_Collection_VBlood_T07_Lucie_Elixirs",
+                                                     "recipe_guid":  -367655643,
+                                                     "tech_guid":  -367655643,
+                                                     "status":  "imprecise_match",
+                                                     "note":  "Partial name match - may not be accurate"
+                                                 },
+    "Tech_Collection_VBlood_T07_Overseer":  {
+                                                "recipe":  "Tech_Collection_VBlood_T07_Overseer",
+                                                "recipe_guid":  -1652178969,
+                                                "tech_guid":  -1652178969,
+                                                "status":  "imprecise_match",
+                                                "note":  "Partial name match - may not be accurate"
+                                            },
+    "Tech_Collection_VBlood_T07_Professor":  {
+                                                 "recipe":  "Tech_Collection_VBlood_T07_Professor",
+                                                 "recipe_guid":  -1199699442,
+                                                 "tech_guid":  -1199699442,
+                                                 "status":  "imprecise_match",
+                                                 "note":  "Partial name match - may not be accurate"
+                                             },
+    "Tech_Collection_VBlood_T07_RailgunSergeant":  {
+                                                       "recipe":  "Tech_Collection_VBlood_T07_RailgunSergeant",
+                                                       "recipe_guid":  -1166562965,
+                                                       "tech_guid":  -1166562965,
+                                                       "status":  "imprecise_match",
+                                                       "note":  "Partial name match - may not be accurate"
+                                                   },
+    "Tech_Collection_VBlood_T07_Sommelier":  {
+                                                 "recipe":  "Tech_Collection_VBlood_T07_Sommelier",
+                                                 "recipe_guid":  2086705669,
+                                                 "tech_guid":  2086705669,
+                                                 "status":  "imprecise_match",
+                                                 "note":  "Partial name match - may not be accurate"
+                                             },
+    "Tech_Collection_VBlood_T07_Sommelier_Bloodwine":  {
+                                                           "recipe":  "Tech_Collection_VBlood_T07_Sommelier_Bloodwine",
+                                                           "recipe_guid":  -797717364,
+                                                           "tech_guid":  -797717364,
+                                                           "status":  "imprecise_match",
+                                                           "note":  "Partial name match - may not be accurate"
+                                                       },
+    "Tech_Collection_VBlood_T07_Sommelier_MagicSource":  {
+                                                             "recipe":  "Tech_Collection_VBlood_T07_Sommelier_MagicSource",
+                                                             "recipe_guid":  134700304,
+                                                             "tech_guid":  134700304,
+                                                             "status":  "imprecise_match",
+                                                             "note":  "Partial name match - may not be accurate"
+                                                         },
+    "Tech_Collection_VBlood_T07_Valyr":  {
+                                             "recipe":  "Tech_Collection_VBlood_T07_Valyr",
+                                             "recipe_guid":  -1224541374,
+                                             "tech_guid":  -1224541374,
+                                             "status":  "imprecise_match",
+                                             "note":  "Partial name match - may not be accurate"
+                                         },
+    "Tech_Collection_VBlood_T07_Witch":  {
+                                             "recipe":  "Tech_Collection_VBlood_T07_Witch",
+                                             "recipe_guid":  739063686,
+                                             "tech_guid":  739063686,
+                                             "status":  "imprecise_match",
+                                             "note":  "Partial name match - may not be accurate"
+                                         },
+    "Tech_Collection_VBlood_T07_ZealousCultist":  {
+                                                      "recipe":  "Tech_Collection_VBlood_T07_ZealousCultist",
+                                                      "recipe_guid":  -242619336,
+                                                      "tech_guid":  -242619336,
+                                                      "status":  "imprecise_match",
+                                                      "note":  "Partial name match - may not be accurate"
+                                                  },
+    "Tech_Collection_VBlood_T08_BatVampire":  {
+                                                  "recipe":  "Tech_Collection_VBlood_T08_BatVampire",
+                                                  "recipe_guid":  644170529,
+                                                  "tech_guid":  644170529,
+                                                  "status":  "imprecise_match",
+                                                  "note":  "Partial name match - may not be accurate"
+                                              },
+    "Tech_Collection_VBlood_T08_Behemoth":  {
+                                                "recipe":  "Tech_Collection_VBlood_T08_Behemoth",
+                                                "recipe_guid":  -2059047777,
+                                                "tech_guid":  -2059047777,
+                                                "status":  "imprecise_match",
+                                                "note":  "Partial name match - may not be accurate"
+                                            },
+    "Tech_Collection_VBlood_T08_BloodKnight":  {
+                                                   "recipe":  "Tech_Collection_VBlood_T08_BloodKnight",
+                                                   "recipe_guid":  90328407,
+                                                   "tech_guid":  90328407,
+                                                   "status":  "imprecise_match",
+                                                   "note":  "Partial name match - may not be accurate"
+                                               },
+    "Tech_Collection_VBlood_T08_Dracula":  {
+                                               "recipe":  "Tech_Collection_VBlood_T08_Dracula",
+                                               "recipe_guid":  956657660,
+                                               "tech_guid":  956657660,
+                                               "status":  "imprecise_match",
+                                               "note":  "Partial name match - may not be accurate"
+                                           },
+    "Tech_Collection_VBlood_T08_Manticore":  {
+                                                 "recipe":  "Tech_Collection_VBlood_T08_Manticore",
+                                                 "recipe_guid":  28013331,
+                                                 "tech_guid":  28013331,
+                                                 "status":  "imprecise_match",
+                                                 "note":  "Partial name match - may not be accurate"
+                                             },
+    "Tech_Collection_VBlood_T08_Monster":  {
+                                               "recipe":  "Tech_Collection_VBlood_T08_Monster",
+                                               "recipe_guid":  -1579828449,
+                                               "tech_guid":  -1579828449,
+                                               "status":  "imprecise_match",
+                                               "note":  "Partial name match - may not be accurate"
+                                           },
+    "Tech_Collection_VBlood_T08_Morgana":  {
+                                               "recipe":  "Tech_Collection_VBlood_T08_Morgana",
+                                               "recipe_guid":  -1902462638,
+                                               "tech_guid":  -1902462638,
+                                               "status":  "imprecise_match",
+                                               "note":  "Partial name match - may not be accurate"
+                                           },
+    "Tech_Collection_VBlood_T08_Paladin":  {
+                                               "recipe":  "Tech_Collection_VBlood_T08_Paladin",
+                                               "recipe_guid":  -1627795309,
+                                               "tech_guid":  -1627795309,
+                                               "status":  "imprecise_match",
+                                               "note":  "Partial name match - may not be accurate"
+                                           },
+    "Tech_Collection_WallHangingMirrors_T02":  {
+                                                   "recipe":  "Tech_Collection_WallHangingMirrors_T02",
+                                                   "recipe_guid":  -505308287,
+                                                   "tech_guid":  -505308287,
+                                                   "status":  "imprecise_match",
+                                                   "note":  "Partial name match - may not be accurate"
+                                               },
+    "Tech_Collection_WallHangingShelves_T02":  {
+                                                   "recipe":  "Tech_Collection_WallHangingShelves_T02",
+                                                   "recipe_guid":  1738542265,
+                                                   "tech_guid":  1738542265,
+                                                   "status":  "imprecise_match",
+                                                   "note":  "Partial name match - may not be accurate"
+                                               },
+    "Tech_Collection_Wallpapers_Bricks01":  {
+                                                "recipe":  "Tech_Collection_Wallpapers_Bricks01",
+                                                "recipe_guid":  -1471943197,
+                                                "tech_guid":  -1471943197,
+                                                "status":  "imprecise_match",
+                                                "note":  "Partial name match - may not be accurate"
+                                            },
+    "Tech_Collection_Wallpapers_Classical01":  {
+                                                   "recipe":  "Tech_Collection_Wallpapers_Classical01",
+                                                   "recipe_guid":  1405536938,
+                                                   "tech_guid":  1405536938,
+                                                   "status":  "imprecise_match",
+                                                   "note":  "Partial name match - may not be accurate"
+                                               },
+    "Tech_Collection_Wallpapers_Cordial01":  {
+                                                 "recipe":  "Tech_Collection_Wallpapers_Cordial01",
+                                                 "recipe_guid":  -1047045523,
+                                                 "tech_guid":  -1047045523,
+                                                 "status":  "imprecise_match",
+                                                 "note":  "Partial name match - may not be accurate"
+                                             },
+    "Tech_Collection_Wallpapers_Imperious01":  {
+                                                   "recipe":  "Tech_Collection_Wallpapers_Imperious01",
+                                                   "recipe_guid":  302835542,
+                                                   "tech_guid":  302835542,
+                                                   "status":  "imprecise_match",
+                                                   "note":  "Partial name match - may not be accurate"
+                                               },
+    "Tech_Collection_Wallpapers_Prison01":  {
+                                                "recipe":  "Tech_Collection_Wallpapers_Prison01",
+                                                "recipe_guid":  1345992385,
+                                                "tech_guid":  1345992385,
+                                                "status":  "imprecise_match",
+                                                "note":  "Partial name match - may not be accurate"
+                                            },
+    "Tech_Collection_Wallpapers_Stone01":  {
+                                               "recipe":  "Tech_Collection_Wallpapers_Stone01",
+                                               "recipe_guid":  2087478902,
+                                               "tech_guid":  2087478902,
+                                               "status":  "imprecise_match",
+                                               "note":  "Partial name match - may not be accurate"
+                                           },
+    "Tech_Collection_Wallpapers_WoodPanel01":  {
+                                                   "recipe":  "Tech_Collection_Wallpapers_WoodPanel01",
+                                                   "recipe_guid":  649753246,
+                                                   "tech_guid":  649753246,
+                                                   "status":  "imprecise_match",
+                                                   "note":  "Partial name match - may not be accurate"
+                                               },
+    "Tech_Collection_Waypoint":  {
+                                     "recipe":  "Tech_Collection_Waypoint",
+                                     "recipe_guid":  -1380817858,
+                                     "tech_guid":  -1380817858,
+                                     "status":  "imprecise_match",
+                                     "note":  "Partial name match - may not be accurate"
+                                 },
+    "Tech_Collection_Workshop_Decoration":  {
+                                                "recipe":  "Tech_Collection_Workshop_Decoration",
+                                                "recipe_guid":  -1212695091,
+                                                "tech_guid":  -1212695091,
+                                                "status":  "imprecise_match",
+                                                "note":  "Partial name match - may not be accurate"
+                                            },
+    "Tech_Consumable_FireResistance_Canteen_T01":  {
+                                                       "recipe":  "Tech_Consumable_FireResistance_Canteen_T01",
+                                                       "recipe_guid":  844019492,
+                                                       "tech_guid":  844019492,
+                                                       "status":  "imprecise_match",
+                                                       "note":  "Partial name match - may not be accurate"
+                                                   },
+    "Tech_Consumable_GarlicResistance_GlassBottle_T02":  {
+                                                             "recipe":  "Tech_Consumable_GarlicResistance_GlassBottle_T02",
+                                                             "recipe_guid":  1329925559,
+                                                             "tech_guid":  1329925559,
+                                                             "status":  "imprecise_match",
+                                                             "note":  "Partial name match - may not be accurate"
+                                                         },
+    "Tech_Consumable_PhysicalBrew_Canteen_T01":  {
+                                                     "recipe":  "Tech_Consumable_PhysicalBrew_Canteen_T01",
+                                                     "recipe_guid":  -537813334,
+                                                     "tech_guid":  -537813334,
+                                                     "status":  "imprecise_match",
+                                                     "note":  "Partial name match - may not be accurate"
+                                                 },
+    "Tech_Consumable_PhysicalBrew_Potion_T03":  {
+                                                    "recipe":  "Tech_Consumable_PhysicalBrew_Potion_T03",
+                                                    "recipe_guid":  -11827994,
+                                                    "tech_guid":  -11827994,
+                                                    "status":  "imprecise_match",
+                                                    "note":  "Partial name match - may not be accurate"
+                                                },
+    "Tech_Consumable_RoseHealing_Canteen_T01":  {
+                                                    "recipe":  "Tech_Consumable_RoseHealing_Canteen_T01",
+                                                    "recipe_guid":  70753269,
+                                                    "tech_guid":  70753269,
+                                                    "status":  "imprecise_match",
+                                                    "note":  "Partial name match - may not be accurate"
+                                                },
+    "Tech_Consumable_SilverBrew_Canteen_T01":  {
+                                                   "recipe":  "Tech_Consumable_SilverBrew_Canteen_T01",
+                                                   "recipe_guid":  -845792723,
+                                                   "tech_guid":  -845792723,
+                                                   "status":  "imprecise_match",
+                                                   "note":  "Partial name match - may not be accurate"
+                                               },
+    "Tech_Consumable_SpellBrew_Canteen_T01":  {
+                                                  "recipe":  "Tech_Consumable_SpellBrew_Canteen_T01",
+                                                  "recipe_guid":  1934754319,
+                                                  "tech_guid":  1934754319,
+                                                  "status":  "imprecise_match",
+                                                  "note":  "Partial name match - may not be accurate"
+                                              },
+    "Tech_Consumable_SpellBrew_Potion_T03":  {
+                                                 "recipe":  "Tech_Consumable_SpellBrew_Potion_T03",
+                                                 "recipe_guid":  -446090633,
+                                                 "tech_guid":  -446090633,
+                                                 "status":  "imprecise_match",
+                                                 "note":  "Partial name match - may not be accurate"
+                                             },
+    "Tech_Consumable_SunResistance_Canteen_T01":  {
+                                                      "recipe":  "Tech_Consumable_SunResistance_Canteen_T01",
+                                                      "recipe_guid":  -680166074,
+                                                      "tech_guid":  -680166074,
+                                                      "status":  "imprecise_match",
+                                                      "note":  "Partial name match - may not be accurate"
+                                                  },
+    "Tech_Consumable_WranglersTea_GlassBottle_T01":  {
+                                                         "recipe":  "Tech_Consumable_WranglersTea_GlassBottle_T01",
+                                                         "recipe_guid":  -1805160530,
+                                                         "tech_guid":  -1805160530,
+                                                         "status":  "imprecise_match",
+                                                         "note":  "Partial name match - may not be accurate"
+                                                     },
+    "Tech_Curtains_T03_Royal":  {
+                                    "recipe":  "Item_Ingredient_Book_Structure_Curtains_T03_Royal",
+                                    "recipe_guid":  285318201,
+                                    "tech_guid":  638346506,
+                                    "status":  "imprecise_match",
+                                    "note":  "Partial name match - may not be accurate"
+                                },
+    "Tech_Floor_AlchemyLab":  {
+                                  "recipe":  "Item_Ingredient_Book_Floor_AlchemyLab",
+                                  "recipe_guid":  978074988,
+                                  "tech_guid":  -55882446,
+                                  "status":  "imprecise_match",
+                                  "note":  "Partial name match - may not be accurate"
+                              },
+    "Tech_Floor_Crypt":  {
+                             "recipe":  "Tech_Floor_Crypt",
+                             "recipe_guid":  308890669,
+                             "tech_guid":  308890669,
+                             "status":  "imprecise_match",
+                             "note":  "Partial name match - may not be accurate"
+                         },
+    "Tech_Floor_Forge":  {
+                             "recipe":  "Item_Ingredient_Book_Floor_Forge",
+                             "recipe_guid":  -1233700610,
+                             "tech_guid":  -508159781,
+                             "status":  "imprecise_match",
+                             "note":  "Partial name match - may not be accurate"
+                         },
+    "Tech_Floor_Jewelcrafting":  {
+                                     "recipe":  "Item_Ingredient_Book_Floor_Jewelcrafting",
+                                     "recipe_guid":  626118128,
+                                     "tech_guid":  414215710,
+                                     "status":  "imprecise_match",
+                                     "note":  "Partial name match - may not be accurate"
+                                 },
+    "Tech_Floor_Library":  {
+                               "recipe":  "Item_Ingredient_Book_Floor_Library",
+                               "recipe_guid":  -946177070,
+                               "tech_guid":  -1851035383,
+                               "status":  "imprecise_match",
+                               "note":  "Partial name match - may not be accurate"
+                           },
+    "Tech_Floor_Prison":  {
+                              "recipe":  "Item_Ingredient_Book_Floor_Prison",
+                              "recipe_guid":  1718353003,
+                              "tech_guid":  -876687572,
+                              "status":  "imprecise_match",
+                              "note":  "Partial name match - may not be accurate"
+                          },
+    "Tech_Floor_Tailor":  {
+                              "recipe":  "Item_Ingredient_Book_Floor_Tailor",
+                              "recipe_guid":  -137886670,
+                              "tech_guid":  -49029138,
+                              "status":  "imprecise_match",
+                              "note":  "Partial name match - may not be accurate"
+                          },
+    "Tech_Floor_Treasury":  {
+                                "recipe":  "Tech_Floor_Treasury",
+                                "recipe_guid":  833988507,
+                                "tech_guid":  833988507,
+                                "status":  "imprecise_match",
+                                "note":  "Partial name match - may not be accurate"
+                            },
+    "Tech_LiquidStatiom_Water_Well01":  {
+                                            "recipe":  "Tech_LiquidStatiom_Water_Well01",
+                                            "recipe_guid":  -554785122,
+                                            "tech_guid":  -554785122,
+                                            "status":  "imprecise_match",
+                                            "note":  "Partial name match - may not be accurate"
+                                        },
+    "Tech_MagicSource_General_T01_BoneRing":  {
+                                                  "recipe":  "R",
+                                                  "recipe_guid":  null,
+                                                  "tech_guid":  -1261543603,
+                                                  "status":  "imprecise_match"
+                                              },
+    "Tech_MagicSource_General_T04_Duskwatcher":  {
+                                                     "recipe":  "R",
+                                                     "recipe_guid":  null,
+                                                     "tech_guid":  -939673215,
+                                                     "status":  "imprecise_match"
+                                                 },
+    "Tech_MagicSource_General_T04_EmberChain":  {
+                                                    "recipe":  "R",
+                                                    "recipe_guid":  null,
+                                                    "tech_guid":  688580986,
+                                                    "status":  "imprecise_match"
+                                                },
+    "Tech_MagicSource_General_T04_FrozenEye":  {
+                                                   "recipe":  "R",
+                                                   "recipe_guid":  null,
+                                                   "tech_guid":  -1183635267,
+                                                   "status":  "imprecise_match"
+                                               },
+    "Tech_MagicSource_General_T04_KnightRing":  {
+                                                    "recipe":  "R",
+                                                    "recipe_guid":  null,
+                                                    "tech_guid":  596593772,
+                                                    "status":  "imprecise_match"
+                                                },
+    "Tech_MagicSource_General_T04_MistSignet":  {
+                                                    "recipe":  "R",
+                                                    "recipe_guid":  null,
+                                                    "tech_guid":  -987554233,
+                                                    "status":  "imprecise_match"
+                                                },
+    "Tech_MagicSource_General_T04_SorcererRing":  {
+                                                      "recipe":  "R",
+                                                      "recipe_guid":  null,
+                                                      "tech_guid":  -1597622418,
+                                                      "status":  "imprecise_match"
+                                                  },
+    "Tech_MagicSource_General_T06_AmethystPendant":  {
+                                                         "recipe":  "R",
+                                                         "recipe_guid":  null,
+                                                         "tech_guid":  2120978146,
+                                                         "status":  "imprecise_match"
+                                                     },
+    "Tech_MagicSource_General_T06_EmeraldNecklace":  {
+                                                         "recipe":  "R",
+                                                         "recipe_guid":  null,
+                                                         "tech_guid":  -2004423580,
+                                                         "status":  "imprecise_match"
+                                                     },
+    "Tech_MagicSource_General_T06_MistStoneNecklace":  {
+                                                           "recipe":  "R",
+                                                           "recipe_guid":  null,
+                                                           "tech_guid":  -678626936,
+                                                           "status":  "imprecise_match"
+                                                       },
+    "Tech_MagicSource_General_T06_RubyPendant":  {
+                                                     "recipe":  "R",
+                                                     "recipe_guid":  null,
+                                                     "tech_guid":  75174829,
+                                                     "status":  "imprecise_match"
+                                                 },
+    "Tech_MagicSource_General_T06_SapphirePendant":  {
+                                                         "recipe":  "R",
+                                                         "recipe_guid":  null,
+                                                         "tech_guid":  2105959904,
+                                                         "status":  "imprecise_match"
+                                                     },
+    "Tech_MagicSource_General_T06_TopazAmulet":  {
+                                                     "recipe":  "R",
+                                                     "recipe_guid":  null,
+                                                     "tech_guid":  1266173480,
+                                                     "status":  "imprecise_match"
+                                                 },
+    "Tech_MagicSource_General_T08_Beast":  {
+                                               "recipe":  "R",
+                                               "recipe_guid":  null,
+                                               "tech_guid":  2057306510,
+                                               "status":  "imprecise_match"
+                                           },
+    "Tech_MagicSource_General_T08_CrimsonSky":  {
+                                                    "recipe":  "R",
+                                                    "recipe_guid":  null,
+                                                    "tech_guid":  -1976191252,
+                                                    "status":  "imprecise_match"
+                                                },
+    "Tech_MagicSource_General_T08_Delusion":  {
+                                                  "recipe":  "R",
+                                                  "recipe_guid":  null,
+                                                  "tech_guid":  1827501900,
+                                                  "status":  "imprecise_match"
+                                              },
+    "Tech_MagicSource_General_T08_FrozenCrypt":  {
+                                                     "recipe":  "R",
+                                                     "recipe_guid":  null,
+                                                     "tech_guid":  -1618357223,
+                                                     "status":  "imprecise_match"
+                                                 },
+    "Tech_MagicSource_General_T08_Madness":  {
+                                                 "recipe":  "R",
+                                                 "recipe_guid":  null,
+                                                 "tech_guid":  438329698,
+                                                 "status":  "imprecise_match"
+                                             },
+    "Tech_MagicSource_General_T08_WickedProphet":  {
+                                                       "recipe":  "R",
+                                                       "recipe_guid":  null,
+                                                       "tech_guid":  1018971284,
+                                                       "status":  "imprecise_match"
+                                                   },
+    "Tech_SpellPassive_Blood_T01_BloodSpray":  {
+                                                   "recipe":  "SpellPassive_Blood_T01_BloodSpray",
+                                                   "recipe_guid":  -1027845865,
+                                                   "tech_guid":  -1435275335,
+                                                   "status":  "imprecise_match",
+                                                   "note":  "Partial name match - may not be accurate"
+                                               },
+    "Tech_SpellPassive_Blood_T02_BloodTypeEfficiency":  {
+                                                            "recipe":  "SpellPassive_Blood_T02_BloodTypeEfficiency",
+                                                            "recipe_guid":  -441009092,
+                                                            "tech_guid":  -1672153699,
+                                                            "status":  "imprecise_match",
+                                                            "note":  "Partial name match - may not be accurate"
+                                                        },
+    "Tech_SpellPassive_Blood_T03_VBloodSlayer":  {
+                                                     "recipe":  "SpellPassive_Blood_T03_VBloodSlayer",
+                                                     "recipe_guid":  896859617,
+                                                     "tech_guid":  -798456253,
+                                                     "status":  "imprecise_match",
+                                                     "note":  "Partial name match - may not be accurate"
+                                                 },
+    "Tech_SpellPassive_Blood_T04_Rampage":  {
+                                                "recipe":  "SpellPassive_Blood_T04_Rampage",
+                                                "recipe_guid":  596456522,
+                                                "tech_guid":  1425732083,
+                                                "status":  "imprecise_match",
+                                                "note":  "Partial name match - may not be accurate"
+                                            },
+    "Tech_SpellPassive_Chaos_T01_ChaosKindling":  {
+                                                      "recipe":  "SpellPassive_Chaos_T01_ChaosKindling",
+                                                      "recipe_guid":  1088642354,
+                                                      "tech_guid":  1843485926,
+                                                      "status":  "imprecise_match",
+                                                      "note":  "Partial name match - may not be accurate"
+                                                  },
+    "Tech_SpellPassive_Chaos_T02_RenewingFlames":  {
+                                                       "recipe":  "SpellPassive_Chaos_T02_RenewingFlames",
+                                                       "recipe_guid":  2088195977,
+                                                       "tech_guid":  -1267731653,
+                                                       "status":  "imprecise_match",
+                                                       "note":  "Partial name match - may not be accurate"
+                                                   },
+    "Tech_SpellPassive_Chaos_T03_Overpower":  {
+                                                  "recipe":  "SpellPassive_Chaos_T03_Overpower",
+                                                  "recipe_guid":  1250779598,
+                                                  "tech_guid":  2009766737,
+                                                  "status":  "imprecise_match",
+                                                  "note":  "Partial name match - may not be accurate"
+                                              },
+    "Tech_SpellPassive_Chaos_T04_RavenousStrikes":  {
+                                                        "recipe":  "SpellPassive_Chaos_T04_RavenousStrikes",
+                                                        "recipe_guid":  -1251152602,
+                                                        "tech_guid":  1027528474,
+                                                        "status":  "imprecise_match",
+                                                        "note":  "Partial name match - may not be accurate"
+                                                    },
+    "Tech_SpellPassive_Frost_T01_ColdSoul":  {
+                                                 "recipe":  "SpellPassive_Frost_T01_ColdSoul",
+                                                 "recipe_guid":  1855867703,
+                                                 "tech_guid":  -1243503477,
+                                                 "status":  "imprecise_match",
+                                                 "note":  "Partial name match - may not be accurate"
+                                             },
+    "Tech_SpellPassive_Frost_T02_ChillWeave":  {
+                                                   "recipe":  "SpellPassive_Frost_T02_ChillWeave",
+                                                   "recipe_guid":  -492383335,
+                                                   "tech_guid":  -634698501,
+                                                   "status":  "imprecise_match",
+                                                   "note":  "Partial name match - may not be accurate"
+                                               },
+    "Tech_SpellPassive_Frost_T03_Bastion":  {
+                                                "recipe":  "SpellPassive_Frost_T03_Bastion",
+                                                "recipe_guid":  1023033912,
+                                                "tech_guid":  167793585,
+                                                "status":  "imprecise_match",
+                                                "note":  "Partial name match - may not be accurate"
+                                            },
+    "Tech_SpellPassive_Frost_T04_DarkEnchantment":  {
+                                                        "recipe":  "SpellPassive_Frost_T04_DarkEnchantment",
+                                                        "recipe_guid":  1865004925,
+                                                        "tech_guid":  -476299746,
+                                                        "status":  "imprecise_match",
+                                                        "note":  "Partial name match - may not be accurate"
+                                                    },
+    "Tech_SpellPassive_Illusion_T01_SpiritualInfusion":  {
+                                                             "recipe":  "SpellPassive_Illusion_T01_SpiritualInfusion",
+                                                             "recipe_guid":  -204224143,
+                                                             "tech_guid":  443034615,
+                                                             "status":  "imprecise_match",
+                                                             "note":  "Partial name match - may not be accurate"
+                                                         },
+    "Tech_SpellPassive_Illusion_T02_FlowingSorcery":  {
+                                                          "recipe":  "SpellPassive_Illusion_T02_FlowingSorcery",
+                                                          "recipe_guid":  -1979168975,
+                                                          "tech_guid":  1166977128,
+                                                          "status":  "imprecise_match",
+                                                          "note":  "Partial name match - may not be accurate"
+                                                      },
+    "Tech_SpellPassive_Illusion_T03_FeralHaste":  {
+                                                      "recipe":  "SpellPassive_Illusion_T03_FeralHaste",
+                                                      "recipe_guid":  -2136476823,
+                                                      "tech_guid":  87181825,
+                                                      "status":  "imprecise_match",
+                                                      "note":  "Partial name match - may not be accurate"
+                                                  },
+    "Tech_SpellPassive_Illusion_T04_WickedPower":  {
+                                                       "recipe":  "SpellPassive_Illusion_T04_WickedPower",
+                                                       "recipe_guid":  21458851,
+                                                       "tech_guid":  839015128,
+                                                       "status":  "imprecise_match",
+                                                       "note":  "Partial name match - may not be accurate"
+                                                   },
+    "Tech_SpellPassive_Storm_T01_LightningFastStrikes":  {
+                                                             "recipe":  "SpellPassive_Storm_T01_LightningFastStrikes",
+                                                             "recipe_guid":  -1042692472,
+                                                             "tech_guid":  216926005,
+                                                             "status":  "imprecise_match",
+                                                             "note":  "Partial name match - may not be accurate"
+                                                         },
+    "Tech_SpellPassive_Storm_T02_EnhancedConductivity":  {
+                                                             "recipe":  "SpellPassive_Storm_T02_EnhancedConductivity",
+                                                             "recipe_guid":  -395364978,
+                                                             "tech_guid":  -421268939,
+                                                             "status":  "imprecise_match",
+                                                             "note":  "Partial name match - may not be accurate"
+                                                         },
+    "Tech_SpellPassive_Storm_T03_HungerForPower":  {
+                                                       "recipe":  "SpellPassive_Storm_T03_HungerForPower",
+                                                       "recipe_guid":  594395982,
+                                                       "tech_guid":  416186705,
+                                                       "status":  "imprecise_match",
+                                                       "note":  "Partial name match - may not be accurate"
+                                                   },
+    "Tech_SpellPassive_Storm_T04_TurbulentVelocity":  {
+                                                          "recipe":  "SpellPassive_Storm_T04_TurbulentVelocity",
+                                                          "recipe_guid":  -1148833103,
+                                                          "tech_guid":  -6320984,
+                                                          "status":  "imprecise_match",
+                                                          "note":  "Partial name match - may not be accurate"
+                                                      },
+    "Tech_SpellPassive_Unholy_T01_ArcaneAnimator":  {
+                                                        "recipe":  "SpellPassive_Unholy_T01_ArcaneAnimator",
+                                                        "recipe_guid":  -539962543,
+                                                        "tech_guid":  -759918389,
+                                                        "status":  "imprecise_match",
+                                                        "note":  "Partial name match - may not be accurate"
+                                                    },
+    "Tech_SpellPassive_Unholy_T02_SoulDrinker":  {
+                                                     "recipe":  "SpellPassive_Unholy_T02_SoulDrinker",
+                                                     "recipe_guid":  -1612317745,
+                                                     "tech_guid":  1841694629,
+                                                     "status":  "imprecise_match",
+                                                     "note":  "Partial name match - may not be accurate"
+                                                 },
+    "Tech_SpellPassive_Unholy_T03_LethalStrikes":  {
+                                                       "recipe":  "SpellPassive_Unholy_T03_LethalStrikes",
+                                                       "recipe_guid":  -2124258403,
+                                                       "tech_guid":  1930313893,
+                                                       "status":  "imprecise_match",
+                                                       "note":  "Partial name match - may not be accurate"
+                                                   },
+    "Tech_SpellPassive_Unholy_T04_EmbraceMayhem":  {
+                                                       "recipe":  "SpellPassive_Unholy_T04_EmbraceMayhem",
+                                                       "recipe_guid":  422612021,
+                                                       "tech_guid":  550246163,
+                                                       "status":  "imprecise_match",
+                                                       "note":  "Partial name match - may not be accurate"
+                                                   },
+    "Tech_Storage_Alchemy_T02":  {
+                                     "recipe":  "Item_Ingredient_Book_Structure_Storage_Alchemy_T02",
+                                     "recipe_guid":  11798247,
+                                     "tech_guid":  1517382260,
+                                     "status":  "imprecise_match",
+                                     "note":  "Partial name match - may not be accurate"
+                                 },
+    "Tech_Storage_Alchemy_T03":  {
+                                     "recipe":  "Item_Ingredient_Book_Structure_Storage_Alchemy_T03",
+                                     "recipe_guid":  -67943596,
+                                     "tech_guid":  1625843968,
+                                     "status":  "imprecise_match",
+                                     "note":  "Partial name match - may not be accurate"
+                                 },
+    "Tech_Storage_Armor_T02":  {
+                                   "recipe":  "Item_Ingredient_Book_Structure_Storage_Armor_T02",
+                                   "recipe_guid":  207381334,
+                                   "tech_guid":  1081189242,
+                                   "status":  "imprecise_match",
+                                   "note":  "Partial name match - may not be accurate"
+                               },
+    "Tech_Storage_Blood_T02":  {
+                                   "recipe":  "Tech_Storage_Blood_T02",
+                                   "recipe_guid":  977509050,
+                                   "tech_guid":  977509050,
+                                   "status":  "imprecise_match",
+                                   "note":  "Partial name match - may not be accurate"
+                               },
+    "Tech_Storage_Blood_T03":  {
+                                   "recipe":  "Tech_Storage_Blood_T03",
+                                   "recipe_guid":  1047288877,
+                                   "tech_guid":  1047288877,
+                                   "status":  "imprecise_match",
+                                   "note":  "Partial name match - may not be accurate"
+                               },
+    "Tech_Storage_Coins_T02":  {
+                                   "recipe":  "Item_Ingredient_Book_Structure_Storage_Coins_T02",
+                                   "recipe_guid":  -832387204,
+                                   "tech_guid":  1415500586,
+                                   "status":  "imprecise_match",
+                                   "note":  "Partial name match - may not be accurate"
+                               },
+    "Tech_Storage_Consumable_T02":  {
+                                        "recipe":  "Item_Ingredient_Book_Structure_Storage_Consumable_T02",
+                                        "recipe_guid":  -1624005683,
+                                        "tech_guid":  -799314882,
+                                        "status":  "imprecise_match",
+                                        "note":  "Partial name match - may not be accurate"
+                                    },
+    "Tech_Storage_Consumable_T03":  {
+                                        "recipe":  "Item_Ingredient_Book_Structure_Storage_Consumable_T03",
+                                        "recipe_guid":  824237901,
+                                        "tech_guid":  -895778945,
+                                        "status":  "imprecise_match",
+                                        "note":  "Partial name match - may not be accurate"
+                                    },
+    "Tech_Storage_Fish_T02":  {
+                                  "recipe":  "Tech_Storage_Fish_T02",
+                                  "recipe_guid":  1464078715,
+                                  "tech_guid":  1464078715,
+                                  "status":  "imprecise_match",
+                                  "note":  "Partial name match - may not be accurate"
+                              },
+    "Tech_Storage_Gems_T01":  {
+                                  "recipe":  "Item_Ingredient_Book_Structure_Storage_Gems_T01",
+                                  "recipe_guid":  1455590675,
+                                  "tech_guid":  283418827,
+                                  "status":  "imprecise_match",
+                                  "note":  "Partial name match - may not be accurate"
+                              },
+    "Tech_Storage_Gems_T02":  {
+                                  "recipe":  "Item_Ingredient_Book_Structure_Storage_Gems_T02",
+                                  "recipe_guid":  1150376281,
+                                  "tech_guid":  1546021583,
+                                  "status":  "imprecise_match",
+                                  "note":  "Partial name match - may not be accurate"
+                              },
+    "Tech_Storage_Herbs_T01":  {
+                                   "recipe":  "Item_Ingredient_Book_Structure_Storage_Herbs_T01",
+                                   "recipe_guid":  -853559619,
+                                   "tech_guid":  1919678927,
+                                   "status":  "imprecise_match",
+                                   "note":  "Partial name match - may not be accurate"
+                               },
+    "Tech_Storage_Herbs_T02":  {
+                                   "recipe":  "Item_Ingredient_Book_Structure_Storage_Herbs_T02",
+                                   "recipe_guid":  473545520,
+                                   "tech_guid":  -1430391301,
+                                   "status":  "imprecise_match",
+                                   "note":  "Partial name match - may not be accurate"
+                               },
+    "Tech_Storage_Jewels_T02":  {
+                                    "recipe":  "Item_Ingredient_Book_Structure_Storage_Jewels_T02",
+                                    "recipe_guid":  -1870194782,
+                                    "tech_guid":  1839251968,
+                                    "status":  "imprecise_match",
+                                    "note":  "Partial name match - may not be accurate"
+                                },
+    "Tech_Storage_Knowledge_T02":  {
+                                       "recipe":  "Item_Ingredient_Book_Structure_Storage_Knowledge_T02",
+                                       "recipe_guid":  -1394295910,
+                                       "tech_guid":  -1233545962,
+                                       "status":  "imprecise_match",
+                                       "note":  "Partial name match - may not be accurate"
+                                   },
+    "Tech_Storage_Knowledge_T03":  {
+                                       "recipe":  "Item_Ingredient_Book_Structure_Storage_Knowledge_T03",
+                                       "recipe_guid":  1823379076,
+                                       "tech_guid":  -1309377338,
+                                       "status":  "imprecise_match",
+                                       "note":  "Partial name match - may not be accurate"
+                                   },
+    "Tech_Storage_Minerals_T01":  {
+                                      "recipe":  "Item_Ingredient_Book_Structure_Storage_Minerals_T01",
+                                      "recipe_guid":  -513865346,
+                                      "tech_guid":  503660474,
+                                      "status":  "imprecise_match",
+                                      "note":  "Partial name match - may not be accurate"
+                                  },
+    "Tech_Storage_Minerals_T02":  {
+                                      "recipe":  "Item_Ingredient_Book_Structure_Storage_Minerals_T02",
+                                      "recipe_guid":  -1061940339,
+                                      "tech_guid":  659306848,
+                                      "status":  "imprecise_match",
+                                      "note":  "Partial name match - may not be accurate"
+                                  },
+    "Tech_Storage_Pack_Equipment_T02":  {
+                                            "recipe":  "Item_Ingredient_Book_Structure_Storage_Pack_Equipment_T02",
+                                            "recipe_guid":  1249076837,
+                                            "tech_guid":  -1605857820,
+                                            "status":  "imprecise_match",
+                                            "note":  "Partial name match - may not be accurate"
+                                        },
+    "Tech_Storage_Pack_T01_A":  {
+                                    "recipe":  "Tech_Storage_Pack_T01_A",
+                                    "recipe_guid":  134968992,
+                                    "tech_guid":  134968992,
+                                    "status":  "imprecise_match",
+                                    "note":  "Partial name match - may not be accurate"
+                                },
+    "Tech_Storage_Pack_T01_B":  {
+                                    "recipe":  "Tech_Storage_Pack_T01_B",
+                                    "recipe_guid":  -1700135018,
+                                    "tech_guid":  -1700135018,
+                                    "status":  "imprecise_match",
+                                    "note":  "Partial name match - may not be accurate"
+                                },
+    "Tech_Storage_Pack_T02":  {
+                                  "recipe":  "Item_Ingredient_Book_Structure_Storage_Pack_T02",
+                                  "recipe_guid":  1519475093,
+                                  "tech_guid":  -612322185,
+                                  "status":  "imprecise_match",
+                                  "note":  "Partial name match - may not be accurate"
+                              },
+    "Tech_Storage_T01":  {
+                             "recipe":  "DG_Tech_Storage_T01",
+                             "recipe_guid":  -1494906591,
+                             "tech_guid":  -1065914013,
+                             "status":  "imprecise_match",
+                             "note":  "Partial name match - may not be accurate"
+                         },
+    "Tech_Storage_T02":  {
+                             "recipe":  "DG_Tech_Storage_T02",
+                             "recipe_guid":  -728740676,
+                             "tech_guid":  2081297006,
+                             "status":  "imprecise_match",
+                             "note":  "Partial name match - may not be accurate"
+                         },
+    "Tech_Storage_T03":  {
+                             "recipe":  "DG_Tech_Storage_T03",
+                             "recipe_guid":  1068448198,
+                             "tech_guid":  -527623056,
+                             "status":  "imprecise_match",
+                             "note":  "Partial name match - may not be accurate"
+                         },
+    "Tech_Storage_Tailoring_T02":  {
+                                       "recipe":  "Item_Ingredient_Book_Structure_Storage_Tailoring_T02",
+                                       "recipe_guid":  -1304625582,
+                                       "tech_guid":  -1208628879,
+                                       "status":  "imprecise_match",
+                                       "note":  "Partial name match - may not be accurate"
+                                   },
+    "Tech_Storage_Tailoring_T03":  {
+                                       "recipe":  "Item_Ingredient_Book_Structure_Storage_Tailoring_T03",
+                                       "recipe_guid":  -63123159,
+                                       "tech_guid":  1648033500,
+                                       "status":  "imprecise_match",
+                                       "note":  "Partial name match - may not be accurate"
+                                   },
+    "Tech_Storage_Weapons_T02":  {
+                                     "recipe":  "Item_Ingredient_Book_Structure_Storage_Weapons_T02",
+                                     "recipe_guid":  -1564741377,
+                                     "tech_guid":  -917955046,
+                                     "status":  "imprecise_match",
+                                     "note":  "Partial name match - may not be accurate"
+                                 },
+    "Tech_Storage_Woodworking_T01":  {
+                                         "recipe":  "Item_Ingredient_Book_Structure_Storage_Woodworking_T01",
+                                         "recipe_guid":  1040245278,
+                                         "tech_guid":  -1972974567,
+                                         "status":  "imprecise_match",
+                                         "note":  "Partial name match - may not be accurate"
+                                     },
+    "Tech_Storage_Woodworking_T02":  {
+                                         "recipe":  "Item_Ingredient_Book_Structure_Storage_Woodworking_T02",
+                                         "recipe_guid":  206151993,
+                                         "tech_guid":  1090765974,
+                                         "status":  "imprecise_match",
+                                         "note":  "Partial name match - may not be accurate"
+                                     },
+    "Tech_Weapon_Axe_T04":  {
+                                "status":  "fixed_mapping",
+                                "recipe_guid":  -411123427,
+                                "tech_guid":  -632708133,
+                                "recipe":  "Recipe_Weapon_Axe_T04_Copper_Reinforced",
+                                "note":  "Manually corrected weapon recipe mapping"
+                            },
+    "Tech_Weapon_Axe_T06":  {
+                                "recipe":  "R",
+                                "recipe_guid":  null,
+                                "tech_guid":  -2012042353,
+                                "status":  "imprecise_match",
+                                "note":  "Name-based matching - may need manual review"
+                            },
+    "Tech_Weapon_Axe_T08":  {
+                                "recipe":  "R",
+                                "recipe_guid":  null,
+                                "tech_guid":  1895745785,
+                                "status":  "imprecise_match",
+                                "note":  "Name-based matching - may need manual review"
+                            },
+    "Tech_Weapon_Claws_T06":  {
+                                  "recipe":  "R",
+                                  "recipe_guid":  null,
+                                  "tech_guid":  1738256866,
+                                  "status":  "imprecise_match",
+                                  "note":  "Name-based matching - may need manual review"
+                              },
+    "Tech_Weapon_Claws_T08":  {
+                                  "recipe":  "R",
+                                  "recipe_guid":  null,
+                                  "tech_guid":  574338808,
+                                  "status":  "imprecise_match",
+                                  "note":  "Name-based matching - may need manual review"
+                              },
+    "Tech_Weapon_Crossbow_T04":  {
+                                     "recipe":  "R",
+                                     "recipe_guid":  null,
+                                     "tech_guid":  -997169234,
+                                     "status":  "imprecise_match",
+                                     "note":  "Name-based matching - may need manual review"
+                                 },
+    "Tech_Weapon_Crossbow_T06":  {
+                                     "recipe":  "R",
+                                     "recipe_guid":  null,
+                                     "tech_guid":  1000023879,
+                                     "status":  "imprecise_match",
+                                     "note":  "Name-based matching - may need manual review"
+                                 },
+    "Tech_Weapon_Crossbow_T08":  {
+                                     "recipe":  "R",
+                                     "recipe_guid":  null,
+                                     "tech_guid":  -1333600826,
+                                     "status":  "imprecise_match",
+                                     "note":  "Name-based matching - may need manual review"
+                                 },
+    "Tech_Weapon_Daggers_T06":  {
+                                    "recipe":  "R",
+                                    "recipe_guid":  null,
+                                    "tech_guid":  -1688466299,
+                                    "status":  "imprecise_match",
+                                    "note":  "Name-based matching - may need manual review"
+                                },
+    "Tech_Weapon_Daggers_T08":  {
+                                    "recipe":  "R",
+                                    "recipe_guid":  null,
+                                    "tech_guid":  867896907,
+                                    "status":  "imprecise_match",
+                                    "note":  "Name-based matching - may need manual review"
+                                },
+    "Tech_Weapon_GreatSword_T06":  {
+                                       "recipe":  "R",
+                                       "recipe_guid":  null,
+                                       "tech_guid":  175562220,
+                                       "status":  "imprecise_match",
+                                       "note":  "Name-based matching - may need manual review"
+                                   },
+    "Tech_Weapon_GreatSword_T08":  {
+                                       "recipe":  "R",
+                                       "recipe_guid":  null,
+                                       "tech_guid":  -976123885,
+                                       "status":  "imprecise_match",
+                                       "note":  "Name-based matching - may need manual review"
+                                   },
+    "Tech_Weapon_Longbow_T04":  {
+                                    "recipe":  "R",
+                                    "recipe_guid":  null,
+                                    "tech_guid":  -212104516,
+                                    "status":  "imprecise_match",
+                                    "note":  "Name-based matching - may need manual review"
+                                },
+    "Tech_Weapon_Longbow_T06":  {
+                                    "recipe":  "R",
+                                    "recipe_guid":  null,
+                                    "tech_guid":  -1988689265,
+                                    "status":  "imprecise_match",
+                                    "note":  "Name-based matching - may need manual review"
+                                },
+    "Tech_Weapon_Longbow_T08":  {
+                                    "recipe":  "R",
+                                    "recipe_guid":  null,
+                                    "tech_guid":  -396858635,
+                                    "status":  "imprecise_match",
+                                    "note":  "Name-based matching - may need manual review"
+                                },
+    "Tech_Weapon_Mace_T04":  {
+                                 "recipe":  "R",
+                                 "recipe_guid":  null,
+                                 "tech_guid":  507915220,
+                                 "status":  "imprecise_match",
+                                 "note":  "Name-based matching - may need manual review"
+                             },
+    "Tech_Weapon_Mace_T06":  {
+                                 "recipe":  "R",
+                                 "recipe_guid":  null,
+                                 "tech_guid":  -437562995,
+                                 "status":  "imprecise_match",
+                                 "note":  "Name-based matching - may need manual review"
+                             },
+    "Tech_Weapon_Mace_T08":  {
+                                 "recipe":  "R",
+                                 "recipe_guid":  null,
+                                 "tech_guid":  -412324833,
+                                 "status":  "imprecise_match",
+                                 "note":  "Name-based matching - may need manual review"
+                             },
+    "Tech_Weapon_Pistols_T06":  {
+                                    "recipe":  "R",
+                                    "recipe_guid":  null,
+                                    "tech_guid":  -1341416577,
+                                    "status":  "imprecise_match",
+                                    "note":  "Name-based matching - may need manual review"
+                                },
+    "Tech_Weapon_Pistols_T08":  {
+                                    "recipe":  "R",
+                                    "recipe_guid":  null,
+                                    "tech_guid":  -1917260012,
+                                    "status":  "imprecise_match",
+                                    "note":  "Name-based matching - may need manual review"
+                                },
+    "Tech_Weapon_Reaper_T04":  {
+                                   "recipe":  "R",
+                                   "recipe_guid":  null,
+                                   "tech_guid":  -1073336085,
+                                   "status":  "imprecise_match",
+                                   "note":  "Name-based matching - may need manual review"
+                               },
+    "Tech_Weapon_Reaper_T06":  {
+                                   "recipe":  "R",
+                                   "recipe_guid":  null,
+                                   "tech_guid":  1184108243,
+                                   "status":  "imprecise_match",
+                                   "note":  "Name-based matching - may need manual review"
+                               },
+    "Tech_Weapon_Reaper_T08":  {
+                                   "recipe":  "R",
+                                   "recipe_guid":  null,
+                                   "tech_guid":  -409067814,
+                                   "status":  "imprecise_match",
+                                   "note":  "Name-based matching - may need manual review"
+                               },
+    "Tech_Weapon_Slashers_T04":  {
+                                     "recipe":  "R",
+                                     "recipe_guid":  null,
+                                     "tech_guid":  -9976124,
+                                     "status":  "imprecise_match",
+                                     "note":  "Name-based matching - may need manual review"
+                                 },
+    "Tech_Weapon_Slashers_T06":  {
+                                     "recipe":  "R",
+                                     "recipe_guid":  null,
+                                     "tech_guid":  -2121238754,
+                                     "status":  "imprecise_match",
+                                     "note":  "Name-based matching - may need manual review"
+                                 },
+    "Tech_Weapon_Slashers_T08":  {
+                                     "recipe":  "R",
+                                     "recipe_guid":  null,
+                                     "tech_guid":  575105000,
+                                     "status":  "imprecise_match",
+                                     "note":  "Name-based matching - may need manual review"
+                                 },
+    "Tech_Weapon_Spear_T04":  {
+                                  "recipe":  "R",
+                                  "recipe_guid":  null,
+                                  "tech_guid":  -54738837,
+                                  "status":  "imprecise_match",
+                                  "note":  "Name-based matching - may need manual review"
+                              },
+    "Tech_Weapon_Spear_T06":  {
+                                  "recipe":  "R",
+                                  "recipe_guid":  null,
+                                  "tech_guid":  -1396617298,
+                                  "status":  "imprecise_match",
+                                  "note":  "Name-based matching - may need manual review"
+                              },
+    "Tech_Weapon_Spear_T08":  {
+                                  "recipe":  "R",
+                                  "recipe_guid":  null,
+                                  "tech_guid":  -759663833,
+                                  "status":  "imprecise_match",
+                                  "note":  "Name-based matching - may need manual review"
+                              },
+    "Tech_Weapon_Sword_T04":  {
+                                  "recipe":  "R",
+                                  "recipe_guid":  null,
+                                  "tech_guid":  1950052883,
+                                  "status":  "imprecise_match",
+                                  "note":  "Name-based matching - may need manual review"
+                              },
+    "Tech_Weapon_Sword_T06":  {
+                                  "recipe":  "R",
+                                  "recipe_guid":  null,
+                                  "tech_guid":  -1685075160,
+                                  "status":  "imprecise_match",
+                                  "note":  "Name-based matching - may need manual review"
+                              },
+    "Tech_Weapon_Sword_T08":  {
+                                  "recipe":  "R",
+                                  "recipe_guid":  null,
+                                  "tech_guid":  361533671,
+                                  "status":  "imprecise_match",
+                                  "note":  "Name-based matching - may need manual review"
+                              },
+    "Tech_Weapon_TwinBlades_T06":  {
+                                       "recipe":  "R",
+                                       "recipe_guid":  null,
+                                       "tech_guid":  928267897,
+                                       "status":  "imprecise_match",
+                                       "note":  "Name-based matching - may need manual review"
+                                   },
+    "Tech_Weapon_TwinBlades_T08":  {
+                                       "recipe":  "R",
+                                       "recipe_guid":  null,
+                                       "tech_guid":  -711409497,
+                                       "status":  "imprecise_match",
+                                       "note":  "Name-based matching - may need manual review"
+                                   },
+    "Tech_Weapon_Whip_T06":  {
+                                 "recipe":  "R",
+                                 "recipe_guid":  null,
+                                 "tech_guid":  1500666524,
+                                 "status":  "imprecise_match",
+                                 "note":  "Name-based matching - may need manual review"
+                             },
+    "Tech_Weapon_Whip_T08":  {
+                                 "recipe":  "R",
+                                 "recipe_guid":  null,
+                                 "tech_guid":  1515808838,
+                                 "status":  "imprecise_match",
+                                 "note":  "Name-based matching - may need manual review"
+                             }
+}

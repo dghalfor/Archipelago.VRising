@@ -22,13 +22,18 @@ public static class DebugTool
         return Plugin.Server.EntityManager.Debug.GetEntityInfo(entity);
     }
 
-    private static string DumpEntity(Entity entity, bool fullDump = true)
+    public static string DumpEntity(Entity entity, bool fullDump = true)
     {
         var sb = new Il2CppSystem.Text.StringBuilder();
         ProjectM.EntityDebuggingUtility.DumpEntity(Plugin.Server, entity, fullDump, sb);
         return sb.ToString();
     }
-
+    public static string DumpClientEntity(Entity entity, bool fullDump = true)
+    {
+        var sb = new Il2CppSystem.Text.StringBuilder();
+        ProjectM.EntityDebuggingUtility.DumpEntity(Plugin.Client, entity, fullDump, sb);
+        return sb.ToString();
+    }
     /// <summary>
     /// Logs prefab name and guid hash (and returns the PrefabGUID)
     /// </summary>

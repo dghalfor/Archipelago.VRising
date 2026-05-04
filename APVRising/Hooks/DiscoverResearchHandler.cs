@@ -34,13 +34,12 @@ internal class DiscoverResearchHandler
 
         _lastRolledResearchGuid = randomResearch.ResearchGuid;
         _lastRolledTargetStation = targetResearchStation;
-        //RemoveFromResearchPool(GetProgressionEntity(fromCharacter.User), randomResearch.ResearchGuid);
-        //RemoveFromResearchPool(progressionEntity, randomResearch.ResearchGuid);
         return true;
     }
     public static PrefabGUID _lastRolledResearchGuid = default;
     public static Entity _lastRolledTargetStation = default;
 
+    // TODO This may not be necessary now since we're not messing with the progression entity
     [HarmonyPatch(typeof(DiscoverResearchSystem), nameof(DiscoverResearchSystem.UnlockProgression))]
     [HarmonyPostfix]
     public static void PostFix(

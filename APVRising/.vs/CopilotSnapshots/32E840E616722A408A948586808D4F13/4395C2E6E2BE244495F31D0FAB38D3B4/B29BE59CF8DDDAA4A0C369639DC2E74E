@@ -1,0 +1,370 @@
+﻿using APVRising;
+using APVRising.Archipelago;
+using APVRising.Utils;
+using BepInEx.Logging;
+using HarmonyLib;
+using Il2CppInterop.Common.Attributes;
+using Il2CppInterop.Runtime;
+using ProjectM;
+using ProjectM.CastleBuilding;
+using ProjectM.Network;
+using ProjectM.UI;
+using Stunlock.Core;
+using System.Collections.Generic;
+using Unity.Collections;
+using Unity.Entities;
+using Unity.Entities.UniversalDelegates;
+using static ProjectM.ProgressionUtility;
+using static VCF.Core.Basics.RoleCommands;
+
+namespace APVRising.Hooks;
+
+[HarmonyPatch]
+public static class Workstation
+{
+    [HarmonyPatch(typeof(ResearchstationSubMenuMapper), nameof(ResearchstationSubMenuMapper.ResearchstationSubMenuMapper_159B1CC0_LambdaJob_1_Execute))]
+    [HarmonyPrefix]
+    public static bool GatherUnlockedRecipesPrefix(ref Entity localControlledEntity, ref Entity progressionEntity, ref PrefabLookupMap prefabLookupMap, ref MapZoneCollection mapZoneCollection, ref GameDataSystem gameDataSystem)
+    {
+        // Use Server EntityManager since progressionEntity comes from the server world
+        var serverEntityManager = Plugin.EntityManager;
+        foreach (var element in serverEntityManager.GetBuffer<UnlockedProgressionElement>(progressionEntity))
+        {
+            Plugin.BepinLogger.LogInfo($"GatherUnlockedRecipes: {element.UnlockedPrefab}");
+        }
+        Plugin.BepinLogger.LogInfo("Workstation On Create Prefix");
+        return true;
+    }
+
+    
+      [HarmonyPatch(typeof(ProgressionUtility), nameof(ProgressionUtility.GatherUnlockedRecipes))]
+      [HarmonyPrefix]
+      public static bool GatherUnlockedRecipesPrefix(EntityManager entityManager,
+          Entity progressionEntity,
+          NativeParallelHashSet<PrefabGUID> unlockedRecipes)
+      {
+
+          Plugin.BepinLogger.LogInfo("Workstation On Create Prefix");
+          return true;
+      }
+
+      [HarmonyPatch(typeof(ResearchstationMenuMapper), nameof(ResearchstationMenuMapper.InitializeUI))]
+      [HarmonyPostfix]
+      public static bool Prefix()
+      {
+          Plugin.BepinLogger.LogInfo("Postfix On GetLocalUser");
+          var em = Plugin.EntityManager; // Use Server EntityManager
+
+          var progQuery2 = em.CreateEntityQuery(ComponentType.ReadWrite<UnlockedProgressionElement>());
+          if (progQuery2.IsEmpty) return true;
+          Plugin.BepinLogger.LogInfo("Postfix On GetLocalUser 2");
+
+          var progQuery = em.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
+          if (progQuery.IsEmpty) return true;
+          Plugin.BepinLogger.LogInfo("Postfix On GetLocalUser 2");
+
+          var entities = progQuery.ToEntityArray(Allocator.Temp);
+          foreach (var entity in entities)
+          {
+              Plugin.BepinLogger.LogInfo("Postfix On GetLocalUser " + entity);
+          }
+          // Query for User entities which have ProgressionMapper
+          var userQuery = em.CreateEntityQuery(ComponentType.ReadOnly<ProjectM.Network.User>(), ComponentType.ReadOnly<ProgressionMapper>());
+          if (userQuery.IsEmpty) return true;
+
+          var users = userQuery.ToEntityArray(Allocator.Temp);
+          foreach (var userEntity in users)
+          {
+              var query = em.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
+              if (query.IsEmpty) return true;
+
+              entities = query.ToEntityArray(Allocator.Temp);
+              foreach (var entity in entities)
+              {
+                  //UnlockedRecipeElement, UnlockedBlueprintElement, UnlockedVBlood, (maybe) UnlockedSpellBookAbility
+                  var buffer = em.GetBuffer<UnlockedProgressionElement>(entity);
+                  var unlockedTechHashes = new List<int>();
+                  //unlockedTechHashes.Add(507915220); - mace is not unlocked in research station
+                  unlockedTechHashes.Add(-54738837);
+                  unlockedTechHashes.Add(-2012042353);
+
+                  // Sync tech unlocks with recipe unlocks directly on the buffer
+                  TechToRecipeMapping.SyncUnlockedTechs(buffer, unlockedTechHashes);
+                  var recipeBuffer = em.GetBuffer<UnlockedRecipeElement>(entity);
+
+                  // TODO Read archipelago progression data and sync with game progression
+
+
+                  // Sync tech unlocks with recipe unlocks directly on the buffer
+                  TechToRecipeMapping.SyncTechRecipes(recipeBuffer, unlockedTechHashes);
+              }
+              entities.Dispose();
+          }
+          return true;
+      }
+
+      /*
+      [HarmonyPatch(typeof(ResearchstationMenuMapper), nameof(ResearchstationMenuMapper.OnDestroy))]
+      [HarmonyPrefix]
+      public static bool OnDestroyPrefix()
+      {
+          var em = Plugin.EntityManager; // Use Server EntityManager
+
+          // Query for User entities which have ProgressionMapper
+          var userQuery = em.CreateEntityQuery(ComponentType.ReadOnly<ProjectM.Network.User>(), ComponentType.ReadOnly<ProgressionMapper>());
+          if (userQuery.IsEmpty) return true;
+
+          var users = userQuery.ToEntityArray(Allocator.Temp);
+          foreach (var userEntity in users)
+          {
+              var query = em.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
+              if (query.IsEmpty) return true;
+
+              var entities = query.ToEntityArray(Allocator.Temp);
+              foreach (var entity in entities)
+              {
+                  //UnlockedRecipeElement, UnlockedBlueprintElement, UnlockedVBlood, (maybe) UnlockedSpellBookAbility
+                  var buffer = em.GetBuffer<UnlockedProgressionElement>(entity);
+                  var unlockedTechHashes = new List<int>();
+                  unlockedTechHashes.Add(507915220); //Mace is unlocked in crafting
+                  unlockedTechHashes.Add(-54738837);
+                  unlockedTechHashes.Add(-2012042353);
+
+                  // Sync tech unlocks with recipe unlocks directly on the buffer
+                  TechToRecipeMapping.SyncUnlockedTechs(buffer, unlockedTechHashes);
+                  var recipeBuffer = em.GetBuffer<UnlockedRecipeElement>(entity);
+
+                  // TODO Read archipelago progression data and sync with game progression
+
+
+                  // Sync tech unlocks with recipe unlocks directly on the buffer
+                  TechToRecipeMapping.SyncTechRecipes(recipeBuffer, unlockedTechHashes);
+              }
+              entities.Dispose();
+          }
+          Plugin.BepinLogger.LogInfo("ResearchStation On Initialize Prefix");
+          return true;
+      }
+      */
+      /*
+    [HarmonyPatch(typeof(ProgressionUtility), nameof(ProgressionUtility.GatherUnlockedRecipes))]
+    [HarmonyPrefix]
+    public static bool GatherUnlockedRecipesPrefix(EntityManager entityManager, 
+        Entity progressionEntity, 
+        NativeParallelHashSet<PrefabGUID> unlockedRecipes)
+    {
+
+        foreach (var recipe in entityManager.GetBuffer<UnlockedRecipeElement>(progressionEntity))
+        {
+            Plugin.BepinLogger.LogInfo($"GatherUnlockedRecipes: {recipe.UnlockedRecipe}");
+        }
+        for (int i = entityManager.GetBuffer<UnlockedProgressionElement>(progressionEntity).Length - 1; i >= 0; i--)
+        {
+            if (entityManager.GetBuffer<UnlockedProgressionElement>(progressionEntity)[i].UnlockedPrefab == new PrefabGUID(507915220) || entityManager.GetBuffer<UnlockedProgressionElement>(progressionEntity)[i].UnlockedPrefab == new PrefabGUID(1183771910))
+            {
+                entityManager.GetBuffer<UnlockedProgressionElement>(progressionEntity).RemoveAt(i);
+                break;
+            }
+        }
+
+        for (int j = entityManager.GetBuffer<UnlockedRecipeElement>(progressionEntity).Length - 1; j >= 0; j--)
+        {
+            if (entityManager.GetBuffer<UnlockedRecipeElement>(progressionEntity)[j].UnlockedRecipe == new PrefabGUID(-2125590443) || entityManager.GetBuffer<UnlockedRecipeElement>(progressionEntity)[j].UnlockedRecipe == new PrefabGUID(-897446828))
+            {
+                entityManager.GetBuffer<UnlockedRecipeElement>(progressionEntity).RemoveAt(j);
+                break;
+            }
+        }
+        Plugin.BepinLogger.LogInfo("Workstation On Create Prefix");
+        return true;
+    }
+    [HarmonyPatch(typeof(ProgressionUtility), nameof(ProgressionUtility.GatherUnlockedRecipes))]
+    [HarmonyPostfix]
+    public static void GatherUnlockedRecipesPostfix(EntityManager entityManager,
+        Entity progressionEntity,
+        NativeParallelHashSet<PrefabGUID> unlockedRecipes)
+    {
+        
+        entityManager.GetBuffer<UnlockedProgressionElement>(progressionEntity).Add(new UnlockedProgressionElement { UnlockedPrefab = new PrefabGUID(507915220) });
+        entityManager.GetBuffer<UnlockedProgressionElement>(progressionEntity).Add(new UnlockedProgressionElement { UnlockedPrefab = new PrefabGUID(1183771910) });
+        Plugin.BepinLogger.LogInfo("Workstation On Create Postfix");
+    }
+    /*
+    [HarmonyPatch(typeof(ProgressionUtility), nameof(ProgressionUtility.HasUnlockedProgression), typeof(EntityManager), typeof(Entity), typeof(PrefabGUID))]
+    [HarmonyPrefix]
+    public static bool HasUnlockedProgressionPrefix(EntityManager entityManager, Entity progressionEntity, PrefabGUID progression)
+    {
+
+        foreach (var recipe in entityManager.GetBuffer<UnlockedRecipeElement>(progressionEntity))
+        {
+            Plugin.BepinLogger.LogInfo($"HasUnlockedProgression: {recipe.UnlockedRecipe}");
+        }
+        for (int i = entityManager.GetBuffer<UnlockedProgressionElement>(progressionEntity).Length - 1; i >= 0; i--)
+        {
+            if (entityManager.GetBuffer<UnlockedProgressionElement>(progressionEntity)[i].UnlockedPrefab == new PrefabGUID(507915220) || entityManager.GetBuffer<UnlockedProgressionElement>(progressionEntity)[i].UnlockedPrefab == new PrefabGUID(-54738837) || entityManager.GetBuffer<UnlockedProgressionElement>(progressionEntity)[i].UnlockedPrefab == new PrefabGUID(1183771910))
+            {
+                entityManager.GetBuffer<UnlockedProgressionElement>(progressionEntity).RemoveAt(i);
+                break;
+            }
+        }
+
+        for (int j = entityManager.GetBuffer<UnlockedRecipeElement>(progressionEntity).Length - 1; j >= 0; j--)
+        {
+            if (entityManager.GetBuffer<UnlockedRecipeElement>(progressionEntity)[j].UnlockedRecipe == new PrefabGUID(-2125590443) || entityManager.GetBuffer<UnlockedRecipeElement>(progressionEntity)[j].UnlockedRecipe == new PrefabGUID(-897446828))
+            {
+                entityManager.GetBuffer<UnlockedRecipeElement>(progressionEntity).RemoveAt(j);
+                break;
+            }
+        }
+        Plugin.BepinLogger.LogInfo("HasUnlockedProgression On Create Prefix");
+        return true;
+    }
+    [HarmonyPatch(typeof(ProgressionUtility), nameof(ProgressionUtility.HasUnlockedProgression), typeof(EntityManager), typeof(Entity), typeof(PrefabGUID))]
+    [HarmonyPostfix]
+    public static void HasUnlockedProgressionPostfix(EntityManager entityManager, Entity progressionEntity, PrefabGUID progression)
+    {
+        foreach (var recipe in entityManager.GetBuffer<UnlockedRecipeElement>(progressionEntity))
+        {
+            Plugin.BepinLogger.LogInfo($"HasUnlockedProgression: {recipe.UnlockedRecipe}");
+        }
+        Plugin.BepinLogger.LogInfo("HasUnlockedProgression On Create Postfix");
+    }
+    /*
+    [HarmonyPatch(typeof(StartCraftingSystem), nameof(StartCraftingSystem.OnCreate))]
+    [HarmonyPrefix]
+    public static bool Prefix(StartCraftingSystem __instance)
+    {
+        Plugin.BepinLogger.LogInfo("Workstation On Create Prefix");
+        return true;
+    }
+    [HarmonyPatch(typeof(StartCraftingSystem), nameof(StartCraftingSystem.OnCreate))]
+    [HarmonyPostfix]
+    public static void Postfix(StartCraftingSystem __instance)
+    {
+        Plugin.BepinLogger.LogInfo("Workstation On Create Postfix");
+    }
+
+    [HarmonyPatch(typeof(StartCraftingSystem), nameof(StartCraftingSystem.OnUpdate))]
+    [HarmonyPrefix]
+    public static bool UpdatePrefix(StartCraftingSystem __instance)
+    {
+
+        Plugin.BepinLogger.LogInfo("Workstation On Update Prefix");
+        return true;
+    }
+    [HarmonyPatch(typeof(StartCraftingSystem), nameof(StartCraftingSystem.OnUpdate))]
+    [HarmonyPostfix]
+    public static void UpdatePostfix(StartCraftingSystem __instance)
+    {
+        Plugin.BepinLogger.LogInfo("Workstation On Update Postfix");
+    }
+    /*
+    private static ComponentTypeHandle<ResearchStation> testStation;
+    private static ComponentTypeHandle<HaveUnlocksInStation> testUnlocks;
+
+    [HarmonyPatch(typeof(ActiveResearchstationSequenceSystem), nameof(ActiveResearchstationSequenceSystem.OnCreate))]
+    [HarmonyPrefix]
+    public static bool Prefix(ActiveResearchstationSequenceSystem __instance)
+    {
+        Plugin.BepinLogger.LogInfo("Workstation On Create Prefix");
+        return true;
+    }
+    [HarmonyPatch(typeof(ActiveResearchstationSequenceSystem), nameof(ActiveResearchstationSequenceSystem.OnCreate))]
+    [HarmonyPostfix]
+    public static void Postfix(ActiveResearchstationSequenceSystem __instance)
+    {
+        testStation = __instance.__TypeHandle.__ProjectM_ResearchStation_RO_ComponentTypeHandle;
+        testUnlocks = __instance.__TypeHandle.__ProjectM_HaveUnlocksInStation_RO_ComponentTypeHandle;
+
+        Plugin.BepinLogger.LogInfo("Workstation On Create Postfix");
+    }
+
+    [HarmonyPatch(typeof(ActiveResearchstationSequenceSystem), nameof(ActiveResearchstationSequenceSystem.OnUpdate))]
+    [HarmonyPrefix]
+    public static bool UpdatePrefix(ActiveResearchstationSequenceSystem __instance)
+    {
+        testStation = __instance.__TypeHandle.__ProjectM_ResearchStation_RO_ComponentTypeHandle;
+        testUnlocks = __instance.__TypeHandle.__ProjectM_HaveUnlocksInStation_RO_ComponentTypeHandle;
+
+        Plugin.BepinLogger.LogInfo("Workstation On Update Prefix");
+        return true;
+    }
+    [HarmonyPatch(typeof(ActiveResearchstationSequenceSystem), nameof(ActiveResearchstationSequenceSystem.OnUpdate))]
+    [HarmonyPostfix]
+    public static void UpdatePostfix(ActiveResearchstationSequenceSystem __instance)
+    {
+        testStation = __instance.__TypeHandle.__ProjectM_ResearchStation_RO_ComponentTypeHandle;
+        testUnlocks = __instance.__TypeHandle.__ProjectM_HaveUnlocksInStation_RO_ComponentTypeHandle;
+        Plugin.BepinLogger.LogInfo("Workstation On Update Postfix");
+    }
+    /*
+    public static NativeParallelHashSet<PrefabGUID> _UnlockedRecipes;
+    // majority of this code adapted from VampireCommandFramework @ VCF.Core/Breadstone/ChatHook.cs
+    [HarmonyPatch(typeof(WorkstationSubMenuMapper), nameof(WorkstationSubMenuMapper.OnCreate))]
+    [HarmonyPrefix]
+    public static bool Prefix(WorkstationSubMenuMapper __instance)
+    {
+        //Plugin.BepinLogger.LogInfo("Workstation On Create Prefix");
+        return true;
+    }
+    [HarmonyPatch(typeof(WorkstationSubMenuMapper), nameof(WorkstationSubMenuMapper.OnCreate))]
+    [HarmonyPostfix]
+    public static void Postfix(WorkstationSubMenuMapper __instance)
+    {
+       _UnlockedRecipes = __instance._UnlockedRecipes;
+        foreach (var recipe in _UnlockedRecipes)
+        {
+            Plugin.BepinLogger.LogInfo($"Unlocked recipe: {recipe}");
+        }
+        // Plugin.BepinLogger.LogInfo("Workstation On Create Postfix");
+    }
+
+    [HarmonyPatch(typeof(WorkstationSubMenuMapper), nameof(WorkstationSubMenuMapper.OnUpdate))]
+    [HarmonyPrefix]
+    public static bool UpdatePrefix(WorkstationSubMenuMapper __instance)
+    {
+        if (__instance._UnlockedRecipes.Count() != _UnlockedRecipes.Count())
+        {
+            Plugin.BepinLogger.LogInfo("Workstation On Update Prefix");
+
+            foreach (var recipe in _UnlockedRecipes)
+            {
+                if (!_UnlockedRecipes.Contains(recipe))
+                    Plugin.BepinLogger.LogInfo($"[Update] Unlocked recipe: {recipe}");
+            }
+            _UnlockedRecipes = __instance._UnlockedRecipes;
+        }
+        return true;
+    }
+    [HarmonyPatch(typeof(WorkstationSubMenuMapper), nameof(WorkstationSubMenuMapper.OnUpdate))]
+    [HarmonyPostfix]
+    public static void UpdatePostfix(WorkstationSubMenuMapper __instance)
+    {
+        if (__instance._UnlockedRecipes.Count() != _UnlockedRecipes.Count())
+        {
+            Plugin.BepinLogger.LogInfo("Postfix");
+
+            _UnlockedRecipes = __instance._UnlockedRecipes;
+            foreach (var recipe in _UnlockedRecipes)
+            {
+                Plugin.BepinLogger.LogInfo($"[Update] Unlocked recipe: {recipe}");
+            }
+        }
+        //Plugin.BepinLogger.LogInfo("Workstation On Update Postfix");
+    }
+
+    [HarmonyPatch(typeof(WorkstationSubMenuMapper), nameof(WorkstationSubMenuMapper.GetTargetWorkstationEntity))]
+    [HarmonyPrefix]
+    public static bool GetTargetWorkstationEntityPrefix(WorkstationSubMenuMapper __instance)
+    {
+        //Plugin.BepinLogger.LogInfo("Workstation On GetTargetWorkstationEntity Prefix");
+        return true;
+    }
+    [HarmonyPatch(typeof(WorkstationSubMenuMapper), nameof(WorkstationSubMenuMapper.GetTargetWorkstationEntity))]
+    [HarmonyPostfix]
+    public static void GetTargetWorkstationEntityPostfix(WorkstationSubMenuMapper __instance)
+    {
+        //Plugin.BepinLogger.LogInfo("Workstation On GetTargetWorkstationEntity` Postfix");
+    }
+    */
+}

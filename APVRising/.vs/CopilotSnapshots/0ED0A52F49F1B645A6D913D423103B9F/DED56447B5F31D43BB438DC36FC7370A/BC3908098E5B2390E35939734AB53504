@@ -1,0 +1,99 @@
+﻿using APVRising;
+using APVRising.Archipelago;
+using APVRising.Utils;
+using BepInEx.Logging;
+using HarmonyLib;
+using ProjectM;
+using ProjectM.CastleBuilding;
+using ProjectM.Network;
+using Stunlock.Core;
+using Unity.Collections;
+using Unity.Entities;
+using static ProjectM.ProgressionUtility;
+using static VCF.Core.Basics.RoleCommands;
+
+namespace APVRising.Hooks;
+
+[HarmonyPatch]
+public static class UnlockResearch
+{
+	// majority of this code adapted from VampireCommandFramework @ VCF.Core/Breadstone/ChatHook.cs
+	[HarmonyPatch(typeof(UnlockResearchSystem), nameof(UnlockResearchSystem.UnlockProgression))]
+    [HarmonyPrefix]
+    public static bool Prefix(
+    EntityManager entityManager,
+    UpdateUnlockedJobData progressionJobData,
+    PrefabGUID researchGuid,
+    Entity user,
+    EntityCommandBuffer commandBuffer,
+    PrefabLookupMap prefabMapping,
+    Entity progressionEntity,
+    bool logOnDuplicate = true)
+    {
+        var name = DebugTool.GetPrefabName(researchGuid);
+        Plugin.BepinLogger.LogInfo($"[AP] UnlockProgression: {DebugTool.GetPrefabName(researchGuid)}");
+        return true;
+    }
+
+    //ResearchEntry is a gridSelectionEntry which is part of the research station
+}
+
+[HarmonyPatch]
+public static class ProgressionUtilityPatch
+{
+    [HarmonyPatch(typeof(ProgressionUtility), nameof(ProgressionUtility.updateUnlockedJobData))]
+    [HarmonyPrefix]
+    public static void updateUnlockedJobDataPrefix()
+    {
+        Plugin.BepinLogger.LogInfo("[AP] ProgressionUtility.updateUnlockedJobData [PREFIX]");
+    }
+
+    [HarmonyPatch(typeof(ProgressionUtility), nameof(ProgressionUtility.updateUnlockedJobData))]
+    [HarmonyPostfix]
+    public static void updateUnlockedJobDataPostfix()
+    {
+        Plugin.BepinLogger.LogInfo("[AP] ProgressionUtility.updateUnlockedJobData [POSTFIX]");
+    }
+
+    [HarmonyPatch(typeof(ProgressionUtility), nameof(ProgressionUtility.updateUnlockedBuffers))]
+    [HarmonyPrefix]
+    public static void updateUnlockedBuffersPrefix()
+    {
+        Plugin.BepinLogger.LogInfo("[AP] ProgressionUtility.updateUnlockedBuffers [PREFIX]");
+    }
+
+    [HarmonyPatch(typeof(ProgressionUtility), nameof(ProgressionUtility.updateUnlockedBuffers))]
+    [HarmonyPostfix]
+    public static void updateUnlockedBuffersPostfix()
+    {
+        Plugin.BepinLogger.LogInfo("[AP] ProgressionUtility.updateUnlockedBuffers [POSTFIX]");
+    }
+
+    [HarmonyPatch(typeof(ProgressionUtility), nameof(ProgressionUtility.hasUnlockedRecipeForItem))]
+    [HarmonyPrefix]
+    public static void hasUnlockedRecipeForItemPrefix()
+    {
+        Plugin.BepinLogger.LogInfo("[AP] ProgressionUtility.hasUnlockedRecipeForItem [PREFIX]");
+    }
+
+    [HarmonyPatch(typeof(ProgressionUtility), nameof(ProgressionUtility.hasUnlockedRecipeForItem))]
+    [HarmonyPostfix]
+    public static void hasUnlockedRecipeForItemPostfix()
+    {
+        Plugin.BepinLogger.LogInfo("[AP] ProgressionUtility.hasUnlockedRecipeForItem [POSTFIX]");
+    }
+
+    [HarmonyPatch(typeof(ProgressionUtility), nameof(ProgressionUtility.gatherUnlockedRecipes))]
+    [HarmonyPrefix]
+    public static void gatherUnlockedRecipesPrefix()
+    {
+        Plugin.BepinLogger.LogInfo("[AP] ProgressionUtility.gatherUnlockedRecipes [PREFIX]");
+    }
+
+    [HarmonyPatch(typeof(ProgressionUtility), nameof(ProgressionUtility.gatherUnlockedRecipes))]
+    [HarmonyPostfix]
+    public static void gatherUnlockedRecipesPostfix()
+    {
+        Plugin.BepinLogger.LogInfo("[AP] ProgressionUtility.gatherUnlockedRecipes [POSTFIX]");
+    }
+}

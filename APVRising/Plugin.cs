@@ -18,7 +18,6 @@ namespace APVRising;
 
 [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
 [BepInDependency("gg.deca.VampireCommandFramework")]
-//[BepInDependency("gg.deca.Bloodstone")]
 public class Plugin : BasePlugin
 {
     public const string PluginGUID = "APVRising";
@@ -31,6 +30,7 @@ public class Plugin : BasePlugin
     public static ArchipelagoClient ArchipelagoClient;
     Harmony _harmony;
     private static World _serverWorld;
+    private static World _clientWorld;
 
     public static bool IsServer => Application.productName == "VRisingServer";
 
@@ -40,7 +40,7 @@ public class Plugin : BasePlugin
         BepinLogger = Log;
         ArchipelagoClient = new ArchipelagoClient();
         ArchipelagoConsole.Awake();
-
+        
         // Harmony patching
         _harmony = new Harmony(PluginGUID);
         _harmony.PatchAll(System.Reflection.Assembly.GetExecutingAssembly());
@@ -49,13 +49,13 @@ public class Plugin : BasePlugin
         BepinLogger.LogInfo($"[Harmony] Total patched methods: {patched.Count}");
         foreach (var m in patched)
             BepinLogger.LogInfo($"[Harmony] Patched -> {m.DeclaringType?.Name}.{m.Name}");
+        CommandRegistry.RegisterAll();
 
         if (IsServer)
         {
             ArchipelagoClient.Instance = new ArchipelagoClient();
 
             // Register all commands in the assembly with VCF
-            CommandRegistry.RegisterAll();
 
             ArchipelagoConsole.LogMessage($"{ModDisplayInfo} loaded!");
         }
@@ -72,7 +72,10 @@ public class Plugin : BasePlugin
         return true;
     }
 
+    public static bool IsResearching => ProgressionHandler.IsResearching;
     public static EntityManager EntityManager => Server.EntityManager;
+
+    public static EntityManager ClientEntityManager => Client.EntityManager;
     public static PrefabCollectionSystem PrefabCollectionSystem => Server.GetExistingSystemManaged<PrefabCollectionSystem>();
     public static GameDataSystem GameDataSystem => Server.GetExistingSystemManaged<GameDataSystem>();
     public static ManagedDataRegistry ManagedDataRegistry => GameDataSystem.ManagedDataRegistry;
@@ -95,12 +98,27 @@ public class Plugin : BasePlugin
         }
     }
 
+    public static World Client
+    {
+        get
+        {
+            if (_clientWorld != null) return _clientWorld;
+
+            _clientWorld = GetWorld("Default World")
+                ?? throw new System.Exception("There is no Client world (yet). Did you install a client mod on the server?");
+            return _clientWorld ;
+        }
+    }
+
     private static World GetWorld(string name)
     {
         foreach (var world in World.s_AllWorlds)
         {
+            Plugin.BepinLogger.LogInfo($"Found world: {world.Name}");
             if (world.Name == name)
             {
+                
+
                 _serverWorld = world;
                 return world;
             }
@@ -108,4 +126,5 @@ public class Plugin : BasePlugin
 
         return null;
     }
+
 }
