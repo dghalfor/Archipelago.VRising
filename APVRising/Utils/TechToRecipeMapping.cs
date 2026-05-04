@@ -241,7 +241,7 @@ public static class TechToRecipeMapping
                 {
                     if (techBuffer[i].UnlockedPrefab == techPrefab)
                     {
-                        Plugin.BepinLogger.LogInfo($"Tech {DebugTool.GetPrefabName(techPrefab)} already exists in buffer, skipping add");
+                        Plugin.BepinLogger.LogInfo($"Tech {techPrefab} already exists in buffer, skipping add");
                         techExists = true;
                         break;
                     }
@@ -249,7 +249,7 @@ public static class TechToRecipeMapping
 
                 if (!techExists)
                 {
-                    Plugin.BepinLogger.LogInfo($"Tech {DebugTool.GetPrefabName(techPrefab)} should be unlocked but is not in buffer, adding it");
+                    Plugin.BepinLogger.LogInfo($"Tech {techPrefab} should be unlocked but is not in buffer, adding it");
                     techBuffer.Add(new UnlockedProgressionElement { UnlockedPrefab = techPrefab });
                 }
             }
@@ -260,7 +260,7 @@ public static class TechToRecipeMapping
                 {
                     if (techBuffer[i].UnlockedPrefab == techPrefab)
                     {
-                        Plugin.BepinLogger.LogInfo($"Tech {DebugTool.GetPrefabName(techPrefab)} should be locked but is in buffer, removing it");
+                        Plugin.BepinLogger.LogInfo($"Tech {techPrefab} should be locked but is in buffer, removing it");
                         techBuffer.RemoveAt(i);
                         break;
                     }
@@ -312,48 +312,34 @@ public static class TechToRecipeMapping
             }
         }
     }
-        public static void SyncResearchSnapshot(DynamicBuffer<Snapshot_ResearchBuffer_Data> techBuffer, List<int> unlockedTech)
+    public static void SyncResearchSnapshot(DynamicBuffer<Snapshot_ResearchBuffer> techBuffer, List<int> unlockedTech)
     {
-        if (unlockedTech == null)
+        if (unlockedTech == null) return;
+
+        if (!Snapshot_ResearchBuffer.TryGetSerializedSnapshot(techBuffer, readOnly: false, out Snapshot_ResearchBuffer.BufferSnapshotPtr snapshotPtr))
         {
+            Plugin.BepinLogger.LogWarning("SyncResearchSnapshot: TryGetSerializedSnapshot failed");
             return;
         }
-
-        foreach (var techHash in TechToRecipes.Keys)
+        unsafe
         {
-            PrefabGUID techPrefab = new PrefabGUID(techHash);
-            bool techShouldBeUnlocked = unlockedTech.Contains(techHash);
-
-            if (techShouldBeUnlocked)
+            if (snapshotPtr.Elements == null || snapshotPtr.Length == 0) return;
+        
+            for (int i = 0; i < snapshotPtr.Length; i++)
             {
-                // Tech should be unlocked, ensure it's in the buffer
-                bool techExists = false;
-                for (int i = 0; i < techBuffer.Length; i++)
-                {
-                    if (techBuffer[i].ResearchGuid == techPrefab)
-                    {
-                        var tech = techBuffer[i];
-                        tech.IsResearchByStation = true;
-                        techBuffer[i] = tech;
-                        break;
-                    }
-                }
+                ref Snapshot_ResearchBuffer_Data data = ref snapshotPtr.Elements[i];
 
-            }
-            else
-            {
-                // Tech should be locked, remove it if it exists
-                for (int j = techBuffer.Length - 1; j >= 0; j--)
+                if (!TechToRecipes.ContainsKey(data.ResearchGuid.GetHashCode())) continue;
+
+                bool shouldBeUnlocked = unlockedTech.Contains(data.ResearchGuid.GetHashCode());
+
+                if (data.IsResearchByStation != shouldBeUnlocked)
                 {
-                    if (techBuffer[j].ResearchGuid == techPrefab)
-                    {
-                        var tech = techBuffer[j];
-                        tech.IsResearchByStation = false;
-                        techBuffer[j] = tech;
-                        break;
-                    }
+                    Plugin.BepinLogger.LogInfo($"Snapshot sync: {data.ResearchGuid} {data.IsResearchByStation} -> {shouldBeUnlocked}");
+                    data.IsResearchByStation = shouldBeUnlocked;
                 }
             }
         }
     }
-    }
+}
+    

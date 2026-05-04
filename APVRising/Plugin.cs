@@ -72,7 +72,6 @@ public class Plugin : BasePlugin
         return true;
     }
 
-    public static bool IsResearching => ProgressionHandler.IsResearching;
     public static EntityManager EntityManager => Server.EntityManager;
 
     public static EntityManager ClientEntityManager => Client.EntityManager;

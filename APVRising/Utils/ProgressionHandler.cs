@@ -1,4 +1,5 @@
-﻿using ProjectM;
+﻿using APVRising.Archipelago;
+using ProjectM;
 using ProjectM.Network;
 using System;
 using System.Collections.Generic;
@@ -13,27 +14,49 @@ namespace APVRising.Utils
 {
     internal class ProgressionHandler
     {
-        public static List<int> APProgression = new List<int> { 507915220, -54738837 };
-        public static List<int> ResearchedProgression = new List<int> { -632708133, -997169234, -212104516 };
 
-        public static bool IsResearching;
+        public static bool IsResearching = false;
         public static void SwitchProgression(DynamicBuffer<UnlockedProgressionElement> progressionBuffer)
         {
+            Plugin.BepinLogger.LogInfo($"Switching progression. IsResearching: {IsResearching}");
             if (IsResearching)
             {
-                TechToRecipeMapping.SyncUnlockedTechs(progressionBuffer, ResearchedProgression);
+                Plugin.BepinLogger.LogInfo($"Switching to researched progression");
+                TechToRecipeMapping.SyncUnlockedTechs(progressionBuffer, ArchipelagoData.GetResearchProgression());
                 //ClearUnlockBuffers();
-                CheckResearchStations(ResearchedProgression);
-                //CheckClientResearchStations(unlockedTechHashes);
-                //ClearSnapshots(unlockedTechHashes);
+                Plugin.BepinLogger.LogInfo(Plugin.IsServer.ToString());
+
+                if (Plugin.IsServer)
+                {
+                    CheckResearchStations(ArchipelagoData.GetResearchProgression());
+                    ClearSnapshots(ArchipelagoData.GetResearchProgression());
+
+                }
+                else
+                {
+                    CheckClientResearchStations(ArchipelagoData.GetResearchProgression());
+                    ClearClientSnapshots(ArchipelagoData.GetResearchProgression());
+                }
+                //CheckClientResearchStations(ResearchedProgression);
                 //update progressionElement to previouslyResearched elements
             }
             else
             {
-                TechToRecipeMapping.SyncUnlockedTechs(progressionBuffer, APProgression);
-                CheckResearchStations(APProgression);
+                Plugin.BepinLogger.LogInfo($"Switching to AP progression");
+                TechToRecipeMapping.SyncUnlockedTechs(progressionBuffer, ArchipelagoData.GetAPProgression());
+                Plugin.BepinLogger.LogInfo(Plugin.IsServer.ToString());
+                if (Plugin.IsServer)
+                {
+                    CheckResearchStations(ArchipelagoData.GetAPProgression());
+                    ClearSnapshots(ArchipelagoData.GetAPProgression());
 
-                //CheckClientResearchStations(unlockedTechHashes);
+                }
+                else
+                {
+                    CheckClientResearchStations(ArchipelagoData.GetAPProgression());
+                    ClearClientSnapshots(ArchipelagoData.GetAPProgression());
+                }
+                //CheckClientResearchStations(APProgression);
                 //ClearUnlockBuffers();
                 // ClearSnapshots(unlockedTechHashes);
 
@@ -45,8 +68,7 @@ namespace APVRising.Utils
         {
             var em = Plugin.EntityManager;
             // Query for User entities which have ProgressionMapper
-            //var userQuery = em.CreateEntityQuery(ComponentType.ReadOnly<User>(), ComponentType.ReadOnly<ProgressionMapper>());
-            var userQuery = em.CreateEntityQuery(ComponentType.ReadOnly<ProgressionMapper>());
+            var userQuery = em.CreateEntityQuery(ComponentType.ReadOnly<User>(), ComponentType.ReadOnly<ProgressionMapper>());
             if (userQuery.IsEmpty) return;
 
             var users = userQuery.ToEntityArray(Allocator.Temp);
@@ -60,7 +82,6 @@ namespace APVRising.Utils
                 {
                     //UnlockedRecipeElement, UnlockedBlueprintElement, UnlockedVBlood, (maybe) UnlockedSpellBookAbility
                     var buffer = em.GetBuffer<UnlockedProgressionElement>(entity);
-
                     // Sync tech unlocks with recipe unlocks directly on the buffer
                     SwitchProgression(buffer);
                     var recipeBuffer = em.GetBuffer<UnlockedRecipeElement>(entity);
@@ -71,7 +92,7 @@ namespace APVRising.Utils
             }
         }
         
-        public static void ClearUnlockBuffers()
+        public void ClearUnlockBuffers()
         {
             var query = Plugin.ClientEntityManager.CreateEntityQuery(ComponentType.ReadWrite<HaveUnlocksInStation>());
             if (query.IsEmpty) {
@@ -109,19 +130,7 @@ namespace APVRising.Utils
             foreach (var stationEntity in stations)
             {
                 var buffer = Plugin.EntityManager.GetBuffer<ResearchBuffer>(stationEntity);
-                for (var i = 0; i < buffer.Length; i++) 
-                    {
-                    var research = buffer[i];
-                    Plugin.BepinLogger.LogInfo($"Station has research: {research.ResearchGuid}{research.IsResearchByStation}");
-                }
                 TechToRecipeMapping.SyncResearchStation(buffer, unlockedTechHashes);
-                Plugin.BepinLogger.LogInfo($"Post-sync");
-
-                for (var i = 0; i < buffer.Length; i++)
-                {
-                    var research = buffer[i];
-                    Plugin.BepinLogger.LogInfo($"Station has research: {research.ResearchGuid}{research.IsResearchByStation}");
-                }
             }
             stations.Dispose();
         }
@@ -135,47 +144,34 @@ namespace APVRising.Utils
             foreach (var stationEntity in stations)
             {
                 var buffer = Plugin.ClientEntityManager.GetBuffer<ResearchBuffer>(stationEntity);
-                for (var i = 0; i < buffer.Length; i++)
-                {
-                    var research = buffer[i];
-                    Plugin.BepinLogger.LogInfo($"Client Station has research: {research.ResearchGuid}{research.IsResearchByStation}");
-                }
                 TechToRecipeMapping.SyncResearchStation(buffer, unlockedTechHashes);
-                Plugin.BepinLogger.LogInfo($"Client Post-sync");
-
-                for (var i = 0; i < buffer.Length; i++)
-                {
-                    var research = buffer[i];
-                    Plugin.BepinLogger.LogInfo($"Client Station has research: {research.ResearchGuid}{research.IsResearchByStation}");
-                }
             }
             stations.Dispose();
         }
         public static void ClearSnapshots(List<int> unlockedTechHashes)
         {
-            var query = Plugin.EntityManager.CreateEntityQuery(ComponentType.ReadOnly<Snapshot_ResearchBuffer_Data>());
+            var query = Plugin.EntityManager.CreateEntityQuery(ComponentType.ReadOnly<Snapshot_ResearchBuffer>());
             Plugin.BepinLogger.LogInfo($"ClearSnapshots");
 
-            // Iterate chunks and zero out
             var stations = query.ToEntityArray(Allocator.Temp);
             foreach (var stationEntity in stations)
             {
-                var buffer = Plugin.EntityManager.GetBuffer<Snapshot_ResearchBuffer_Data>(stationEntity);
-                for (var i = 0; i < buffer.Length; i++)
-                {
-                    var research = buffer[i];
-                    Plugin.BepinLogger.LogInfo($"Station has research: {research.ResearchGuid}{research.IsResearchByStation}");
-                }
+                var buffer = Plugin.EntityManager.GetBuffer<Snapshot_ResearchBuffer>(stationEntity);
                 TechToRecipeMapping.SyncResearchSnapshot(buffer, unlockedTechHashes);
-                Plugin.BepinLogger.LogInfo($"Post-sync");
-
-                for (var i = 0; i < buffer.Length; i++)
-                {
-                    var research = buffer[i];
-                    Plugin.BepinLogger.LogInfo($"Station has research: {research.ResearchGuid}{research.IsResearchByStation}");
-                }
             }
-            stations.Dispose();
+        }
+
+        public static void ClearClientSnapshots(List<int> unlockedTechHashes)
+        {
+            var query = Plugin.ClientEntityManager.CreateEntityQuery(ComponentType.ReadOnly<Snapshot_ResearchBuffer>());
+            Plugin.BepinLogger.LogInfo($"ClearClientSnapshots");
+
+            var stations = query.ToEntityArray(Allocator.Temp);
+            foreach (var stationEntity in stations)
+            {
+                var buffer = Plugin.EntityManager.GetBuffer<Snapshot_ResearchBuffer>(stationEntity);
+                TechToRecipeMapping.SyncResearchSnapshot(buffer, unlockedTechHashes);
+            }
         }
     }
 }

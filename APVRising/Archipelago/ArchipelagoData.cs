@@ -10,7 +10,8 @@ public class ArchipelagoData
     public int Index;
 
     public List<long> CheckedLocations;
-
+    public static List<int> APProgression = new List<int> { 507915220, -54738837 };
+    public static List<int> ResearchedProgression = new List<int> { -632708133, -997169234, -212104516 };
     /// <summary>
     /// seed for this archipelago data. Can be used when loading a file to verify the session the player is trying to
     /// load is valid to the room it's connecting to.
@@ -28,6 +29,15 @@ public class ArchipelagoData
         CheckedLocations = new();
     }
 
+    public static List<int> GetAPProgression()
+    {
+        return APProgression;
+    }
+
+    public static List<int> GetResearchProgression()
+    {
+        return ResearchedProgression;
+    }
     public ArchipelagoData(string uri, string slotName, string password)
     {
         Uri = uri;

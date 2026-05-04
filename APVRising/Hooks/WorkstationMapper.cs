@@ -82,7 +82,7 @@ public static unsafe class Workstation
         GridSelectionGroup<ResearchEntry, ResearchEntry.Data> parent,
         bool isBloodAltar)
     {
-        //Plugin.BepinLogger.LogInfo($"Postfix fired: {data.EntryId} Status: {data.Status}");
+        Plugin.BepinLogger.LogInfo($"Postfix fired: {data.EntryId} Status: {data.Status}");
 
         if (_isPatching) return;
         if (data.Status != ResearchEntry.ResearchStatus.Insertable) return;
@@ -111,11 +111,11 @@ public static unsafe class Workstation
         _isPatching = true;
         ResearchEntry.RefreshData(entry, corrected, controllerType, parent, isBloodAltar);
         _isPatching = false;
-        //Plugin.BepinLogger.LogInfo($"Postfix complete, entry.UpdatedData.Status: {entry.UpdatedData.Status}");
+        Plugin.BepinLogger.LogInfo($"Postfix complete, entry.UpdatedData.Status: {entry.UpdatedData.Status}");
         entry.ItemBackground.sprite = entry.BackgroundSprite_Normal;
 
     }
-    
+
     private static int _lastProgressionHash = 0;
 
     [HarmonyPatch(typeof(ProgressionUtility), nameof(ProgressionUtility.HasUnlockedProgression), typeof(EntityManager), typeof(Entity), typeof(PrefabGUID))]
@@ -124,8 +124,40 @@ public static unsafe class Workstation
     {
         var buffer = entityManager.GetBuffer<UnlockedProgressionElement>(progressionEntity);
 
+        // Compute a cheap hash from the buffer length and a few key elements
+        int hash = buffer.Length;
+        if (buffer.Length > 0) hash = Il2CppSystem.HashCode.Combine(hash, buffer[0].GetHashCode());
+        if (buffer.Length > 1) hash = Il2CppSystem.HashCode.Combine(hash, buffer[buffer.Length - 1].GetHashCode());
+
+        if (hash == _lastProgressionHash) return true;
+
+        _lastProgressionHash = hash;
+        Plugin.BepinLogger.LogInfo("Progression changed, syncing...");
         ProgressionHandler.SwitchProgression(buffer);
 
+        return true;
+    }
+     
+    [HarmonyPatch(typeof(ResearchstationSubMenu), nameof(ResearchstationSubMenu.HandleInput))]
+    [HarmonyPrefix]
+    public static bool HandleInputPrefix(ResearchstationSubMenu __instance, InputState inputState)
+    {
+        Plugin.BepinLogger.LogInfo($"HandleInput fired");
+        return true;
+    }
+    [HarmonyPatch(typeof(ResearchstationSubMenuMapper), "AffordToUnlock")]
+    [HarmonyPrefix]
+    public static bool AffordToUnlockPrefix(ResearchstationSubMenuMapper __instance, List<CostData> researchCost, ref bool __result)
+    {
+        __result = true;
+        return false; // skip original
+    }
+    /*
+    [HarmonyPatch(typeof(ResearchstationSubMenuMapper), "ResearchstationSubMenuMapper_159B1CC0_LambdaJob_1_Execute")]
+    [HarmonyPrefix]
+    public static bool LambdaJob1Prefix(ref Entity localControlledEntity, ref Entity progressionEntity, ref PrefabLookupMap prefabLookupMap, ref MapZoneCollection mapZoneCollection, ref GameDataSystem gameDataSystem)
+    {
+        Plugin.BepinLogger.LogInfo("LambdaJob1 fired");
         return true;
     }
     /*

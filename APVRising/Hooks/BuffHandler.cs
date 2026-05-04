@@ -13,7 +13,7 @@ using Unity.Entities;
 using UnityEngine.EventSystems;
 
 namespace APVRising.Hooks;
-
+/*
 //Hooking into the buff system when a V Blood is killed
 [HarmonyPatch]
 public class BuffSystemSpawnServerPatch
@@ -98,4 +98,4 @@ public class BuffSystemSpawnServerPatch
             //Plugin.BepinLogger.LogInfo(userEntity, $"{(killOnly ? "Killed" : "Consumed")}: {DebugTool.GetPrefabName(target.Target._Entity)}");
         }
     }
-}
+}*/
