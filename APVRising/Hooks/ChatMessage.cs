@@ -1,14 +1,19 @@
 using APVRising.Archipelago;
-using ProjectM.Network;
-using ProjectM;
-using Unity.Entities;
-using Unity.Collections;
+using APVRising.Utils;
 using HarmonyLib;
+using ProjectM;
+using ProjectM.Network;
+using ProjectM.UI;
+using System;
+using Unity.Collections;
+using Unity.Entities;
 
 namespace APVRising.Hooks;
 
+[HarmonyPatch]
 public static class ChatMessage
 {
+    /*
     // majority of this code adapted from VampireCommandFramework @ VCF.Core/Breadstone/ChatHook.cs
     [HarmonyPatch(typeof(ChatMessageSystem), nameof(ChatMessageSystem.OnUpdate))]
 	public static void Prefix(ChatMessageSystem __instance)
@@ -31,5 +36,57 @@ public static class ChatMessage
                     Plugin.ArchipelagoClient.SendMessage(messageText);
 			}
 		}
-	}
+	}*/
+    // Server side - send hidden command via chat
+    public static void NotifyClient(bool isResearching)
+    {
+        // Find the chat message system
+        var em = Plugin.EntityManager;
+        var userQuery = em.CreateEntityQuery(ComponentType.ReadOnly<User>());
+        var users = userQuery.ToEntityArray(Allocator.Temp);
+        Plugin.BepinLogger.LogInfo($"Notifying clients of AP state change: IsResearching={isResearching}, Users={users.Length}");
+        foreach (var userEntity in users)
+        {
+            var user = em.GetComponentData<User>(userEntity);
+            // Send a special prefixed message the client can intercept
+            var message = (FixedString512Bytes) $"##AP_STATE#{isResearching}##";
+            ServerChatUtils.SendSystemMessageToClient(em, user, ref message);
+        }
+
+        users.Dispose();
+    }
+
+    [HarmonyPatch(typeof(ClientChatSystem), "OnUpdate")]
+    [HarmonyPrefix]
+    public static void ClientChatOnUpdatePostfix(ClientChatSystem __instance)
+    {
+        var em = __instance.EntityManager;
+        var query = em.CreateEntityQuery(ComponentType.ReadOnly<ChatMessageServerEvent>());
+        if (query.IsEmpty) return;
+
+        var events = query.ToEntityArray(Allocator.Temp);
+        foreach (var eventEntity in events)
+        {
+            try
+            {
+                var chatEvent = em.GetComponentData<ChatMessageServerEvent>(eventEntity);
+                string message = chatEvent.MessageText.ToString();
+
+                if (message.StartsWith("##AP_STATE#"))
+                {
+                    bool isResearching = message.Contains("True");
+                    ProgressionHandler.IsResearching = isResearching;
+                    Plugin.BepinLogger.LogInfo($"Client AP state: IsResearching={isResearching}");
+
+                    // Destroy so it doesn't appear in chat UI
+                    em.DestroyEntity(eventEntity);
+                }
+            }
+            catch (Exception e)
+            {
+                Plugin.BepinLogger.LogError($"Chat intercept error: {e}");
+            }
+        }
+        events.Dispose();
+    }
 }

@@ -314,6 +314,8 @@ public static class TechToRecipeMapping
     }
     public static void SyncResearchSnapshot(DynamicBuffer<Snapshot_ResearchBuffer> techBuffer, List<int> unlockedTech)
     {
+
+
         if (unlockedTech == null) return;
 
         if (!Snapshot_ResearchBuffer.TryGetSerializedSnapshot(techBuffer, readOnly: false, out Snapshot_ResearchBuffer.BufferSnapshotPtr snapshotPtr))
@@ -324,22 +326,24 @@ public static class TechToRecipeMapping
         unsafe
         {
             if (snapshotPtr.Elements == null || snapshotPtr.Length == 0) return;
-        
             for (int i = 0; i < snapshotPtr.Length; i++)
             {
                 ref Snapshot_ResearchBuffer_Data data = ref snapshotPtr.Elements[i];
+                int hash = data.ResearchGuid.GetHashCode();
 
-                if (!TechToRecipes.ContainsKey(data.ResearchGuid.GetHashCode())) continue;
+                if (!TechToRecipes.ContainsKey(hash)) continue;
 
-                bool shouldBeUnlocked = unlockedTech.Contains(data.ResearchGuid.GetHashCode());
+                bool shouldBeUnlocked = unlockedTech.Contains(hash);
 
                 if (data.IsResearchByStation != shouldBeUnlocked)
                 {
                     Plugin.BepinLogger.LogInfo($"Snapshot sync: {data.ResearchGuid} {data.IsResearchByStation} -> {shouldBeUnlocked}");
                     data.IsResearchByStation = shouldBeUnlocked;
+                    Plugin.BepinLogger.LogInfo($"Verify: {data.ResearchGuid} = {data.IsResearchByStation}");
                 }
             }
         }
+      
     }
 }
     

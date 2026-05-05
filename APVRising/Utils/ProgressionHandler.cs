@@ -1,4 +1,6 @@
-﻿using APVRising.Archipelago;
+﻿using APVRising;
+using APVRising.Archipelago;
+using APVRising.Hooks;
 using ProjectM;
 using ProjectM.Network;
 using System;
@@ -16,6 +18,7 @@ namespace APVRising.Utils
     {
 
         public static bool IsResearching = false;
+
         public static void SwitchProgression(DynamicBuffer<UnlockedProgressionElement> progressionBuffer)
         {
             Plugin.BepinLogger.LogInfo($"Switching progression. IsResearching: {IsResearching}");
@@ -30,12 +33,13 @@ namespace APVRising.Utils
                 {
                     CheckResearchStations(ArchipelagoData.GetResearchProgression());
                     ClearSnapshots(ArchipelagoData.GetResearchProgression());
-
+                    ForceSnapshotResend();
                 }
                 else
                 {
                     CheckClientResearchStations(ArchipelagoData.GetResearchProgression());
                     ClearClientSnapshots(ArchipelagoData.GetResearchProgression());
+                    ForceClientSnapshotResend();
                 }
                 //CheckClientResearchStations(ResearchedProgression);
                 //update progressionElement to previouslyResearched elements
@@ -49,12 +53,13 @@ namespace APVRising.Utils
                 {
                     CheckResearchStations(ArchipelagoData.GetAPProgression());
                     ClearSnapshots(ArchipelagoData.GetAPProgression());
-
+                    ForceSnapshotResend();
                 }
                 else
                 {
                     CheckClientResearchStations(ArchipelagoData.GetAPProgression());
                     ClearClientSnapshots(ArchipelagoData.GetAPProgression());
+                    ForceClientSnapshotResend();
                 }
                 //CheckClientResearchStations(APProgression);
                 //ClearUnlockBuffers();
@@ -63,10 +68,60 @@ namespace APVRising.Utils
                 //update progressionElement to Archipelago unlocked elements
             }
         }
+        /*
+        public static void UpdateProgression()
+        {
+            // Always sync server
+            var serverEm = Plugin.EntityManager;
+            var serverQuery = serverEm.CreateEntityQuery(
+                ComponentType.ReadOnly<User>(),
+                ComponentType.ReadOnly<ProgressionMapper>()
+            );
+
+            if (!serverQuery.IsEmpty)
+            {
+                var users = serverQuery.ToEntityArray(Allocator.Temp);
+                foreach (var userEntity in users)
+                {
+                    var progQuery = serverEm.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
+                    if (!progQuery.IsEmpty)
+                    {
+                        var entities = progQuery.ToEntityArray(Allocator.Temp);
+                        foreach (var entity in entities)
+                        {
+                            SwitchProgression(serverEm.GetBuffer<UnlockedProgressionElement>(entity));
+                        }
+                        entities.Dispose();
+                    }
+                }
+                users.Dispose();
+            }
+            /*
+            // Always also sync client
+            var clientEm = Plugin.ClientEntityManager;
+            var clientProgQuery = clientEm.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
+            if (!clientProgQuery.IsEmpty)
+            {
+                var entities = clientProgQuery.ToEntityArray(Allocator.Temp);
+                foreach (var entity in entities)
+                {
+                    SwitchProgression(clientEm.GetBuffer<UnlockedProgressionElement>(entity));
+                }
+                entities.Dispose();
+            }
+           
+        } */
 
         public static void UpdateProgression()
         {
-            var em = Plugin.EntityManager;
+            EntityManager em;
+            if (Plugin.IsServer) {
+                em = Plugin.EntityManager;
+            }
+            else
+            {
+                em = Plugin.ClientEntityManager;
+            }
             // Query for User entities which have ProgressionMapper
             var userQuery = em.CreateEntityQuery(ComponentType.ReadOnly<User>(), ComponentType.ReadOnly<ProgressionMapper>());
             if (userQuery.IsEmpty) return;
@@ -141,6 +196,7 @@ namespace APVRising.Utils
 
             // Iterate chunks and zero out
             var stations = query.ToEntityArray(Allocator.Temp);
+            Plugin.BepinLogger.LogInfo($"Found {stations.Length} stations with Snapshot_ResearchBuffer to clear");
             foreach (var stationEntity in stations)
             {
                 var buffer = Plugin.ClientEntityManager.GetBuffer<ResearchBuffer>(stationEntity);
@@ -167,11 +223,71 @@ namespace APVRising.Utils
             Plugin.BepinLogger.LogInfo($"ClearClientSnapshots");
 
             var stations = query.ToEntityArray(Allocator.Temp);
+            Plugin.BepinLogger.LogInfo($"Found {stations.Length} stations with Snapshot_ResearchBuffer to clear");
             foreach (var stationEntity in stations)
             {
-                var buffer = Plugin.EntityManager.GetBuffer<Snapshot_ResearchBuffer>(stationEntity);
+                var buffer = Plugin.ClientEntityManager.GetBuffer<Snapshot_ResearchBuffer>(stationEntity);
                 TechToRecipeMapping.SyncResearchSnapshot(buffer, unlockedTechHashes);
             }
+        }
+        public static void ForceClientSnapshotResend()
+        {
+            var em = Plugin.ClientEntityManager;
+            var query = em.CreateEntityQuery(ComponentType.ReadOnly<ClientNetworkSnapshotState>());
+            var clients = query.ToEntityArray(Allocator.Temp);
+
+            Plugin.BepinLogger.LogInfo($"Found {clients.Length} clients to force resend");
+
+            foreach (var clientEntity in clients)
+            {
+                var state = em.GetComponentData<ClientNetworkSnapshotState>(clientEntity);
+                //state.LastFrameReceived = 0; // force full resend
+
+                em.SetComponentData(clientEntity, state);
+            }
+
+            clients.Dispose();
+        }
+        public static void ForceSnapshotResend()
+        {
+            var em = Plugin.EntityManager;
+            var query = em.CreateEntityQuery(ComponentType.ReadOnly<ResearchBuffer>());
+            var stations = query.ToEntityArray(Allocator.Temp);
+
+            foreach (var station in stations)
+            {
+                // Force FrameChanged to current frame to mark entity as dirty
+                if (em.HasComponent<FrameChanged>(station))
+                {
+                    var frameChanged = em.GetComponentData<FrameChanged>(station);
+                    Plugin.BepinLogger.LogInfo($"FrameChanged before: {frameChanged.Value}");
+                    frameChanged.Value = int.MaxValue;
+                    em.SetComponentData(station, frameChanged);
+                    Plugin.BepinLogger.LogInfo($"FrameChanged after: {frameChanged.Value}");
+                }
+
+                // Also update NetworkSnapshot if it has a version/frame field
+                // Clear UpToDateUserBitMask to force resend to all clients
+                if (em.HasComponent<UpToDateUserBitMask>(station))
+                {
+                    var bitMask = em.GetComponentData<UpToDateUserBitMask>(station);
+
+                    // Clear bits for all connected users
+                    var userQuery = em.CreateEntityQuery(ComponentType.ReadOnly<User>());
+                    var users = userQuery.ToEntityArray(Allocator.Temp);
+
+                    for (int i = 0; i < users.Length; i++)
+                    {
+                        bitMask.Value.RemoveUserBit(i);
+                    }
+
+                    users.Dispose();
+                    em.SetComponentData(station, bitMask);
+                    Plugin.BepinLogger.LogInfo($"Cleared UpToDateUserBitMask for station");
+                }
+            }
+
+            stations.Dispose();
         }
     }
 }

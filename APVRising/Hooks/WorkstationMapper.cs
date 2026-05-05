@@ -82,7 +82,7 @@ public static unsafe class Workstation
         GridSelectionGroup<ResearchEntry, ResearchEntry.Data> parent,
         bool isBloodAltar)
     {
-        Plugin.BepinLogger.LogInfo($"Postfix fired: {data.EntryId} Status: {data.Status}");
+        //Plugin.BepinLogger.LogInfo($"Postfix fired: {data.EntryId} Status: {data.Status}");
 
         if (_isPatching) return;
         if (data.Status != ResearchEntry.ResearchStatus.Insertable) return;
@@ -111,13 +111,85 @@ public static unsafe class Workstation
         _isPatching = true;
         ResearchEntry.RefreshData(entry, corrected, controllerType, parent, isBloodAltar);
         _isPatching = false;
-        Plugin.BepinLogger.LogInfo($"Postfix complete, entry.UpdatedData.Status: {entry.UpdatedData.Status}");
+        //Plugin.BepinLogger.LogInfo($"Postfix complete, entry.UpdatedData.Status: {entry.UpdatedData.Status}");
         entry.ItemBackground.sprite = entry.BackgroundSprite_Normal;
 
     }
 
-    private static int _lastProgressionHash = 0;
+    [HarmonyPatch(typeof(ProgressionUtility), nameof(ProgressionUtility.HasUnlockedProgression),
+    typeof(EntityManager), typeof(Entity), typeof(PrefabGUID))]
+    [HarmonyPrefix]
+    public static bool HasUnlockedProgression1(EntityManager entityManager, Entity progressionEntity, PrefabGUID progression)
+    {
+        float now = UnityEngine.Time.time;
+        if (now - _lastSyncTime < _syncInterval) return true;
+        _lastSyncTime = now;
 
+        ProgressionHandler.SwitchProgression(entityManager.GetBuffer<UnlockedProgressionElement>(progressionEntity));
+
+        return true;
+    }
+
+    [HarmonyPatch(typeof(ProgressionUtility), nameof(ProgressionUtility.HasUnlockedProgression),
+        typeof(EntityManager), typeof(bool), typeof(Entity), typeof(PrefabGUID))]
+    [HarmonyPrefix]
+    public static bool HasUnlockedProgression3(EntityManager entityManager, bool skipProgressionCheck, Entity progressionEntity, PrefabGUID progression)
+    {
+        float now = UnityEngine.Time.time;
+        if (now - _lastSyncTime < _syncInterval) return true;
+        _lastSyncTime = now;
+
+        ProgressionHandler.SwitchProgression(entityManager.GetBuffer<UnlockedProgressionElement>(progressionEntity));
+
+        return true;
+    }
+
+    [HarmonyPatch(typeof(ProgressionUtility), nameof(ProgressionUtility.HasUnlockedProgressionOrDefault),
+        typeof(EntityManager), typeof(Entity), typeof(PrefabGUID), typeof(bool))]
+    [HarmonyPrefix]
+    public static bool HasUnlockedProgressionOrDefault(EntityManager entityManager, Entity progressionEntity, PrefabGUID progression, bool resultIfProgressionGuidDefault)
+    {
+        float now = UnityEngine.Time.time;
+        if (now - _lastSyncTime < _syncInterval) return true;
+        _lastSyncTime = now;
+
+        ProgressionHandler.SwitchProgression(entityManager.GetBuffer<UnlockedProgressionElement>(progressionEntity));
+
+        return true;
+    }
+    private static float _lastSyncTime = 0f;
+    private static float _syncInterval = 1f; // only sync once per second max
+    /*
+    [HarmonyPatch(typeof(ProgressionUtility), nameof(ProgressionUtility.HasUnlockedProgression), typeof(EntityManager), typeof(Entity), typeof(PrefabGUID))]
+    [HarmonyPrefix]
+    public static bool HasUnlockedProgressionPrefix(EntityManager entityManager, Entity progressionEntity, PrefabGUID progression)
+    {
+        float now = UnityEngine.Time.time;
+        if (now - _lastSyncTime < _syncInterval) return true;
+        _lastSyncTime = now;
+
+        ProgressionHandler.SwitchProgression(entityManager.GetBuffer<UnlockedProgressionElement>(progressionEntity));
+
+        return true;
+    }
+    /*
+    [HarmonyPatch(typeof(ProgressionUtility), nameof(ProgressionUtility.HasUnlockedProgression), typeof(EntityManager), typeof(Entity), typeof(PrefabGUID))]
+    [HarmonyPrefix]
+    public static bool HasUnlockedProgressionPrefix(EntityManager entityManager, Entity progressionEntity, PrefabGUID progression)
+    {
+        var targetProgression = ProgressionHandler.IsResearching
+            ? ArchipelagoData.GetResearchProgression()
+            : ArchipelagoData.GetAPProgression();
+
+        if (targetProgression == null) return true;
+
+        // Sync client progression buffer directly
+        ProgressionHandler.UpdateProgression();
+
+        return true;
+    }
+
+    /*
     [HarmonyPatch(typeof(ProgressionUtility), nameof(ProgressionUtility.HasUnlockedProgression), typeof(EntityManager), typeof(Entity), typeof(PrefabGUID))]
     [HarmonyPrefix]
     public static bool HasUnlockedProgressionPrefix(EntityManager entityManager, Entity progressionEntity, PrefabGUID progression)
@@ -125,428 +197,527 @@ public static unsafe class Workstation
         var buffer = entityManager.GetBuffer<UnlockedProgressionElement>(progressionEntity);
 
         // Compute a cheap hash from the buffer length and a few key elements
-        int hash = buffer.Length;
-        if (buffer.Length > 0) hash = Il2CppSystem.HashCode.Combine(hash, buffer[0].GetHashCode());
-        if (buffer.Length > 1) hash = Il2CppSystem.HashCode.Combine(hash, buffer[buffer.Length - 1].GetHashCode());
 
-        if (hash == _lastProgressionHash) return true;
+        ProgressionHandler.SwitchProgression(entityManager.GetBuffer<UnlockedProgressionElement>(progressionEntity));
 
-        _lastProgressionHash = hash;
-        Plugin.BepinLogger.LogInfo("Progression changed, syncing...");
-        ProgressionHandler.SwitchProgression(buffer);
-
-        return true;
-    }
-     
-    [HarmonyPatch(typeof(ResearchstationSubMenu), nameof(ResearchstationSubMenu.HandleInput))]
-    [HarmonyPrefix]
-    public static bool HandleInputPrefix(ResearchstationSubMenu __instance, InputState inputState)
-    {
-        Plugin.BepinLogger.LogInfo($"HandleInput fired");
-        return true;
-    }
-    [HarmonyPatch(typeof(ResearchstationSubMenuMapper), "AffordToUnlock")]
-    [HarmonyPrefix]
-    public static bool AffordToUnlockPrefix(ResearchstationSubMenuMapper __instance, List<CostData> researchCost, ref bool __result)
-    {
-        __result = true;
-        return false; // skip original
-    }
-    /*
-    [HarmonyPatch(typeof(ResearchstationSubMenuMapper), "ResearchstationSubMenuMapper_159B1CC0_LambdaJob_1_Execute")]
-    [HarmonyPrefix]
-    public static bool LambdaJob1Prefix(ref Entity localControlledEntity, ref Entity progressionEntity, ref PrefabLookupMap prefabLookupMap, ref MapZoneCollection mapZoneCollection, ref GameDataSystem gameDataSystem)
-    {
-        Plugin.BepinLogger.LogInfo("LambdaJob1 fired");
-        return true;
-    }
-    /*
-  [HarmonyPatch(typeof(ProgressionUtility), nameof(ProgressionUtility.HasUnlockedProgression), typeof(EntityManager), typeof(Entity), typeof(PrefabGUID))]
-  [HarmonyPostfix]
-  public static void HasUnlockedProgressionPostfix(EntityManager entityManager, Entity progressionEntity, PrefabGUID progression)
-  {
-      foreach (var recipe in entityManager.GetBuffer<UnlockedRecipeElement>(progressionEntity))
-      {
-          Plugin.BepinLogger.LogInfo($"HasUnlockedProgression: {recipe.UnlockedRecipe}");
-      }
-      Plugin.BepinLogger.LogInfo("HasUnlockedProgression On Create Postfix");
-  }
-    /*
-    [HarmonyPatch(typeof(ResearchstationSubMenuMapper), nameof(ResearchstationSubMenuMapper.OnUpdate))]
-    [HarmonyPrefix]
-    public static bool UpdatePrefix(ResearchstationSubMenuMapper __instance)
-    {
-
-        Plugin.BepinLogger.LogInfo("Workstation On Update Prefix");
-
-        var keys = new System.Collections.Generic.List<TechCategory>();
-        foreach (var kvp in __instance._ResearchDatas)
-            keys.Add(kvp.Key);
-
-        // Now iterate the keys safely
-        foreach (TechCategory key in keys)
-        {
-            Il2CppSystem.Collections.Generic.List<ResearchEntry.Data> entries = __instance._ResearchDatas[key];
-
-            unsafe
-            {
-                for (int i = 0; i < entries.Count; i++)
-                {
-                    ResearchEntry entry = entries[i]; // get the ResearchEntry, not ResearchEntry.Data
-                    if (entry == null) continue;
-
-                    ResearchEntry.Data data = entry.UpdatedData; // boxes a copy
-                    if (data.Status != ResearchEntry.ResearchStatus.Insertable) continue;
-
-                    // Modify the copy
-                    data.Status = ResearchEntry.ResearchStatus.Researchable;
-
-                    // Write back via the setter which uses cpblk to copy into the field
-                    entry.UpdatedData = data;
-
-                    // Verify
-                    Plugin.BepinLogger.LogInfo($"After: {entry.UpdatedData.Status}");
-                }
-            }
-
-        }
-        foreach (TechCategory key in keys)
-        {
-            for (int i = 0; i < __instance._ResearchDatas[key].Count; i++)
-            {
-                ResearchEntry.Data entry = __instance._ResearchDatas[key][i];
-                if (entry == null) continue;
-                Plugin.BepinLogger.LogInfo($"Post: [{__instance._ResearchDatas[key][i].EntryId}] Status: {__instance._ResearchDatas[key][i].Status}");
-            }
-        }
-            return true;
-    }
-    private static System.IntPtr _statusFieldPtr = System.IntPtr.Zero;
-
-    static System.IntPtr GetStatusFieldPtr()
-    {
-        if (_statusFieldPtr != System.IntPtr.Zero) return _statusFieldPtr;
-
-        var field = typeof(ResearchEntry.Data)
-            .GetField("NativeFieldInfoPtr_Status",
-                      System.Reflection.BindingFlags.NonPublic |
-                      System.Reflection.BindingFlags.Static);
-
-        _statusFieldPtr = (System.IntPtr)field.GetValue(null);
-        return _statusFieldPtr;
-    }
-    /*
-    [HarmonyPatch(typeof(ResearchstationSubMenuMapper), nameof(ResearchstationSubMenuMapper.OnUpdate))]
-    [HarmonyPrefix]
-    public static bool UpdatePrefix(ResearchstationSubMenuMapper __instance)
-    {
-        Plugin.BepinLogger.LogInfo("Workstation On Update Prefix");
-        __instance.Force
-        if (__instance._UnlockedRecipes.Count() != _UnlockedRecipes.Count())
-        {
-            Plugin.BepinLogger.LogInfo("Workstation On Update Prefix");
-
-            foreach (var recipe in _UnlockedRecipes)
-            {
-                if (!_UnlockedRecipes.Contains(recipe))
-                    Plugin.BepinLogger.LogInfo($"[Update] Unlocked recipe: {recipe}");
-            }
-            _UnlockedRecipes = __instance._UnlockedRecipes;
-        }
-        return true;
-    }
-    [HarmonyPatch(typeof(EventHelper), nameof(EventHelper.TryShareRefinement))]
-    [HarmonyPrefix]
-    public static bool shareRefinementPrefix(EntityManager entityManager, Entity target)
-    {
-        /*
-        Plugin.BepinLogger.LogInfo("ShareRefinement");
-        Plugin.BepinLogger.LogInfo(entityManager.Debug.GetEntityInfo(target));
-        Plugin.BepinLogger.LogInfo(entityManager.GetComponentData<HaveUnlocksInStation>(target).CanUnlock.ToString());
-        if (!entityManager.HasBuffer<Snapshot_ResearchBuffer>(target))
-        {
-            Plugin.BepinLogger.LogWarning("No Snapshot_ResearchBuffer on target");
-            return true;
-        }
-        var attachedBuffer = entityManager.GetBuffer<AttachedBuffer>(target);
-        Plugin.BepinLogger.LogInfo($"Attached buffers:");
-        foreach (var bufferElement in attachedBuffer)
-        {
-            Plugin.BepinLogger.LogInfo(bufferElement.ToString());
-        }
-        var buffer = entityManager.GetBuffer<Snapshot_ResearchBuffer>(target, isReadOnly: true);
-
-        if (!Snapshot_ResearchBuffer.TryGetSerializedSnapshot(buffer, readOnly: true, out Snapshot_ResearchBuffer.BufferSnapshotPtr snapshotPtr))
-        {
-            Plugin.BepinLogger.LogWarning("TryGetSerializedSnapshot failed");
-            return true;
-        }
-
-        if (snapshotPtr.Elements == null || snapshotPtr.Length == 0)
-        {
-            Plugin.BepinLogger.LogWarning("Snapshot has no elements");
-            return true;
-        }
-
-        unsafe
-        {
-            for (int j = 0; j < snapshotPtr.Length; j++)
-            {
-                Snapshot_ResearchBuffer_Data data = snapshotPtr.Elements[j];
-                Plugin.BepinLogger.LogInfo($"ResearchBuffer entry {data.ResearchGuid}: {data.IsResearchByStation}");
-            }
-        }
-        return true;
-    }
-    /*
-    [HarmonyPatch(typeof(ShareRefinementSystem), nameof(ShareRefinementSystem.ShareResearchJob_Execute))]
-    [HarmonyPrefix]
-    public static bool shareResearch()
-    {
-        Plugin.BepinLogger.LogInfo("shareResearch");
-        //ProgressionHandler.ClearUnlockBuffers();
-        //ProgressionHandler.CheckResearchStations();
         return true;
     }
 
     /*
-    [HarmonyPatch(typeof(SetSnapshotOnDestroyedEntitiesSystem), nameof(SetSnapshotOnDestroyedEntitiesSystem.OnCreate))]
-    [HarmonyPrefix]
-    public static bool snapshotPrefix()
-    {
-        Plugin.BepinLogger.LogInfo("Prefix On SetSnapshotOnDestroyedEntitiesSystem");
-        //ProgressionHandler.ClearUnlockBuffers();
-        //ProgressionHandler.CheckResearchStations();
-        return true;
-    }
+    public static bool IsClientDirty = false;
 
-    [HarmonyPatch(typeof(SetSnapshotOnDestroyedEntitiesSystem), nameof(SetSnapshotOnDestroyedEntitiesSystem.OnUpdate))]
-    [HarmonyPrefix]
-    public static bool updatesnapshotPrefix(SetSnapshotOnDestroyedEntitiesSystem __instance)
-    {
-        // Access the BufferLookup to check if buffer exists
-        var bufferLookup = __instance.__TypeHandle.__ProjectM_Network_Snapshot_ResearchBuffer_RW_BufferLookup;
-        Plugin.BepinLogger.LogInfo("Prefix OnUpdate SetSnapshotOnDestroyedEntitiesSystem");
-        //ProgressionHandler.ClearUnlockBuffers();
-        //ProgressionHandler.CheckResearchStations();
-        return true;
-    }
-
-    [HarmonyPatch(typeof(SetSnapshotOnDestroyedEntitiesSystem), nameof(SetSnapshotOnDestroyedEntitiesSystem.SetupJob))]
-    [HarmonyPrefix]
-    public static bool setupJobsnapshotPrefix(SetSnapshotOnDestroyedEntitiesSystem __instance,
-        ref CopyDataToDestroyedEntitiesJob.JobParams jobParams)
-    {
-        // Log the contents of Snapshot_ResearchBuffer
-        var snapshotBuffer = jobParams.GetSnapshot_ResearchBuffer;
-      
-        Plugin.BepinLogger.LogInfo("Prefix OnUpdate SetUpJob");
-        //ProgressionHandler.ClearUnlockBuffers();
-        //ProgressionHandler.CheckResearchStations();
-        return true;
-    }
-
-    
-    [HarmonyPatch(typeof(EventHelper), nameof(EventHelper.TryShareRefinement))]
-    [HarmonyPrefix]
-    public static bool shareRefinementPrefix(EntityManager entityManager, Entity target)
-    {
-        Plugin.BepinLogger.LogInfo("ShareRefinement");
-        //DebugTool.DumpClientEntity(target);
-        //ProgressionHandler.ClearUnlockBuffers();
-        //ProgressionHandler.CheckResearchStations();
-        return true;
-    }
-    /*
-        [HarmonyPatch(typeof(SetSnapshotOnDestroyedEntitiesSystem.CopyDataToDestroyedEntitiesJob), nameof(SetSnapshotOnDestroyedEntitiesSystem.CopyDataToDestroyedEntitiesJob.CopySnapshotData))]
-    [HarmonyPrefix]
-    public static bool copySnapshotDataPrefix(SetSnapshotOnDestroyedEntitiesSystem __instance)
-    {
-        Plugin.BepinLogger.LogInfo("COPYSNAPSHOTDATA");
-        //ProgressionHandler.ClearUnlockBuffers();
-        //ProgressionHandler.CheckResearchStations();
-        return true;
-    }
-    [HarmonyPatch(typeof(ShareRefinementSystem), nameof(ShareRefinementSystem.ShareResearchJob_Execute))]
-    [HarmonyPrefix]
-    public static bool shareResearch()
-    {
-        Plugin.BepinLogger.LogInfo("shareResearch");
-        //ProgressionHandler.ClearUnlockBuffers();
-        //ProgressionHandler.CheckResearchStations();
-        return true;
-    }
-    /*
-    [HarmonyPatch(typeof(Snapshot_ResearchBuffer), nameof(Snapshot_ResearchBuffer.))]
-    [HarmonyPrefix]
-    public static bool researchstationMenuMapper()
-    {
-        Plugin.BepinLogger.LogInfo("Prefix On ResearchstationMenuMapper OnDestroy");
-        //ProgressionHandler.ClearUnlockBuffers();
-        //ProgressionHandler.CheckResearchStations();
-        return true;
-    }
-    /*
-    private static ComponentTypeHandle<ResearchStation> testStation;
-    private static ComponentTypeHandle<HaveUnlocksInStation> testUnlocks;
-
-    [HarmonyPatch(typeof(ActiveResearchstationSequenceSystem), nameof(ActiveResearchstationSequenceSystem.OnCreate))]
-    [HarmonyPrefix]
-    public static bool Prefix(ActiveResearchstationSequenceSystem __instance)
-    {
-        // Build a query for entities that have this component
-        var query = Plugin.ClientEntityManager.CreateEntityQuery(ComponentType.ReadWrite<HaveUnlocksInStation>());
-
-        // Get and update the handle
-
-        var testUnlocks = Plugin.ClientEntityManager.GetComponentTypeHandle<HaveUnlocksInStation>(false);
-
-        // Iterate chunks and zero out
-        var chunks = query.ToArchetypeChunkArray(Allocator.Temp);
-        foreach (var chunk in chunks)
-        {
-            var components = chunk.GetNativeArray(ref testUnlocks);
-            for (int i = 0; i < components.Length; i++)
-            {
-                var comp = components[i];
-                comp.CanUnlock = false;
-                components[i] = comp;
-            }
-        }
-        chunks.Dispose();
-        //Plugin.BepinLogger.LogInfo("Workstation On Create Prefix");
-        return true;
-    }
-    [HarmonyPatch(typeof(ActiveResearchstationSequenceSystem), nameof(ActiveResearchstationSequenceSystem.OnCreate))]
+    [HarmonyPatch(typeof(ResearchstationSubMenuMapper), "OnUpdate")]
     [HarmonyPostfix]
-    public static void Postfix(ActiveResearchstationSequenceSystem __instance)
+    public static void OnUpdatePostfix(ResearchstationSubMenuMapper __instance)
     {
-        testStation = __instance.__TypeHandle.__ProjectM_ResearchStation_RO_ComponentTypeHandle;
-        testUnlocks = __instance.__TypeHandle.__ProjectM_HaveUnlocksInStation_RO_ComponentTypeHandle;
-        Plugin.BepinLogger.LogInfo("Workstation On Create Postfix");
-    }
+        if (!IsClientDirty) return;
+        IsClientDirty = false;
 
-    [HarmonyPatch(typeof(ActiveResearchstationSequenceSystem), nameof(ActiveResearchstationSequenceSystem.OnUpdate))]
-    [HarmonyPrefix]
-    public static bool UpdatePrefix(ActiveResearchstationSequenceSystem __instance)
-    {
-        // Build a query for entities that have this component
-        var query = Plugin.ClientEntityManager.CreateEntityQuery(ComponentType.ReadWrite<HaveUnlocksInStation>());
+        var targetProgression = ProgressionHandler.IsResearching
+            ? ArchipelagoData.GetResearchProgression()
+            : ArchipelagoData.GetAPProgression();
 
-        // Get and update the handle
-        var testUnlocks = Plugin.ClientEntityManager.GetComponentTypeHandle<HaveUnlocksInStation>(false);
+        if (targetProgression == null) return;
 
-        // Iterate chunks and zero out
-        var chunks = query.ToArchetypeChunkArray(Allocator.Temp);
-        foreach (var chunk in chunks)
+        var em = Plugin.ClientEntityManager;
+        var query = em.CreateEntityQuery(ComponentType.ReadOnly<ResearchBuffer>());
+        var stations = query.ToEntityArray(Allocator.Temp);
+
+        foreach (var stationEntity in stations)
         {
-            var components = chunk.GetNativeArray(ref testUnlocks);
-            for (int i = 0; i < components.Length; i++)
-            {
-                Plugin.BepinLogger.LogInfo($"Zeroing out HaveUnlocksInStation component for entity in chunk. Original value: {components[i]}");
-                var comp = components[i];
-                comp.CanUnlock = false;
-                components[i] = comp;
-            }
+            var buffer = em.GetBuffer<ResearchBuffer>(stationEntity);
+            TechToRecipeMapping.SyncResearchStation(buffer, targetProgression);
         }
-        chunks.Dispose();
-       // Plugin.BepinLogger.LogInfo("Workstation On Update Prefix");
-        return true;
-    }
-    [HarmonyPatch(typeof(ActiveResearchstationSequenceSystem), nameof(ActiveResearchstationSequenceSystem.OnUpdate))]
-    [HarmonyPostfix]
-    public static void UpdatePostfix(ActiveResearchstationSequenceSystem __instance)
-    {
-        var query = Plugin.ClientEntityManager.CreateEntityQuery(ComponentType.ReadWrite<HaveUnlocksInStation>());
 
-        // Get and update the handle
-        var testUnlocks = Plugin.ClientEntityManager.GetComponentTypeHandle<HaveUnlocksInStation>(false);
-
-        // Iterate chunks and zero out
-        var chunks = query.ToArchetypeChunkArray(Allocator.Temp);
-        foreach (var chunk in chunks)
-        {
-            var components = chunk.GetNativeArray(ref testUnlocks);
-            for (int i = 0; i < components.Length; i++)
-            {
-                var comp = components[i];
-                comp.CanUnlock = false;
-                components[i] = comp;
-            }
-        }
-        chunks.Dispose();
-        //Plugin.BepinLogger.LogInfo("Workstation On Update Postfix");
+        stations.Dispose();
     }
     /*
-      [HarmonyPatch(typeof(ResearchstationMenuMapper), nameof(ResearchstationMenuMapper.InitializeUI))]
-      [HarmonyPostfix]
-      public static bool Prefix()
-      {
-          try
-          {
-              Plugin.BepinLogger.LogInfo("Postfix On GetLocalUser");
-              var em = Plugin.EntityManager; // Use Server EntityManager
+   [HarmonyPatch(typeof(ResearchstationSubMenu), nameof(ResearchstationSubMenu.HandleInput))]
+   [HarmonyPrefix]
+   public static bool HandleInputPrefix(ResearchstationSubMenu __instance, InputState inputState)
+   {
+       Plugin.BepinLogger.LogInfo($"HandleInput fired");
+       return true;
+   }
 
-              if (em == null)
-              {
-                  Plugin.BepinLogger.LogWarning("EntityManager is null, skipping patch");
-                  return true;
-              }
+   [HarmonyPatch(typeof(ResearchstationSubMenuMapper), "OnUpdate")]
+   [HarmonyPrefix]
+   public static bool OnUpdatePrefix(ResearchstationSubMenuMapper __instance)
+   {
+       // Log all worlds and their ResearchBuffer counts
+       foreach (var world in World.All)
+       {
+           try
+           {
+               var em = world.EntityManager;
+               var query = em.CreateEntityQuery(ComponentType.ReadOnly<ResearchBuffer>());
+               var stations = query.ToEntityArray(Allocator.Temp);
+               Plugin.BepinLogger.LogInfo($"World '{world.Name}': {stations.Length} ResearchBuffer entities");
+               stations.Dispose();
+           }
+           catch (System.Exception e)
+           {
+               Plugin.BepinLogger.LogInfo($"World '{world.Name}': error - {e.Message}");
+           }
+       }
 
-              var progQuery2 = em.CreateEntityQuery(ComponentType.ReadWrite<UnlockedProgressionElement>());
-              if (progQuery2.IsEmpty) return true;
-              Plugin.BepinLogger.LogInfo("Postfix On GetLocalUser 2");
+       return true;
+   }
 
-              var progQuery = em.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
-              if (progQuery.IsEmpty) return true;
-              Plugin.BepinLogger.LogInfo("Postfix On GetLocalUser 2");
+   /*
+   [HarmonyPatch(typeof(ResearchstationSubMenuMapper), "AffordToUnlock")]
+   [HarmonyPrefix]
+   public static bool AffordToUnlockPrefix(ResearchstationSubMenuMapper __instance, List<CostData> researchCost, ref bool __result)
+   {
+       __result = true;
+       return false; // skip original
+   }
+   /*
+   [HarmonyPatch]
+   public static class ReceivePacketPatch
+   {
+       static MethodBase TargetMethod() =>
+           AccessTools.Method(typeof(ReceivePacketSystem.ReceivePacketJob), "ReceivePacket");
 
-              var entities = progQuery.ToEntityArray(Allocator.Temp);
-              foreach (var entity in entities)
-              {
-                  Plugin.BepinLogger.LogInfo("Postfix On GetLocalUser " + entity);
-              }
-              // Query for User entities which have ProgressionMapper
-              var userQuery = em.CreateEntityQuery(ComponentType.ReadOnly<ProjectM.Network.User>(), ComponentType.ReadOnly<ProgressionMapper>());
-              if (userQuery.IsEmpty) return true;
+       [HarmonyPrefix]
+       public static bool Prefix(
+           ref ReceivePacketSystem.ReceivePacketJob __instance,
+           ref ReceivedPacket packetMetaData,
+           DynamicBuffer<ReceivedPacketBuffer> receivedPacketBuffer)
+       {
+           Plugin.BepinLogger.LogInfo("ReceivePacket fired");
+           return true;
+       }
+   }
 
-              var users = userQuery.ToEntityArray(Allocator.Temp);
-              foreach (var userEntity in users)
-              {
-                  var query = em.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
-                  if (query.IsEmpty) return true;
+   [HarmonyPatch(typeof(CopySnapshotsToEntitiesSystem), "OnUpdate")]
+   [HarmonyPostfix]
+   public static void CopySnapshotsPostfix(CopySnapshotsToEntitiesSystem __instance)
+   {
+       try
+       {
+           var em = Plugin.ClientEntityManager;
+           var query = em.CreateEntityQuery(ComponentType.ReadOnly<ResearchBuffer>());
+           var stations = query.ToEntityArray(Allocator.Temp);
 
-                  entities = query.ToEntityArray(Allocator.Temp);
-                  foreach (var entity in entities)
-                  {
-                      //UnlockedRecipeElement, UnlockedBlueprintElement, UnlockedVBlood, (maybe) UnlockedSpellBookAbility
-                      var buffer = em.GetBuffer<UnlockedProgressionElement>(entity);
-                      var unlockedTechHashes = new List<int>();
-                      //unlockedTechHashes.Add(507915220); - mace is not unlocked in research station
-                      unlockedTechHashes.Add(-54738837);
-                      unlockedTechHashes.Add(-2012042353);
+           var targetProgression = ProgressionHandler.IsResearching
+               ? ArchipelagoData.GetResearchProgression()
+               : ArchipelagoData.GetAPProgression();
 
-                      // Sync tech unlocks with recipe unlocks directly on the buffer
-                      TechToRecipeMapping.SyncUnlockedTechs(buffer, unlockedTechHashes);
-                      var recipeBuffer = em.GetBuffer<UnlockedRecipeElement>(entity);
+           if (targetProgression == null)
+           {
+               stations.Dispose();
+               return;
+           }
 
-                      // TODO Read archipelago progression data and sync with game progression
+           foreach (var stationEntity in stations)
+           {
+               var buffer = em.GetBuffer<ResearchBuffer>(stationEntity);
+               TechToRecipeMapping.SyncResearchStation(buffer, targetProgression);
+           }
+
+           stations.Dispose();
+       }
+       catch (System.Exception e)
+       {
+           Plugin.BepinLogger.LogError($"CopySnapshotsPostfix error: {e}");
+       }
+   }
+   /*
+   [HarmonyPatch(typeof(ResearchstationSubMenuMapper), "ResearchstationSubMenuMapper_159B1CC0_LambdaJob_1_Execute")]
+   [HarmonyPrefix]
+   public static bool LambdaJob1Prefix(ref Entity localControlledEntity, ref Entity progressionEntity, ref PrefabLookupMap prefabLookupMap, ref MapZoneCollection mapZoneCollection, ref GameDataSystem gameDataSystem)
+   {
+       Plugin.BepinLogger.LogInfo("LambdaJob1 fired");
+       return true;
+   }
+   /*
+ [HarmonyPatch(typeof(ProgressionUtility), nameof(ProgressionUtility.HasUnlockedProgression), typeof(EntityManager), typeof(Entity), typeof(PrefabGUID))]
+ [HarmonyPostfix]
+ public static void HasUnlockedProgressionPostfix(EntityManager entityManager, Entity progressionEntity, PrefabGUID progression)
+ {
+     foreach (var recipe in entityManager.GetBuffer<UnlockedRecipeElement>(progressionEntity))
+     {
+         Plugin.BepinLogger.LogInfo($"HasUnlockedProgression: {recipe.UnlockedRecipe}");
+     }
+     Plugin.BepinLogger.LogInfo("HasUnlockedProgression On Create Postfix");
+ }
+   /*
+   [HarmonyPatch(typeof(ResearchstationSubMenuMapper), nameof(ResearchstationSubMenuMapper.OnUpdate))]
+   [HarmonyPrefix]
+   public static bool UpdatePrefix(ResearchstationSubMenuMapper __instance)
+   {
+
+       Plugin.BepinLogger.LogInfo("Workstation On Update Prefix");
+
+       var keys = new System.Collections.Generic.List<TechCategory>();
+       foreach (var kvp in __instance._ResearchDatas)
+           keys.Add(kvp.Key);
+
+       // Now iterate the keys safely
+       foreach (TechCategory key in keys)
+       {
+           Il2CppSystem.Collections.Generic.List<ResearchEntry.Data> entries = __instance._ResearchDatas[key];
+
+           unsafe
+           {
+               for (int i = 0; i < entries.Count; i++)
+               {
+                   ResearchEntry entry = entries[i]; // get the ResearchEntry, not ResearchEntry.Data
+                   if (entry == null) continue;
+
+                   ResearchEntry.Data data = entry.UpdatedData; // boxes a copy
+                   if (data.Status != ResearchEntry.ResearchStatus.Insertable) continue;
+
+                   // Modify the copy
+                   data.Status = ResearchEntry.ResearchStatus.Researchable;
+
+                   // Write back via the setter which uses cpblk to copy into the field
+                   entry.UpdatedData = data;
+
+                   // Verify
+                   Plugin.BepinLogger.LogInfo($"After: {entry.UpdatedData.Status}");
+               }
+           }
+
+       }
+       foreach (TechCategory key in keys)
+       {
+           for (int i = 0; i < __instance._ResearchDatas[key].Count; i++)
+           {
+               ResearchEntry.Data entry = __instance._ResearchDatas[key][i];
+               if (entry == null) continue;
+               Plugin.BepinLogger.LogInfo($"Post: [{__instance._ResearchDatas[key][i].EntryId}] Status: {__instance._ResearchDatas[key][i].Status}");
+           }
+       }
+           return true;
+   }
+   private static System.IntPtr _statusFieldPtr = System.IntPtr.Zero;
+
+   static System.IntPtr GetStatusFieldPtr()
+   {
+       if (_statusFieldPtr != System.IntPtr.Zero) return _statusFieldPtr;
+
+       var field = typeof(ResearchEntry.Data)
+           .GetField("NativeFieldInfoPtr_Status",
+                     System.Reflection.BindingFlags.NonPublic |
+                     System.Reflection.BindingFlags.Static);
+
+       _statusFieldPtr = (System.IntPtr)field.GetValue(null);
+       return _statusFieldPtr;
+   }
+   /*
+   [HarmonyPatch(typeof(ResearchstationSubMenuMapper), nameof(ResearchstationSubMenuMapper.OnUpdate))]
+   [HarmonyPrefix]
+   public static bool UpdatePrefix(ResearchstationSubMenuMapper __instance)
+   {
+       Plugin.BepinLogger.LogInfo("Workstation On Update Prefix");
+       __instance.Force
+       if (__instance._UnlockedRecipes.Count() != _UnlockedRecipes.Count())
+       {
+           Plugin.BepinLogger.LogInfo("Workstation On Update Prefix");
+
+           foreach (var recipe in _UnlockedRecipes)
+           {
+               if (!_UnlockedRecipes.Contains(recipe))
+                   Plugin.BepinLogger.LogInfo($"[Update] Unlocked recipe: {recipe}");
+           }
+           _UnlockedRecipes = __instance._UnlockedRecipes;
+       }
+       return true;
+   }
+   [HarmonyPatch(typeof(EventHelper), nameof(EventHelper.TryShareRefinement))]
+   [HarmonyPrefix]
+   public static bool shareRefinementPrefix(EntityManager entityManager, Entity target)
+   {
+       /*
+       Plugin.BepinLogger.LogInfo("ShareRefinement");
+       Plugin.BepinLogger.LogInfo(entityManager.Debug.GetEntityInfo(target));
+       Plugin.BepinLogger.LogInfo(entityManager.GetComponentData<HaveUnlocksInStation>(target).CanUnlock.ToString());
+       if (!entityManager.HasBuffer<Snapshot_ResearchBuffer>(target))
+       {
+           Plugin.BepinLogger.LogWarning("No Snapshot_ResearchBuffer on target");
+           return true;
+       }
+       var attachedBuffer = entityManager.GetBuffer<AttachedBuffer>(target);
+       Plugin.BepinLogger.LogInfo($"Attached buffers:");
+       foreach (var bufferElement in attachedBuffer)
+       {
+           Plugin.BepinLogger.LogInfo(bufferElement.ToString());
+       }
+       var buffer = entityManager.GetBuffer<Snapshot_ResearchBuffer>(target, isReadOnly: true);
+
+       if (!Snapshot_ResearchBuffer.TryGetSerializedSnapshot(buffer, readOnly: true, out Snapshot_ResearchBuffer.BufferSnapshotPtr snapshotPtr))
+       {
+           Plugin.BepinLogger.LogWarning("TryGetSerializedSnapshot failed");
+           return true;
+       }
+
+       if (snapshotPtr.Elements == null || snapshotPtr.Length == 0)
+       {
+           Plugin.BepinLogger.LogWarning("Snapshot has no elements");
+           return true;
+       }
+
+       unsafe
+       {
+           for (int j = 0; j < snapshotPtr.Length; j++)
+           {
+               Snapshot_ResearchBuffer_Data data = snapshotPtr.Elements[j];
+               Plugin.BepinLogger.LogInfo($"ResearchBuffer entry {data.ResearchGuid}: {data.IsResearchByStation}");
+           }
+       }
+       return true;
+   }
+   /*
+   [HarmonyPatch(typeof(ShareRefinementSystem), nameof(ShareRefinementSystem.ShareResearchJob_Execute))]
+   [HarmonyPrefix]
+   public static bool shareResearch()
+   {
+       Plugin.BepinLogger.LogInfo("shareResearch");
+       //ProgressionHandler.ClearUnlockBuffers();
+       //ProgressionHandler.CheckResearchStations();
+       return true;
+   }
+
+   /*
+   [HarmonyPatch(typeof(SetSnapshotOnDestroyedEntitiesSystem), nameof(SetSnapshotOnDestroyedEntitiesSystem.OnCreate))]
+   [HarmonyPrefix]
+   public static bool snapshotPrefix()
+   {
+       Plugin.BepinLogger.LogInfo("Prefix On SetSnapshotOnDestroyedEntitiesSystem");
+       //ProgressionHandler.ClearUnlockBuffers();
+       //ProgressionHandler.CheckResearchStations();
+       return true;
+   }
+
+   [HarmonyPatch(typeof(SetSnapshotOnDestroyedEntitiesSystem), nameof(SetSnapshotOnDestroyedEntitiesSystem.OnUpdate))]
+   [HarmonyPrefix]
+   public static bool updatesnapshotPrefix(SetSnapshotOnDestroyedEntitiesSystem __instance)
+   {
+       // Access the BufferLookup to check if buffer exists
+       var bufferLookup = __instance.__TypeHandle.__ProjectM_Network_Snapshot_ResearchBuffer_RW_BufferLookup;
+       Plugin.BepinLogger.LogInfo("Prefix OnUpdate SetSnapshotOnDestroyedEntitiesSystem");
+       //ProgressionHandler.ClearUnlockBuffers();
+       //ProgressionHandler.CheckResearchStations();
+       return true;
+   }
+
+   [HarmonyPatch(typeof(SetSnapshotOnDestroyedEntitiesSystem), nameof(SetSnapshotOnDestroyedEntitiesSystem.SetupJob))]
+   [HarmonyPrefix]
+   public static bool setupJobsnapshotPrefix(SetSnapshotOnDestroyedEntitiesSystem __instance,
+       ref CopyDataToDestroyedEntitiesJob.JobParams jobParams)
+   {
+       // Log the contents of Snapshot_ResearchBuffer
+       var snapshotBuffer = jobParams.GetSnapshot_ResearchBuffer;
+
+       Plugin.BepinLogger.LogInfo("Prefix OnUpdate SetUpJob");
+       //ProgressionHandler.ClearUnlockBuffers();
+       //ProgressionHandler.CheckResearchStations();
+       return true;
+   }
 
 
-                      // Sync tech unlocks with recipe unlocks directly on the buffer
-                      TechToRecipeMapping.SyncTechRecipes(recipeBuffer, unlockedTechHashes);
-                  }
-                  entities.Dispose();
-              }
-              return true;
-          }
-          catch (Exception ex)
-          {
-              Plugin.BepinLogger.LogError($"Error in ResearchstationMenuMapper.InitializeUI patch: {ex}");
-              return true;
-          }
-      }
-    */
+   [HarmonyPatch(typeof(EventHelper), nameof(EventHelper.TryShareRefinement))]
+   [HarmonyPrefix]
+   public static bool shareRefinementPrefix(EntityManager entityManager, Entity target)
+   {
+       Plugin.BepinLogger.LogInfo("ShareRefinement");
+       //DebugTool.DumpClientEntity(target);
+       //ProgressionHandler.ClearUnlockBuffers();
+       //ProgressionHandler.CheckResearchStations();
+       return true;
+   }
+   /*
+       [HarmonyPatch(typeof(SetSnapshotOnDestroyedEntitiesSystem.CopyDataToDestroyedEntitiesJob), nameof(SetSnapshotOnDestroyedEntitiesSystem.CopyDataToDestroyedEntitiesJob.CopySnapshotData))]
+   [HarmonyPrefix]
+   public static bool copySnapshotDataPrefix(SetSnapshotOnDestroyedEntitiesSystem __instance)
+   {
+       Plugin.BepinLogger.LogInfo("COPYSNAPSHOTDATA");
+       //ProgressionHandler.ClearUnlockBuffers();
+       //ProgressionHandler.CheckResearchStations();
+       return true;
+   }
+   [HarmonyPatch(typeof(ShareRefinementSystem), nameof(ShareRefinementSystem.ShareResearchJob_Execute))]
+   [HarmonyPrefix]
+   public static bool shareResearch()
+   {
+       Plugin.BepinLogger.LogInfo("shareResearch");
+       //ProgressionHandler.ClearUnlockBuffers();
+       //ProgressionHandler.CheckResearchStations();
+       return true;
+   }
+   /*
+   [HarmonyPatch(typeof(Snapshot_ResearchBuffer), nameof(Snapshot_ResearchBuffer.))]
+   [HarmonyPrefix]
+   public static bool researchstationMenuMapper()
+   {
+       Plugin.BepinLogger.LogInfo("Prefix On ResearchstationMenuMapper OnDestroy");
+       //ProgressionHandler.ClearUnlockBuffers();
+       //ProgressionHandler.CheckResearchStations();
+       return true;
+   }
+   /*
+   private static ComponentTypeHandle<ResearchStation> testStation;
+   private static ComponentTypeHandle<HaveUnlocksInStation> testUnlocks;
+
+   [HarmonyPatch(typeof(ActiveResearchstationSequenceSystem), nameof(ActiveResearchstationSequenceSystem.OnCreate))]
+   [HarmonyPrefix]
+   public static bool Prefix(ActiveResearchstationSequenceSystem __instance)
+   {
+       // Build a query for entities that have this component
+       var query = Plugin.ClientEntityManager.CreateEntityQuery(ComponentType.ReadWrite<HaveUnlocksInStation>());
+
+       // Get and update the handle
+
+       var testUnlocks = Plugin.ClientEntityManager.GetComponentTypeHandle<HaveUnlocksInStation>(false);
+
+       // Iterate chunks and zero out
+       var chunks = query.ToArchetypeChunkArray(Allocator.Temp);
+       foreach (var chunk in chunks)
+       {
+           var components = chunk.GetNativeArray(ref testUnlocks);
+           for (int i = 0; i < components.Length; i++)
+           {
+               var comp = components[i];
+               comp.CanUnlock = false;
+               components[i] = comp;
+           }
+       }
+       chunks.Dispose();
+       //Plugin.BepinLogger.LogInfo("Workstation On Create Prefix");
+       return true;
+   }
+   [HarmonyPatch(typeof(ActiveResearchstationSequenceSystem), nameof(ActiveResearchstationSequenceSystem.OnCreate))]
+   [HarmonyPostfix]
+   public static void Postfix(ActiveResearchstationSequenceSystem __instance)
+   {
+       testStation = __instance.__TypeHandle.__ProjectM_ResearchStation_RO_ComponentTypeHandle;
+       testUnlocks = __instance.__TypeHandle.__ProjectM_HaveUnlocksInStation_RO_ComponentTypeHandle;
+       Plugin.BepinLogger.LogInfo("Workstation On Create Postfix");
+   }
+
+   [HarmonyPatch(typeof(ActiveResearchstationSequenceSystem), nameof(ActiveResearchstationSequenceSystem.OnUpdate))]
+   [HarmonyPrefix]
+   public static bool UpdatePrefix(ActiveResearchstationSequenceSystem __instance)
+   {
+       // Build a query for entities that have this component
+       var query = Plugin.ClientEntityManager.CreateEntityQuery(ComponentType.ReadWrite<HaveUnlocksInStation>());
+
+       // Get and update the handle
+       var testUnlocks = Plugin.ClientEntityManager.GetComponentTypeHandle<HaveUnlocksInStation>(false);
+
+       // Iterate chunks and zero out
+       var chunks = query.ToArchetypeChunkArray(Allocator.Temp);
+       foreach (var chunk in chunks)
+       {
+           var components = chunk.GetNativeArray(ref testUnlocks);
+           for (int i = 0; i < components.Length; i++)
+           {
+               Plugin.BepinLogger.LogInfo($"Zeroing out HaveUnlocksInStation component for entity in chunk. Original value: {components[i]}");
+               var comp = components[i];
+               comp.CanUnlock = false;
+               components[i] = comp;
+           }
+       }
+       chunks.Dispose();
+      // Plugin.BepinLogger.LogInfo("Workstation On Update Prefix");
+       return true;
+   }
+   [HarmonyPatch(typeof(ActiveResearchstationSequenceSystem), nameof(ActiveResearchstationSequenceSystem.OnUpdate))]
+   [HarmonyPostfix]
+   public static void UpdatePostfix(ActiveResearchstationSequenceSystem __instance)
+   {
+       var query = Plugin.ClientEntityManager.CreateEntityQuery(ComponentType.ReadWrite<HaveUnlocksInStation>());
+
+       // Get and update the handle
+       var testUnlocks = Plugin.ClientEntityManager.GetComponentTypeHandle<HaveUnlocksInStation>(false);
+
+       // Iterate chunks and zero out
+       var chunks = query.ToArchetypeChunkArray(Allocator.Temp);
+       foreach (var chunk in chunks)
+       {
+           var components = chunk.GetNativeArray(ref testUnlocks);
+           for (int i = 0; i < components.Length; i++)
+           {
+               var comp = components[i];
+               comp.CanUnlock = false;
+               components[i] = comp;
+           }
+       }
+       chunks.Dispose();
+       //Plugin.BepinLogger.LogInfo("Workstation On Update Postfix");
+   }
+   /*
+     [HarmonyPatch(typeof(ResearchstationMenuMapper), nameof(ResearchstationMenuMapper.InitializeUI))]
+     [HarmonyPostfix]
+     public static bool Prefix()
+     {
+         try
+         {
+             Plugin.BepinLogger.LogInfo("Postfix On GetLocalUser");
+             var em = Plugin.EntityManager; // Use Server EntityManager
+
+             if (em == null)
+             {
+                 Plugin.BepinLogger.LogWarning("EntityManager is null, skipping patch");
+                 return true;
+             }
+
+             var progQuery2 = em.CreateEntityQuery(ComponentType.ReadWrite<UnlockedProgressionElement>());
+             if (progQuery2.IsEmpty) return true;
+             Plugin.BepinLogger.LogInfo("Postfix On GetLocalUser 2");
+
+             var progQuery = em.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
+             if (progQuery.IsEmpty) return true;
+             Plugin.BepinLogger.LogInfo("Postfix On GetLocalUser 2");
+
+             var entities = progQuery.ToEntityArray(Allocator.Temp);
+             foreach (var entity in entities)
+             {
+                 Plugin.BepinLogger.LogInfo("Postfix On GetLocalUser " + entity);
+             }
+             // Query for User entities which have ProgressionMapper
+             var userQuery = em.CreateEntityQuery(ComponentType.ReadOnly<ProjectM.Network.User>(), ComponentType.ReadOnly<ProgressionMapper>());
+             if (userQuery.IsEmpty) return true;
+
+             var users = userQuery.ToEntityArray(Allocator.Temp);
+             foreach (var userEntity in users)
+             {
+                 var query = em.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
+                 if (query.IsEmpty) return true;
+
+                 entities = query.ToEntityArray(Allocator.Temp);
+                 foreach (var entity in entities)
+                 {
+                     //UnlockedRecipeElement, UnlockedBlueprintElement, UnlockedVBlood, (maybe) UnlockedSpellBookAbility
+                     var buffer = em.GetBuffer<UnlockedProgressionElement>(entity);
+                     var unlockedTechHashes = new List<int>();
+                     //unlockedTechHashes.Add(507915220); - mace is not unlocked in research station
+                     unlockedTechHashes.Add(-54738837);
+                     unlockedTechHashes.Add(-2012042353);
+
+                     // Sync tech unlocks with recipe unlocks directly on the buffer
+                     TechToRecipeMapping.SyncUnlockedTechs(buffer, unlockedTechHashes);
+                     var recipeBuffer = em.GetBuffer<UnlockedRecipeElement>(entity);
+
+                     // TODO Read archipelago progression data and sync with game progression
+
+
+                     // Sync tech unlocks with recipe unlocks directly on the buffer
+                     TechToRecipeMapping.SyncTechRecipes(recipeBuffer, unlockedTechHashes);
+                 }
+                 entities.Dispose();
+             }
+             return true;
+         }
+         catch (Exception ex)
+         {
+             Plugin.BepinLogger.LogError($"Error in ResearchstationMenuMapper.InitializeUI patch: {ex}");
+             return true;
+         }
+     }
+   */
     /*
     [HarmonyPatch(typeof(ResearchstationMenuMapper), nameof(ResearchstationMenuMapper.OnDestroy))]
     [HarmonyPrefix]

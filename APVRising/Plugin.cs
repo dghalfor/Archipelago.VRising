@@ -103,7 +103,7 @@ public class Plugin : BasePlugin
         {
             if (_clientWorld != null) return _clientWorld;
 
-            _clientWorld = GetWorld("Default World")
+            _clientWorld = GetClientWorld("Client_0")
                 ?? throw new System.Exception("There is no Client world (yet). Did you install a client mod on the server?");
             return _clientWorld ;
         }
@@ -116,9 +116,22 @@ public class Plugin : BasePlugin
             Plugin.BepinLogger.LogInfo($"Found world: {world.Name}");
             if (world.Name == name)
             {
-                
-
                 _serverWorld = world;
+                return world;
+            }
+        }
+
+        return null;
+    }
+
+    private static World GetClientWorld(string name)
+    {
+        foreach (var world in World.s_AllWorlds)
+        {
+            Plugin.BepinLogger.LogInfo($"Found world: {world.Name}");
+            if (world.Name == name)
+            {
+                _clientWorld = world;
                 return world;
             }
         }

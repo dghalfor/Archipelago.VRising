@@ -1,3 +1,4 @@
+using APVRising.Hooks;
 using APVRising.Utils;
 using VampireCommandFramework;
 
@@ -29,6 +30,7 @@ public static class ArchipelagoCommands
     {
         ProgressionHandler.IsResearching = true;
         ProgressionHandler.UpdateProgression();
+        ChatMessage.NotifyClient(true);
         ctx.Reply($"Starting research...");
     }
     [Command("stopresearch")]
@@ -36,6 +38,7 @@ public static class ArchipelagoCommands
     {
         ProgressionHandler.IsResearching = false;
         ProgressionHandler.UpdateProgression();
+        ChatMessage.NotifyClient(false);
         ctx.Reply($"Stopping research...");
     }
 }
