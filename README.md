@@ -35,7 +35,7 @@ V Rising:
 
 * Elements removed from research at runtime are re-added after saving and closing the game.
 
-##To-do
+## To-do
 
 * DiscoverResearch needs to work like unlockProgression and remove the result
 * Make the progression buffers saved and written by startresearch/stopresearch actually connected to the archipelago's progression, not just variables in code\
