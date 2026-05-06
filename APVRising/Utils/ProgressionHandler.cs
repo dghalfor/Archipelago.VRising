@@ -350,5 +350,58 @@ namespace APVRising.Utils
             }
             entities.Dispose();
         }
+        public static void LockResearchUnlocksForPlayer(Entity userEntity, PrefabGUID techPrefab)
+        {
+            EntityManager em;
+            PrefabCollectionSystem prefabCollectionSystem;
+            if (Plugin.IsServer)
+            {
+                em = Plugin.EntityManager;
+                prefabCollectionSystem = Plugin.PrefabCollectionSystem;
+            }
+            else
+            {
+                em = Plugin.ClientEntityManager;
+                prefabCollectionSystem = Plugin.ClientCollectionSystem;
+            }
+            Plugin.BepinLogger.LogInfo($"Lock research for player {userEntity.Index} and tech {techPrefab._Value}");
+            var query = em.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
+            if (query.IsEmpty) return;
+
+            var entities = query.ToEntityArray(Allocator.Temp);
+            foreach (var entity in entities)
+            {
+                //UnlockedRecipeElement, UnlockedBlueprintElement, UnlockedVBlood, (maybe) UnlockedSpellBookAbility
+                Plugin.BepinLogger.LogInfo($"Tech {techPrefab._Value} lock added to UnlockedProgressionElement buffer. Syncing recipes...");
+
+                if (!prefabCollectionSystem._PrefabLookupMap.TryGetValue(techPrefab, out Entity researchEntity))
+                {
+                    Plugin.BepinLogger.LogWarning($"[AP] Could not find entity for PrefabGUID {techPrefab._Value}");
+                    return;
+                }
+
+                if (!em.HasBuffer<TechUnlockRecipeBuffer>(researchEntity))
+                    return;
+
+                var techBuffer = em.GetBuffer<TechUnlockRecipeBuffer>(researchEntity);
+                var unlockedBuffer = em.GetBuffer<UnlockedRecipeElement>(entity);
+                Plugin.BepinLogger.LogInfo($"Found {unlockedBuffer.Length} unlocked recipes for player {entity.Index}");
+                Plugin.BepinLogger.LogInfo($"Found {techBuffer.Length} recipes to lock for tech {techPrefab._Value}");
+                for (int j = 0; j < techBuffer.Length; j++)
+                {
+                    var element = techBuffer[j];
+                    for (int i = unlockedBuffer.Length - 1; i >= 0; i--)
+                    {
+                        if (unlockedBuffer[i].UnlockedRecipe == element.Guid)
+                        {
+                            Plugin.BepinLogger.LogInfo($"Tech {techPrefab} should be locked but is in buffer, removing it");
+                            unlockedBuffer.RemoveAt(i);
+                            break;
+                        }
+                    }
+                }
+            }
+            entities.Dispose();
+        }
     }
 }

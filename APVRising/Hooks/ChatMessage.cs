@@ -74,6 +74,24 @@ public static class ChatMessage
         users.Dispose();
     }
 
+    public static void NotifyClientLock(int guid)
+    {
+        // Find the chat message system
+        var em = Plugin.EntityManager;
+        var userQuery = em.CreateEntityQuery(ComponentType.ReadOnly<User>());
+        var users = userQuery.ToEntityArray(Allocator.Temp);
+        Plugin.BepinLogger.LogInfo($"Notifying clients of AP list change: GUID={guid}, Users={users.Length}");
+        foreach (var userEntity in users)
+        {
+            var user = em.GetComponentData<User>(userEntity);
+            // Send a special prefixed message the client can intercept
+            var message = (FixedString512Bytes)$"##LOCKPROG#{guid}##";
+            ServerChatUtils.SendSystemMessageToClient(em, user, ref message);
+        }
+
+        users.Dispose();
+    }
+
     [HarmonyPatch(typeof(ClientChatSystem), "OnUpdate")]
     [HarmonyPrefix]
     public static void ClientChatOnUpdatePostfix(ClientChatSystem __instance)
@@ -113,6 +131,27 @@ public static class ChatMessage
                         foreach (var userEntity in userEntities)
                         {
                             ProgressionHandler.UnlockResearchForPlayer(userEntity, new Stunlock.Core.PrefabGUID(guid));
+                        }
+                    }
+                    else
+                    {
+                        Plugin.BepinLogger.LogError($"Failed to parse AP unlock GUID from message: {message}");
+                    }
+                    // Destroy so it doesn't appear in chat UI
+                    em.DestroyEntity(eventEntity);
+                }
+                if (message.StartsWith("##LOCKPROG#"))
+                {
+                    string guidStr = message.Replace("##LOCKPROG#", "").Replace("##", "");
+                    if (int.TryParse(guidStr, out int guid))
+                    {
+                        Plugin.BepinLogger.LogInfo($"Client lock: GUID={guid}");
+                        ArchipelagoData.APProgression.Add(guid);
+                        var userQuery = em.CreateEntityQuery(ComponentType.ReadOnly<User>(), ComponentType.ReadOnly<ProgressionMapper>());
+                        var userEntities = userQuery.ToEntityArray(Allocator.Temp);
+                        foreach (var userEntity in userEntities)
+                        {
+                            ProgressionHandler.LockResearchUnlocksForPlayer(userEntity, new Stunlock.Core.PrefabGUID(guid));
                         }
                     }
                     else

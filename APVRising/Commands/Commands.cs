@@ -64,4 +64,22 @@ public static class ArchipelagoCommands
         ChatMessage.NotifyClientUnlock(guid);
         ctx.Reply($"Unlocking tech with GUID: {guid}");
     }
+
+    [Command("lockTech")]
+    public static void APLockTech(ICommandContext ctx, int guid)
+    {
+        var log = Plugin.BepinLogger;
+
+        var query = Plugin.EntityManager.CreateEntityQuery(ComponentType.ReadOnly<User>(), ComponentType.ReadOnly<ProgressionMapper>());
+        var userEntities = query.ToEntityArray(Allocator.Temp);
+        log.LogInfo($"Locking tech for {userEntities.Length} users");
+        foreach (var userEntity in userEntities)
+        {
+            ProgressionHandler.LockResearchUnlocksForPlayer(userEntity, new Stunlock.Core.PrefabGUID(guid));
+        }
+        ArchipelagoData.APProgression.Add(guid);
+        userEntities.Dispose();
+        ChatMessage.NotifyClientLock(guid);
+        ctx.Reply($"Locking tech with GUID: {guid}");
+    }
 }
