@@ -37,7 +37,7 @@ V Rising:
 
 ## To-do
 
-* DiscoverResearch needs to work like unlockProgression and remove the result
+* ~~DiscoverResearch needs to work like unlockProgression and remove the result~~
 * Make the progression buffers saved and written by startresearch/stopresearch actually connected to the archipelago's progression, not just variables in code
 * Refinement Station progress being blocked, there is some nuance here of refinement being locked/unlocked in station or even hidden in station.
 * Journal progress being blocked like the other progression.
