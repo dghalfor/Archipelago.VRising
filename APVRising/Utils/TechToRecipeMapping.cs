@@ -184,6 +184,8 @@ public static class TechToRecipeMapping
                         {
                             if (recipeBuffer[i].UnlockedRecipe == recipePrefab)
                             {
+                                Plugin.BepinLogger.LogInfo($"Recipe {recipePrefab} already exists in buffer, skipping add");
+
                                 recipeExists = true;
                                 break;
                             }
@@ -191,6 +193,8 @@ public static class TechToRecipeMapping
 
                         if (!recipeExists)
                         {
+                            Plugin.BepinLogger.LogInfo($"Recipe {recipePrefab} should be unlocked but is not in buffer, adding it");
+
                             recipeBuffer.Add(new UnlockedRecipeElement { UnlockedRecipe = recipePrefab });
                         }
                     }
@@ -203,6 +207,8 @@ public static class TechToRecipeMapping
                             {
                                 if (recipeBuffer[i].UnlockedRecipe == recipePrefab)
                                 {
+                                    Plugin.BepinLogger.LogInfo($"Recipe {recipePrefab} should be locked but is in buffer, removing it");
+
                                     recipeBuffer.RemoveAt(i);
                                     break;
                                 }
@@ -307,6 +313,66 @@ public static class TechToRecipeMapping
                         tech.IsResearchByStation = false;
                         techBuffer[j] = tech;
                         break;
+                    }
+                }
+            }
+        }
+    }
+
+    public static void SyncWorkstation(DynamicBuffer<WorkstationRecipesBuffer> recipeBuffer, List<int> unlockedTech)
+    {
+        if (unlockedTech == null)
+        {
+            return;
+        }
+        foreach (var techHash in TechToRecipes.Keys)
+        {
+            if (TechToRecipes.TryGetValue(techHash, out var recipeHashes))
+            {
+                bool techIsUnlocked = unlockedTech.Contains(techHash);
+
+                foreach (var recipeHash in recipeHashes)
+                {
+                    PrefabGUID recipePrefab = new PrefabGUID(recipeHash);
+
+                    if (techIsUnlocked)
+                    {
+                        // Tech is unlocked, ensure recipe is in the buffer
+                        bool recipeExists = false;
+                        for (int i = 0; i < recipeBuffer.Length; i++)
+                        {
+                            if (recipeBuffer[i].RecipeGuid == recipePrefab)
+                            {
+                                Plugin.BepinLogger.LogInfo($"Recipe {recipePrefab} already exists in buffer, skipping add");
+
+                                recipeExists = true;
+                                break;
+                            }
+                        }
+
+                        if (!recipeExists)
+                        {
+                            Plugin.BepinLogger.LogInfo($"Recipe {recipePrefab} should be unlocked but is not in buffer, adding it");
+
+                            recipeBuffer.Add(new WorkstationRecipesBuffer { RecipeGuid = recipePrefab });
+                        }
+                    }
+                    else
+                    {
+                        // Tech is locked, only remove if the recipe is mapped
+                        if (IsRecipeMapped(recipeHash))
+                        {
+                            for (int i = recipeBuffer.Length - 1; i >= 0; i--)
+                            {
+                                if (recipeBuffer[i].RecipeGuid == recipePrefab)
+                                {
+                                    Plugin.BepinLogger.LogInfo($"Recipe {recipePrefab} should be locked but is in buffer, removing it");
+
+                                    recipeBuffer.RemoveAt(i);
+                                    break;
+                                }
+                            }
+                        }
                     }
                 }
             }

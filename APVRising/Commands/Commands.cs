@@ -1,5 +1,11 @@
+using APVRising.Archipelago;
 using APVRising.Hooks;
 using APVRising.Utils;
+using ProjectM;
+using ProjectM.Network;
+using System;
+using Unity.Collections;
+using Unity.Entities;
 using VampireCommandFramework;
 
 namespace APVRising.Commands;
@@ -40,5 +46,22 @@ public static class ArchipelagoCommands
         ProgressionHandler.UpdateProgression();
         ChatMessage.NotifyClient(false);
         ctx.Reply($"Stopping research...");
+    }
+    [Command("unlockTech")]
+    public static void APUnlockTech(ICommandContext ctx, int guid)
+    {
+        var log = Plugin.BepinLogger;
+
+        var query = Plugin.EntityManager.CreateEntityQuery(ComponentType.ReadOnly<User>(), ComponentType.ReadOnly<ProgressionMapper>());
+        var userEntities = query.ToEntityArray(Allocator.Temp);
+        log.LogInfo($"Unlocking tech for {userEntities.Length} users");
+        foreach (var userEntity in userEntities)
+        {
+            ProgressionHandler.UnlockResearchForPlayer(userEntity, new Stunlock.Core.PrefabGUID(guid));
+        }
+        ArchipelagoData.APProgression.Add(guid);
+        userEntities.Dispose();
+        ChatMessage.NotifyClientUnlock(guid);
+        ctx.Reply($"Unlocking tech with GUID: {guid}");
     }
 }

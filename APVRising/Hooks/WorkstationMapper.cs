@@ -121,12 +121,10 @@ public static unsafe class Workstation
     [HarmonyPrefix]
     public static bool HasUnlockedProgression1(EntityManager entityManager, Entity progressionEntity, PrefabGUID progression)
     {
-        float now = UnityEngine.Time.time;
-        if (now - _lastSyncTime < _syncInterval) return true;
-        _lastSyncTime = now;
-
+        if (!ProgressionHandler.isStale) return true;
         ProgressionHandler.SwitchProgression(entityManager.GetBuffer<UnlockedProgressionElement>(progressionEntity));
-
+        ProgressionHandler.SwitchRecipe(entityManager.GetBuffer<UnlockedRecipeElement>(progressionEntity));
+        ProgressionHandler.isStale = false;
         return true;
     }
 
@@ -135,12 +133,10 @@ public static unsafe class Workstation
     [HarmonyPrefix]
     public static bool HasUnlockedProgression3(EntityManager entityManager, bool skipProgressionCheck, Entity progressionEntity, PrefabGUID progression)
     {
-        float now = UnityEngine.Time.time;
-        if (now - _lastSyncTime < _syncInterval) return true;
-        _lastSyncTime = now;
-
+        if (!ProgressionHandler.isStale) return true;
         ProgressionHandler.SwitchProgression(entityManager.GetBuffer<UnlockedProgressionElement>(progressionEntity));
-
+        ProgressionHandler.SwitchRecipe(entityManager.GetBuffer<UnlockedRecipeElement>(progressionEntity));
+        ProgressionHandler.isStale = false;
         return true;
     }
 
@@ -149,12 +145,10 @@ public static unsafe class Workstation
     [HarmonyPrefix]
     public static bool HasUnlockedProgressionOrDefault(EntityManager entityManager, Entity progressionEntity, PrefabGUID progression, bool resultIfProgressionGuidDefault)
     {
-        float now = UnityEngine.Time.time;
-        if (now - _lastSyncTime < _syncInterval) return true;
-        _lastSyncTime = now;
-
+        if (!ProgressionHandler.isStale) return true;
         ProgressionHandler.SwitchProgression(entityManager.GetBuffer<UnlockedProgressionElement>(progressionEntity));
-
+        ProgressionHandler.SwitchRecipe(entityManager.GetBuffer<UnlockedRecipeElement>(progressionEntity));
+        ProgressionHandler.isStale = false;
         return true;
     }
     private static float _lastSyncTime = 0f;

@@ -76,6 +76,7 @@ public class Plugin : BasePlugin
 
     public static EntityManager ClientEntityManager => Client.EntityManager;
     public static PrefabCollectionSystem PrefabCollectionSystem => Server.GetExistingSystemManaged<PrefabCollectionSystem>();
+    public static PrefabCollectionSystem ClientCollectionSystem => Client.GetExistingSystemManaged<PrefabCollectionSystem>();
     public static GameDataSystem GameDataSystem => Server.GetExistingSystemManaged<GameDataSystem>();
     public static ManagedDataRegistry ManagedDataRegistry => GameDataSystem.ManagedDataRegistry;
     public static DebugEventsSystem DebugEventsSystem => Server.GetExistingSystemManaged<DebugEventsSystem>();

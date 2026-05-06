@@ -3,6 +3,7 @@ using APVRising.Archipelago;
 using APVRising.Hooks;
 using ProjectM;
 using ProjectM.Network;
+using Stunlock.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine.TextCore.Text;
+using static ProjectM.ProgressionUtility;
 
 namespace APVRising.Utils
 {
@@ -18,6 +20,7 @@ namespace APVRising.Utils
     {
 
         public static bool IsResearching = false;
+        public static bool isStale = false;
 
         public static void SwitchProgression(DynamicBuffer<UnlockedProgressionElement> progressionBuffer)
         {
@@ -48,6 +51,7 @@ namespace APVRising.Utils
             {
                 Plugin.BepinLogger.LogInfo($"Switching to AP progression");
                 TechToRecipeMapping.SyncUnlockedTechs(progressionBuffer, ArchipelagoData.GetAPProgression());
+
                 Plugin.BepinLogger.LogInfo(Plugin.IsServer.ToString());
                 if (Plugin.IsServer)
                 {
@@ -68,49 +72,11 @@ namespace APVRising.Utils
                 //update progressionElement to Archipelago unlocked elements
             }
         }
-        /*
-        public static void UpdateProgression()
+        public static void SwitchRecipe(DynamicBuffer<UnlockedRecipeElement> recipeBuffer)
         {
-            // Always sync server
-            var serverEm = Plugin.EntityManager;
-            var serverQuery = serverEm.CreateEntityQuery(
-                ComponentType.ReadOnly<User>(),
-                ComponentType.ReadOnly<ProgressionMapper>()
-            );
-
-            if (!serverQuery.IsEmpty)
-            {
-                var users = serverQuery.ToEntityArray(Allocator.Temp);
-                foreach (var userEntity in users)
-                {
-                    var progQuery = serverEm.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
-                    if (!progQuery.IsEmpty)
-                    {
-                        var entities = progQuery.ToEntityArray(Allocator.Temp);
-                        foreach (var entity in entities)
-                        {
-                            SwitchProgression(serverEm.GetBuffer<UnlockedProgressionElement>(entity));
-                        }
-                        entities.Dispose();
-                    }
-                }
-                users.Dispose();
-            }
-            /*
-            // Always also sync client
-            var clientEm = Plugin.ClientEntityManager;
-            var clientProgQuery = clientEm.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
-            if (!clientProgQuery.IsEmpty)
-            {
-                var entities = clientProgQuery.ToEntityArray(Allocator.Temp);
-                foreach (var entity in entities)
-                {
-                    SwitchProgression(clientEm.GetBuffer<UnlockedProgressionElement>(entity));
-                }
-                entities.Dispose();
-            }
-           
-        } */
+            Plugin.BepinLogger.LogInfo($"Switching progression. IsResearching: {IsResearching}");
+            
+        }
 
         public static void UpdateProgression()
         {
@@ -139,9 +105,6 @@ namespace APVRising.Utils
                     var buffer = em.GetBuffer<UnlockedProgressionElement>(entity);
                     // Sync tech unlocks with recipe unlocks directly on the buffer
                     SwitchProgression(buffer);
-                    var recipeBuffer = em.GetBuffer<UnlockedRecipeElement>(entity);
-                    //TechToRecipeMapping.SyncTechRecipes(recipeBuffer, unlockedTechHashes);
-
                 }
                 entities.Dispose();
             }
@@ -201,6 +164,38 @@ namespace APVRising.Utils
             {
                 var buffer = Plugin.ClientEntityManager.GetBuffer<ResearchBuffer>(stationEntity);
                 TechToRecipeMapping.SyncResearchStation(buffer, unlockedTechHashes);
+            }
+            stations.Dispose();
+        }
+
+        public static void CheckWorkstations(List<int> unlockedTechHashes)
+        {
+            var query = Plugin.EntityManager.CreateEntityQuery(ComponentType.ReadOnly<WorkstationRecipesBuffer>());
+            Plugin.BepinLogger.LogInfo($"CheckWorkstations");
+
+            // Iterate chunks and zero out
+            var stations = query.ToEntityArray(Allocator.Temp);
+            Plugin.BepinLogger.LogInfo($"Found {stations.Length} workstations to check");
+
+            foreach (var stationEntity in stations)
+            {
+                var buffer = Plugin.EntityManager.GetBuffer<WorkstationRecipesBuffer>(stationEntity);
+                TechToRecipeMapping.SyncWorkstation(buffer, unlockedTechHashes);
+            }
+            stations.Dispose();
+        }
+        public static void CheckClientWorkstations(List<int> unlockedTechHashes)
+        {
+            var query = Plugin.ClientEntityManager.CreateEntityQuery(ComponentType.ReadOnly<WorkstationRecipesBuffer>());
+            Plugin.BepinLogger.LogInfo($"CheckClientWorkstations");
+
+            // Iterate chunks and zero out
+            var stations = query.ToEntityArray(Allocator.Temp);
+            Plugin.BepinLogger.LogInfo($"Found {stations.Length} stations with WorkstationRecipesBuffer to clear");
+            foreach (var stationEntity in stations)
+            {
+                var buffer = Plugin.ClientEntityManager.GetBuffer<WorkstationRecipesBuffer>(stationEntity);
+                TechToRecipeMapping.SyncWorkstation(buffer, unlockedTechHashes);
             }
             stations.Dispose();
         }
@@ -288,6 +283,72 @@ namespace APVRising.Utils
             }
 
             stations.Dispose();
+        }
+    
+
+    public static void UnlockResearchForPlayer(Entity userEntity, PrefabGUID techPrefab)
+        {
+            EntityManager em;
+            PrefabCollectionSystem prefabCollectionSystem;
+            if (Plugin.IsServer)
+            {
+                em = Plugin.EntityManager;
+                prefabCollectionSystem = Plugin.PrefabCollectionSystem;
+            }
+            else
+            {
+                em = Plugin.ClientEntityManager;
+                prefabCollectionSystem = Plugin.ClientCollectionSystem;
+            }
+            Plugin.BepinLogger.LogInfo($"Unlocking research for player {userEntity.Index} and tech {techPrefab._Value}");
+            var query = em.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
+            if (query.IsEmpty) return;
+
+            var entities = query.ToEntityArray(Allocator.Temp);
+            foreach (var entity in entities)
+            {
+                //UnlockedRecipeElement, UnlockedBlueprintElement, UnlockedVBlood, (maybe) UnlockedSpellBookAbility
+                var buffer = em.GetBuffer<UnlockedProgressionElement>(entity);
+                // Sync tech unlocks with recipe unlocks directly on the buffer
+                buffer.Add(new UnlockedProgressionElement { UnlockedPrefab = techPrefab });
+
+                var recipeBuffer = em.GetBuffer<UnlockedRecipeElement>(entity);
+                Plugin.BepinLogger.LogInfo($"Tech {techPrefab._Value} unlock added to UnlockedProgressionElement buffer. Syncing recipes...");
+
+                if (!prefabCollectionSystem._PrefabLookupMap.TryGetValue(techPrefab, out Entity researchEntity))
+                {
+                    Plugin.BepinLogger.LogWarning($"[AP] Could not find entity for PrefabGUID {techPrefab._Value}");
+                    return;
+                }
+
+                if (!em.HasBuffer<TechUnlockRecipeBuffer>(researchEntity))
+                    return;
+
+                var techBuffer = em.GetBuffer<TechUnlockRecipeBuffer>(researchEntity);
+                var unlockedBuffer = em.GetBuffer<UnlockedRecipeElement>(entity);
+                Plugin.BepinLogger.LogInfo($"Found {techBuffer.Length} recipes to unlock for tech {techPrefab._Value}");
+                for (int i = 0; i < techBuffer.Length; i++)
+                {
+                    var element = techBuffer[i];
+
+                    bool alreadyUnlocked = false;
+                    for (int j = 0; j < unlockedBuffer.Length; j++)
+                    {
+                        if (unlockedBuffer[j].UnlockedRecipe == element.Guid)
+                        {
+                            Plugin.BepinLogger.LogInfo($"Recipe {element.Guid} already unlocked for player {userEntity.Index}, skipping");
+                            alreadyUnlocked = true;
+                            break;
+                        }
+                    }
+
+                    if (alreadyUnlocked)
+                        continue;
+                    Plugin.BepinLogger.LogInfo($"Adding element to unlocked buffer: {element.Guid}");
+                    unlockedBuffer.Add(new UnlockedRecipeElement { UnlockedRecipe = element.Guid, UserHasRequiredContentFlags = true });
+                }
+            }
+            entities.Dispose();
         }
     }
 }
