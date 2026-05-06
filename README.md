@@ -54,6 +54,7 @@ V Rising:
 ## Ideas
 
 * Implement Armipotent's original concept as "Killsanity", killing creatures sends checks
+* FishSanity?
 * Add filler table - Paper/techbooks/coins are very powerful and should be limited in this pool. Raw resources, consumables, and high percentage blood potions work great for this
 * Progressive crafting cost reduction should be possible in runtime
 * Progressive damage decrease (reducing how much damage vbloods do to make it easier to finish the game)
