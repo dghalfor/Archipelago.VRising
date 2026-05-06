@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Unity.Entities;
 using static ProjectM.ProgressionUtility;
+using static VCF.Core.Basics.RoleCommands;
 
 namespace APVRising.Hooks;
 
@@ -33,11 +34,9 @@ internal class DiscoverResearchHandler
         Plugin.BepinLogger.LogInfo($"[AP] UnlockProgression: {DebugTool.GetPrefabName(randomResearch.ResearchGuid)}");
 
         _lastRolledResearchGuid = randomResearch.ResearchGuid;
-        _lastRolledTargetStation = targetResearchStation;
         return true;
     }
     public static PrefabGUID _lastRolledResearchGuid = default;
-    public static Entity _lastRolledTargetStation = default;
 
     // TODO This may not be necessary now since we're not messing with the progression entity
     [HarmonyPatch(typeof(DiscoverResearchSystem), nameof(DiscoverResearchSystem.UnlockProgression))]
@@ -51,25 +50,8 @@ internal class DiscoverResearchHandler
         Entity progressionEntity)
     {
         {
-            var em = Plugin.EntityManager;
-
-            Plugin.BepinLogger.LogInfo($"Research intercepted: {DebugTool.GetPrefabName(randomResearch.ResearchGuid)}");
-
-            // 1. Remove from station's ResearchBuffer
-            if (em.HasBuffer<ResearchBuffer>(targetResearchStation))
-            {
-                var stationBuffer = em.GetBuffer<ResearchBuffer>(targetResearchStation);
-
-                for (int i = stationBuffer.Length - 1; i >= 0; i--)
-                {
-                    if (stationBuffer[i].ResearchGuid == randomResearch.ResearchGuid)
-                    {
-                        //stationBuffer.RemoveAt(i);
-                        Plugin.BepinLogger.LogInfo($"Removed {DebugTool.GetPrefabName(randomResearch.ResearchGuid)} from research pool");
-                        break;
-                    }
-                }
-            }
+            ProgressionHandler.LockResearchUnlocksForPlayer(fromCharacter.User, _lastRolledResearchGuid);
+            ChatMessage.NotifyClientLock(_lastRolledResearchGuid.GuidHash);
             return;
         }
     }

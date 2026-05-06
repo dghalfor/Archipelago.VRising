@@ -68,6 +68,5 @@ public static class UnlockResearch
     {
         ProgressionHandler.LockResearchUnlocksForPlayer(user, researchGuid);
         ChatMessage.NotifyClientLock(researchGuid.GuidHash);
-        Plugin.BepinLogger.LogInfo($"[AP] Restored TechUnlockRecipeBuffer");
     }
 }

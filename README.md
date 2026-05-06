@@ -38,7 +38,7 @@ V Rising:
 ## To-do
 
 * DiscoverResearch needs to work like unlockProgression and remove the result
-* Make the progression buffers saved and written by startresearch/stopresearch actually connected to the archipelago's progression, not just variables in code\
+* Make the progression buffers saved and written by startresearch/stopresearch actually connected to the archipelago's progression, not just variables in code
 * Refinement Station progress being blocked, there is some nuance here of refinement being locked/unlocked in station or even hidden in station.
 * Journal progress being blocked like the other progression.
 * Connect to the archipelago
@@ -49,6 +49,7 @@ V Rising:
 * Locally save the progression buffers and reload upon server start
 * Function to re-sync to the archipelago in case of crash or other unrecoverable state
 * Add give item functions to support filler, should be straightforward
+* Archipelago categorization of progression, spheres, etc.
 
 ## Ideas
 
