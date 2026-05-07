@@ -13,7 +13,7 @@ namespace APVRising.Commands;
 //[CommandGroup("archipelago", "ap")]
 public static class ArchipelagoCommands
 {
-    //[Command("connect", shortHand: "c", description: "Connect to Archipelago", adminOnly: false)]
+    [Command("connect", shortHand: "c", description: "Connect to Archipelago", adminOnly: false)]
     public static void APConnect(ICommandContext ctx, string slotName = "Player1", string uri = "archipelago.gg:38281", string password = "")
     {
         Archipelago.ArchipelagoClient.ServerData.Uri = uri;

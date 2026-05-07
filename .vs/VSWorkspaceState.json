@@ -1,8 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\APVRising"
+    "\\APVRising",
+    "\\APVRising\\Archipelago"
   ],
-  "SelectedNode": "\\APVRising\\APVRising.csproj",
+  "SelectedNode": "\\APVRising\\Archipelago\\ArchipelagoClient.cs",
   "PreviewInSolutionExplorer": false
 }

@@ -22,8 +22,8 @@ public class ArchipelagoClient
 {
     public static ArchipelagoClient Instance;
 
-    public const string APVersion = "0.5.0";
-    private const string Game = "V Rising";
+    public const string APVersion = "0.6.7";
+    private const string Game = "Manual_VRising_Phye";
 
     public static bool Authenticated;
     private bool attemptingConnection;
@@ -37,7 +37,7 @@ public class ArchipelagoClient
     /// </summary>
     /// <returns></returns>
     public void Connect()
-    { /*
+    { 
         if (Authenticated || attemptingConnection) return;
 
         try
@@ -51,7 +51,7 @@ public class ArchipelagoClient
         }
 
         TryConnect();
-        */
+        
     }
 
     /// <summary>

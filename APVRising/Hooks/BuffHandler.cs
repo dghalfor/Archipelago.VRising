@@ -29,7 +29,7 @@ public class BuffSystemSpawnServerPatch
         var entities = __instance.__query_401358634_0.ToEntityArray(Allocator.Temp);
         foreach (var entity in entities)
         {
-            var prefabGuid = DebugTool.GetAndLogPrefabGuid(entity, "BuffSystem_Spawn_Server:", true);
+            var prefabGuid = Helper.GetPrefabGUID(entity);
             switch (prefabGuid.GuidHash)
             {
                 case (int)Effects.AB_FeedBoss_03_Complete_Trigger:

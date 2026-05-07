@@ -28,27 +28,6 @@ namespace APVRising.Hooks;
 [HarmonyPatch]
 public static unsafe class Workstation
 {
-
-      [HarmonyPatch(typeof(ProgressionUtility), nameof(ProgressionUtility.GatherUnlockedRecipes))]
-      [HarmonyPrefix]
-      public static bool GatherUnlockedRecipesPrefix(EntityManager entityManager,
-          Entity progressionEntity,
-          NativeParallelHashSet<PrefabGUID> unlockedRecipes)
-      {
-
-          //Plugin.BepinLogger.LogInfo("Workstation On Create Prefix");
-          return true;
-      }
-
-    [HarmonyPatch(typeof(ResearchstationMenuMapper), nameof(ResearchstationMenuMapper.InitializeUI))]
-    [HarmonyPrefix]
-    public static bool UIPrefix()
-    {
-        Plugin.BepinLogger.LogInfo("Prefix On InitializeUi");
-        //ProgressionHandler.ClearUnlockBuffers();
-        //ProgressionHandler.CheckResearchStations();
-        return true;
-    }
     private static bool _isPatching = false;
     
     [HarmonyPatch(typeof(ResearchEntry), nameof(ResearchEntry.RefreshData))]
