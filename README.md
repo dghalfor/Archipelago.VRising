@@ -44,8 +44,8 @@ V Rising:
 * Connect to the archipelago
 * Change logs for AP progression to send to the archipelago
 * Make unlocks from the archipelago call
-* Include all progression elements in the current lock/unlock functionality (UnlockedShapeshiftElement, UnlockedRecipeElement(working), UnlockedBlueprintElement, UnlockedSpellBookAbility, UnlockedSpellPointPassives)
-* UnlockedVBlood likely should stay separate if possible, that would let players actually see what they've killed in the vblood menu
+* Include all progression elements in the current lock/unlock functionality (UnlockedShapeshiftElement, ~~UnlockedRecipeElement~~, ~~UnlockedBlueprintElement~~, UnlockedSpellBookAbility, UnlockedSpellPointPassives)
+* ~~UnlockedVBlood likely should stay separate if possible, that would let players actually see what they've killed in the vblood menu~~
 * Locally save the progression buffers and reload upon server start
 * Function to re-sync to the archipelago in case of crash or other unrecoverable state
 * Add give item functions to support filler, should be straightforward
