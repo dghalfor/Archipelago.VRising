@@ -50,6 +50,7 @@ V Rising:
 * Function to re-sync to the archipelago in case of crash or other unrecoverable state
 * Add give item functions to support filler, should be straightforward
 * Archipelago categorization of progression, spheres, etc.
+* LockResearch needs to be aware if the player has actually earned this in the archipelago or not.
 
 ## Ideas
 
