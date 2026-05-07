@@ -13,7 +13,7 @@ using Unity.Entities;
 using UnityEngine.EventSystems;
 
 namespace APVRising.Hooks;
-/*
+
 //Hooking into the buff system when a V Blood is killed
 [HarmonyPatch]
 public class BuffSystemSpawnServerPatch
@@ -37,13 +37,9 @@ public class BuffSystemSpawnServerPatch
                     var em = __instance.EntityManager;
                     if (em.HasBuffer<CreateGameplayEventsOnSpawn>(entity))
                     {
-                        Plugin.BepinLogger.LogDebug($"BuffSystem_Spawn_Server: Vblood kill triggered a spawn with the same buff, likely the blood pool. Entity: {entity}");
-                        em.GetBuffer<CreateGameplayEventsOnSpawn>(entity).Clear();
                         _bossEntitiesToDestroy = entity;
-
                     }
                     SendPlayerUpdate(__instance.EntityManager, entity, true);
-                    DestroyUtility.Destroy(__instance.EntityManager, entity);
                     break;
             }
         }
@@ -69,19 +65,24 @@ public class BuffSystemSpawnServerPatch
             if (em.HasBuffer<VBloodUnlockTechBuffer>(bossEntity))
             {
                 var techBuffer = em.GetBuffer<VBloodUnlockTechBuffer>(bossEntity);
-                Plugin.BepinLogger.LogDebug($"[AP] VBloodUnlockTechBuffer length: {techBuffer.Length}");
+                var userQuery = em.CreateEntityQuery(ComponentType.ReadOnly<User>(), ComponentType.ReadOnly<ProgressionMapper>());
+                var userEntities = userQuery.ToEntityArray(Allocator.Temp);
+
                 for (int i = 0; i < techBuffer.Length; i++)
                 {
                     var tech = techBuffer[i];
 
                     Plugin.BepinLogger.LogInfo($"[AP] Unlock Progression: {DebugTool.GetPrefabName(tech.Guid)}");
+                    
+                    foreach (var userEntity in userEntities)
+                    {
+                        ProgressionHandler.LockResearchUnlocksForPlayer(userEntity, new Stunlock.Core.PrefabGUID(tech.Guid.GuidHash));
+                        ChatMessage.NotifyClientLock(tech.Guid.GuidHash);
+                    }
+                    break;
                 }
             }
-            Plugin.BepinLogger.LogDebug($"BuffSystem_Spawn_Server Postfix: Attempting to destroy boss entity {bossEntity} associated with buff entity {_bossEntitiesToDestroy}");
-            DestroyUtility.Destroy(__instance.EntityManager, bossEntity);
         }
-
-        _bossEntitiesToDestroy = Entity.Null; // Clear the boss entity to destroy after handling
     }
 
     private static void SendPlayerUpdate(EntityManager em, Entity entity, bool killOnly)
@@ -98,4 +99,4 @@ public class BuffSystemSpawnServerPatch
             //Plugin.BepinLogger.LogInfo(userEntity, $"{(killOnly ? "Killed" : "Consumed")}: {DebugTool.GetPrefabName(target.Target._Entity)}");
         }
     }
-}*/
+}

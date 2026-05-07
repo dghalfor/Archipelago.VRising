@@ -321,32 +321,64 @@ namespace APVRising.Utils
                     return;
                 }
 
-                if (!em.HasBuffer<TechUnlockRecipeBuffer>(researchEntity))
-                    return;
-
-                var techBuffer = em.GetBuffer<TechUnlockRecipeBuffer>(researchEntity);
-                var unlockedBuffer = em.GetBuffer<UnlockedRecipeElement>(entity);
-                Plugin.BepinLogger.LogInfo($"Found {techBuffer.Length} recipes to unlock for tech {techPrefab._Value}");
-                for (int i = 0; i < techBuffer.Length; i++)
+                //Unlock recipes
+                if (em.HasBuffer<TechUnlockRecipeBuffer>(researchEntity))
                 {
-                    var element = techBuffer[i];
-
-                    bool alreadyUnlocked = false;
-                    for (int j = 0; j < unlockedBuffer.Length; j++)
+                    var techBuffer = em.GetBuffer<TechUnlockRecipeBuffer>(researchEntity);
+                    var unlockedBuffer = em.GetBuffer<UnlockedRecipeElement>(entity);
+                    Plugin.BepinLogger.LogInfo($"Found {techBuffer.Length} recipes to unlock for tech {techPrefab._Value}");
+                    for (int i = 0; i < techBuffer.Length; i++)
                     {
-                        if (unlockedBuffer[j].UnlockedRecipe == element.Guid)
-                        {
-                            Plugin.BepinLogger.LogInfo($"Recipe {element.Guid} already unlocked for player {userEntity.Index}, skipping");
-                            alreadyUnlocked = true;
-                            break;
-                        }
-                    }
+                        var element = techBuffer[i];
 
-                    if (alreadyUnlocked)
-                        continue;
-                    Plugin.BepinLogger.LogInfo($"Adding element to unlocked buffer: {element.Guid}");
-                    unlockedBuffer.Add(new UnlockedRecipeElement { UnlockedRecipe = element.Guid, UserHasRequiredContentFlags = true });
+                        bool alreadyUnlocked = false;
+                        for (int j = 0; j < unlockedBuffer.Length; j++)
+                        {
+                            if (unlockedBuffer[j].UnlockedRecipe == element.Guid)
+                            {
+                                Plugin.BepinLogger.LogInfo($"Recipe {element.Guid} already unlocked for player {userEntity.Index}, skipping");
+                                alreadyUnlocked = true;
+                                break;
+                            }
+                        }
+
+                        if (alreadyUnlocked)
+                            continue;
+                        Plugin.BepinLogger.LogInfo($"Adding element to unlocked buffer: {element.Guid}");
+                        unlockedBuffer.Add(new UnlockedRecipeElement { UnlockedRecipe = element.Guid, UserHasRequiredContentFlags = true });
+                    }
                 }
+
+                
+
+                //Unlock blueprints
+                if (em.HasBuffer<TechUnlockBlueprintBuffer>(researchEntity))
+                {
+                    var blueprintBuffer = em.GetBuffer<TechUnlockBlueprintBuffer>(researchEntity);
+                    var unlockedBPBuffer = em.GetBuffer<UnlockedBlueprintElement>(entity);
+                    Plugin.BepinLogger.LogInfo($"Found {blueprintBuffer.Length} blueprints to unlock for tech {techPrefab._Value}");
+                    for (int i = 0; i < blueprintBuffer.Length; i++)
+                    {
+                        var element = blueprintBuffer[i];
+
+                        bool alreadyUnlocked = false;
+                        for (int j = 0; j < unlockedBPBuffer.Length; j++)
+                        {
+                            if (unlockedBPBuffer[j].UnlockedBlueprint == element.Guid)
+                            {
+                                Plugin.BepinLogger.LogInfo($"Blueprint {element.Guid} already unlocked for player {userEntity.Index}, skipping");
+                                alreadyUnlocked = true;
+                                break;
+                            }
+                        }
+
+                        if (alreadyUnlocked)
+                            continue;
+                        Plugin.BepinLogger.LogInfo($"Adding element to unlocked buffer: {element.Guid}");
+                        unlockedBPBuffer.Add(new UnlockedBlueprintElement { UnlockedBlueprint = element.Guid, UserHasRequiredContentFlags = true });
+                    }
+                }
+                
             }
             entities.Dispose();
         }
@@ -380,26 +412,48 @@ namespace APVRising.Utils
                     return;
                 }
 
-                if (!em.HasBuffer<TechUnlockRecipeBuffer>(researchEntity))
-                    return;
-
-                var techBuffer = em.GetBuffer<TechUnlockRecipeBuffer>(researchEntity);
-                var unlockedBuffer = em.GetBuffer<UnlockedRecipeElement>(entity);
-                Plugin.BepinLogger.LogInfo($"Found {unlockedBuffer.Length} unlocked recipes for player {entity.Index}");
-                Plugin.BepinLogger.LogInfo($"Found {techBuffer.Length} recipes to lock for tech {techPrefab._Value}");
-                for (int j = 0; j < techBuffer.Length; j++)
+                if (em.HasBuffer<TechUnlockRecipeBuffer>(researchEntity))
                 {
-                    var element = techBuffer[j];
-                    for (int i = unlockedBuffer.Length - 1; i >= 0; i--)
+                    var techBuffer = em.GetBuffer<TechUnlockRecipeBuffer>(researchEntity);
+                    var unlockedBuffer = em.GetBuffer<UnlockedRecipeElement>(entity);
+                    Plugin.BepinLogger.LogInfo($"Found {unlockedBuffer.Length} unlocked recipes for player {entity.Index}");
+                    Plugin.BepinLogger.LogInfo($"Found {techBuffer.Length} recipes to lock for tech {techPrefab._Value}");
+                    for (int j = 0; j < techBuffer.Length; j++)
                     {
-                        if (unlockedBuffer[i].UnlockedRecipe == element.Guid)
+                        var element = techBuffer[j];
+                        for (int i = unlockedBuffer.Length - 1; i >= 0; i--)
                         {
-                            Plugin.BepinLogger.LogInfo($"Tech {techPrefab} should be locked but is in buffer, removing it");
-                            unlockedBuffer.RemoveAt(i);
-                            break;
+                            if (unlockedBuffer[i].UnlockedRecipe == element.Guid)
+                            {
+                                Plugin.BepinLogger.LogInfo($"Tech {techPrefab} should be locked but is in buffer, removing it");
+                                unlockedBuffer.RemoveAt(i);
+                                break;
+                            }
                         }
                     }
                 }
+                if (em.HasBuffer<TechUnlockBlueprintBuffer>(researchEntity))
+                {
+                    var blueprintBuffer = em.GetBuffer<TechUnlockBlueprintBuffer>(researchEntity);
+                    var unlockedBPBuffer = em.GetBuffer<UnlockedBlueprintElement>(entity);
+                    Plugin.BepinLogger.LogInfo($"Found {blueprintBuffer.Length} blueprints to unlock for tech {techPrefab._Value}");
+                    for (int i = 0; i < blueprintBuffer.Length; i++)
+                    {
+                        var element = blueprintBuffer[i];
+
+                        bool alreadyUnlocked = false;
+                        for (int j = unlockedBPBuffer.Length - 1; j >= 0; j--)
+                        {
+                            if (unlockedBPBuffer[j].UnlockedBlueprint == element.Guid)
+                            {
+                                Plugin.BepinLogger.LogInfo($"Blueprint {element.Guid} should be locked but is in buffer, for player {userEntity.Index}");
+                                unlockedBPBuffer.RemoveAt(j);
+                                break;
+                            }
+                        }
+                    }
+                }
+
             }
             entities.Dispose();
         }
