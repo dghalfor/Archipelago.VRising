@@ -58,7 +58,7 @@ public class DeathEventHandler
             // Player death
             if (DeathLinkHandler.deathLinkEnabled && __instance.EntityManager.TryGetComponentData<RespawnCharacter>(ev.Died, out var respawnData))
             {
-                Plugin.ArchipelagoClient.DeathLinkHandler.SendDeathLink();
+                Plugin.APClient.DeathLinkHandler.SendDeathLink();
             }
         }
     }

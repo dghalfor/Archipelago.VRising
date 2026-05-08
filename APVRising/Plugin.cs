@@ -27,7 +27,7 @@ public class Plugin : BasePlugin
     public const string ModDisplayInfo = $"{PluginName} v{PluginVersion}";
     private const string APDisplayInfo = $"Archipelago v{ArchipelagoClient.APVersion}";
     public static ManualLogSource BepinLogger;
-    public static ArchipelagoClient ArchipelagoClient;
+    public static ArchipelagoClient APClient;
     Harmony _harmony;
     private static World _serverWorld;
     private static World _clientWorld;
@@ -38,7 +38,7 @@ public class Plugin : BasePlugin
     {
         // Plugin startup logic
         BepinLogger = Log;
-        ArchipelagoClient = new ArchipelagoClient();
+        APClient = new ArchipelagoClient();
         ArchipelagoConsole.Awake();
         
         // Harmony patching
@@ -53,10 +53,7 @@ public class Plugin : BasePlugin
 
         if (IsServer)
         {
-            ArchipelagoClient.Instance = new ArchipelagoClient();
-
             // Register all commands in the assembly with VCF
-
             ArchipelagoConsole.LogMessage($"{ModDisplayInfo} loaded!");
         }
         Plugin.BepinLogger.LogInfo("Do I even exist");

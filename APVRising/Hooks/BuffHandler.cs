@@ -73,7 +73,8 @@ public class BuffSystemSpawnServerPatch
                     var tech = techBuffer[i];
 
                     Plugin.BepinLogger.LogInfo($"[AP] Unlock Progression: {DebugTool.GetPrefabName(tech.Guid)}");
-                    
+                    Plugin.APClient.SendLocationCheck(DebugTool.GetPrefabName(tech.Guid));
+
                     foreach (var userEntity in userEntities)
                     {
                         ProgressionHandler.LockResearchUnlocksForPlayer(userEntity, new Stunlock.Core.PrefabGUID(tech.Guid.GuidHash));

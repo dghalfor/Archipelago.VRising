@@ -1,11 +1,18 @@
-﻿using APVRising.Utils;
+﻿using APVRising.Data;
+using APVRising.Hooks;
+using APVRising.Utils;
 using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Helpers;
+using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Packets;
+using HarmonyLib;
+using Internal.Cryptography;
 using ProjectM;
+using ProjectM.Network;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,14 +21,13 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading;
 using Unity.Collections;
+using Unity.Entities;
 
 namespace APVRising.Archipelago;
 
 // Shamelessly stolen (& adapted) code from ArchipelagoBepInExPluginTemplate. Same goes for the rest of the files in this directory.
 public class ArchipelagoClient
 {
-    public static ArchipelagoClient Instance;
-
     public const string APVersion = "0.6.7";
     private const string Game = "Manual_VRising_Phye";
 
@@ -68,6 +74,7 @@ public class ArchipelagoClient
         session.Items.ItemReceived += OnItemReceived;
         session.Socket.ErrorReceived += OnSessionErrorReceived;
         session.Socket.SocketClosed += OnSessionSocketClosed;
+        //session.Locations.CompleteLocationChecksAsync += 
     }
 
     /// <summary>
@@ -83,7 +90,7 @@ public class ArchipelagoClient
                     session.TryConnectAndLogin(
                         Game,
                         ServerData.SlotName,
-                        ItemsHandlingFlags.NoItems, // TODO make sure to change this line
+                        ItemsHandlingFlags.AllItems, 
                         new Version(APVersion),
                         password: ServerData.Password,
                         requestSlotData: false // ServerData.NeedSlotData
@@ -153,10 +160,19 @@ public class ArchipelagoClient
         session.Socket.SendPacketAsync(new SayPacket { Text = message });
     }
 
+    public void SendLocationCheck(string locationName)
+    {
+        var apLocationId = session.Locations.GetLocationIdFromName(Game, DataDicts.EntityNameToAPLocation[locationName]);
+        session.Locations.CompleteLocationChecksAsync(apLocationId);
+    }
+
     /// <summary>
     /// we received an item so reward it here
     /// </summary>
     /// <param name="helper">item helper which we can grab our item from</param>
+    /// 
+    public static ConcurrentQueue<ItemInfo> PendingItems = new ConcurrentQueue<ItemInfo>();
+
     private void OnItemReceived(ReceivedItemsHelper helper)
     {
         var receivedItem = helper.DequeueItem();
@@ -165,12 +181,9 @@ public class ArchipelagoClient
 
         ServerData.Index++;
 
-        FixedString512Bytes fixedString = new($"Recieved {receivedItem.ItemName} from {receivedItem.Player} ({receivedItem.LocationDisplayName})");
-        ServerChatUtils.SendSystemMessageToAllClients(Plugin.Server.EntityManager, ref fixedString);
-
-        // TODO reward the item here
-        // if items can be received while in an invalid state for actually handling them, they can be placed in a local
-        // queue/collection to be handled later
+        // Don't touch EntityManager here - just queue the item
+        PendingItems.Enqueue(receivedItem);
+        Plugin.BepinLogger.LogInfo($"[AP] Queued item: {receivedItem.ItemName}");
     }
 
     /// <summary>
