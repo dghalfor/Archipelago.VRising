@@ -33,11 +33,12 @@ V Rising:
 
 ## Known Issues
 
-* Elements removed from research at runtime are re-added after saving and closing the game.
 * There is a big lag spike shortly after launching the server. (only tested in host+play)
 
 ## To-do
-
+* Elements removed from research at runtime are re-added after saving and closing the game.
+  * ~~Function to re-sync to the archipelago in case of crash or other unrecoverable state~~ - resync command
+  * Locally save the progression buffers and reload upon server start
 * ~~DiscoverResearch needs to work like unlockProgression and remove the result~~
 * Make the progression buffers saved and written by startresearch/stopresearch actually connected to the archipelago's progression, not just variables in code
 * Refinement Station progress being blocked, there is some nuance here of refinement being locked/unlocked in station or even hidden in station.
@@ -47,8 +48,6 @@ V Rising:
 * ~~Make unlocks from the archipelago call~~ (working pending mapping)
 * Include all progression elements in the current lock/unlock functionality (~~UnlockedShapeshiftElement~~, ~~UnlockedRecipeElement~~, ~~UnlockedBlueprintElement~~, UnlockedSpellBookAbility, UnlockedSpellPointPassives)
 * ~~UnlockedVBlood likely should stay separate if possible, that would let players actually see what they've killed in the vblood menu~~
-* Locally save the progression buffers and reload upon server start
-* Function to re-sync to the archipelago in case of crash or other unrecoverable state
 * Add give item functions to support filler, should be straightforward
 * ~~Archipelago categorization of progression, spheres, etc.~~ -Phye's manual (https://github.com/PhyeBloodrose/V-Rising-Manual) is being adapted for this use case
   * Add dictionary between the nicely formatted names and the Tech_collection entity names

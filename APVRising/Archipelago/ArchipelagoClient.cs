@@ -218,6 +218,39 @@ public class ArchipelagoClient
         Disconnect();
     }
 
+    public void Resync()
+    {
+        var query = Plugin.EntityManager.CreateEntityQuery(ComponentType.ReadOnly<User>(), ComponentType.ReadOnly<ProgressionMapper>());
+        var userEntities = query.ToEntityArray(Allocator.Temp);
+        var checkedLocations = session.Locations.AllLocationsChecked;
+        var receivedItemLocationIds = session.Items.AllItemsReceived
+            .Select(item => item.ItemId)
+            .ToHashSet();
+
+        var locationsToLock = checkedLocations
+            .Where(locationId => !receivedItemLocationIds.Contains(locationId))
+            .ToList();
+
+        Plugin.BepinLogger.LogInfo($"[AP] Sync: {checkedLocations.Count} checked, {receivedItemLocationIds.Count} received, {locationsToLock.Count} to lock");
+
+        foreach (var locationId in locationsToLock)
+        {
+            var locationName = session.Locations.GetLocationNameFromId(locationId);
+            Plugin.BepinLogger.LogInfo($"[AP] Locking: {locationId} ({locationName})");
+            foreach (var userEntity in userEntities) { 
+                if (DataDicts.APLocationToEntityName.TryGetValue(locationName, out var entityName))
+                {
+                    if (DataDicts.TechToPrefab.TryGetValue(entityName, out var prefab))
+                    {
+                        ProgressionHandler.LockResearchUnlocksForPlayer(userEntity, prefab);
+                        ChatMessage.NotifyClientLock(prefab.GuidHash);
+                    }
+                } 
+            }
+        }
+        userEntities.Dispose();
+    }
+
     private static Dictionary<string, string> entityNameToAPLocation;
     /// <summary>
     /// Fetch a dictionary of entity names and AP location names. May not be all-inclusive, check at runtime.

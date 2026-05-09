@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ProjectM.CastleBuilding.GenerateCastleSystem.LayoutRoom;
 
 namespace APVRising.Data
 {
@@ -13,10 +14,12 @@ namespace APVRising.Data
         {
             {"Tech_Collection_VBlood_T02_AlphaWolf", "Alpha the White Wolf (Wolf Form)" },
             {"Tech_Collection_VBlood_T02_KeelyFrostArrow", "Keely the Frost Archer (Tannery)"},
-            { "Tech_Collection_VBlood_T05_FerociousBear","Kodia the Ferocious Bear (Bear Form)" },
+            {"Tech_Collection_VBlood_T05_FerociousBear","Kodia the Ferocious Bear (Bear Form)" },
             {"Tech_Collection_VBlood_T05_FerociousBear_Rugs","Kodia the Ferocious Bear (Fur Rugs)" },
             };
-            public static readonly Dictionary<string, PrefabGUID> TechToPrefab = new Dictionary<string, PrefabGUID>
+        public static readonly Dictionary<string, string> APLocationToEntityName = EntityNameToAPLocation.ToDictionary(kvp => kvp.Value, kvp => kvp.Key);
+
+        public static readonly Dictionary<string, PrefabGUID> TechToPrefab = new Dictionary<string, PrefabGUID>
             {
                 { "Tech_Ability_CommandingForm", new PrefabGUID(-1301155150) },
                 { "Tech_Ability_PsychicForm", new PrefabGUID(-647200166) },
@@ -396,6 +399,8 @@ namespace APVRising.Data
                 { "Tech_Weapon_Whip_T06", new PrefabGUID(1500666524) },
                 { "Tech_Weapon_Whip_T08", new PrefabGUID(1515808838) },
             };
-        }
-    
+        public static readonly Dictionary<PrefabGUID, string> PrefabToTech = TechToPrefab.ToDictionary(kvp => kvp.Value, kvp => kvp.Key);
+
+    }
+
 }

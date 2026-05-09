@@ -82,4 +82,11 @@ public static class ArchipelagoCommands
         ChatMessage.NotifyClientLock(guid);
         ctx.Reply($"Locking tech with GUID: {guid}");
     }
+
+    [Command("sync")]
+    public static void APSync(ICommandContext ctx)
+    {
+        Plugin.APClient.Resync();
+        ctx.Reply($"Syncing progression...");
+    }
 }
