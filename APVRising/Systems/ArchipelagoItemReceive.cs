@@ -1,7 +1,9 @@
 ﻿using APVRising.Archipelago;
 using Il2CppInterop.Runtime;
+using KindredCommands.Models;
 using ProjectM;
 using ProjectM.Network;
+using Stunlock.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +11,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Unity.Collections;
 using Unity.Entities;
+using UnityEngine;
+using VampireCommandFramework;
 
 namespace APVRising.Systems
 {
@@ -45,8 +49,66 @@ namespace APVRising.Systems
                 Plugin.BepinLogger.LogInfo($"[AP] Unlocking tech for {userEntities.Length} users");
 
                 // your unlock logic here per user entity
-
+                foreach (var userEntity in userEntities)
+                {
+                    var itemName = Plugin.APClient.GetItemNameFromId(item.ItemId);
+                    if (itemName.StartsWith("Item"))
+                    {
+                        //TODO Need item targets before this works
+                        //Utils.Helper.TryGiveItem(userEntity, itemName, 1, out var _);
+                    }
+                }
                 userEntities.Dispose();
+            }
+        }
+
+        // KindredCommands GiveBloodPotion/GiveBloodMerlot
+        public static void GiveBloodPotion(Entity user,BloodType type = BloodType.Frailed, float quality = 100f, int quantity = 1)
+        {
+            quality = Mathf.Clamp(quality, 0, 100);
+            for (var i = 0; i < quantity; i++)
+            {
+                if (!Utils.Helper.TryGiveItem(user, new PrefabGUID(1223264867), 1, out var entity)) { 
+                    //Not sure how to get drop and get the entity to rewrite it
+                    //Utils.Helper.DropItemNearby(user, new PrefabGUID(1223264867), 1);
+                }
+
+                var blood = new StoredBlood()
+                {
+                    BloodQuality = quality,
+                    PrimaryBloodType = new PrefabGUID((int)type)
+                };
+
+                Plugin.EntityManager.SetComponentData(entity, blood);
+            }
+        }
+
+        public static void GiveBloodMerlotCommand(Entity user, BloodType primaryType = BloodType.Frailed, float primaryQuality = 100f, BloodType secondaryType = BloodType.Frailed, float secondaryQuality = 100f, int secondaryTrait = 1, int quantity = 1)
+        {
+            primaryQuality = Mathf.Clamp(primaryQuality, 0, 100);
+            secondaryQuality = Mathf.Clamp(secondaryQuality, 0, 100);
+            secondaryTrait = Mathf.Clamp(secondaryTrait, 1, 3);
+            for (var i = 0; i < quantity; i++)
+            {
+                if (!Utils.Helper.TryGiveItem(user, new PrefabGUID(1223264867), 1, out var entity))
+                {
+                    //Not sure how to get drop and get the entity to rewrite it
+                    //Utils.Helper.DropItemNearby(user, new PrefabGUID(1223264867), 1);
+                }
+
+                var blood = new StoredBlood()
+                {
+                    BloodQuality = primaryQuality,
+                    PrimaryBloodType = new PrefabGUID((int)primaryType),
+                    SecondaryBlood = new()
+                    {
+                        Quality = secondaryQuality,
+                        Type = new PrefabGUID((int)secondaryType),
+                        BuffIndex = (byte)(secondaryTrait - 1)
+                    }
+                };
+
+                Plugin.EntityManager.SetComponentData(entity, blood);
             }
         }
     }

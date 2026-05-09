@@ -160,6 +160,11 @@ public class ArchipelagoClient
         session.Socket.SendPacketAsync(new SayPacket { Text = message });
     }
 
+    public string GetItemNameFromId(long itemId)
+    {
+        return session.Items.GetItemName(itemId);
+    }
+
     public void SendLocationCheck(string locationName)
     {
         try {
