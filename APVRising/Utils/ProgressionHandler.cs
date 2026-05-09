@@ -349,8 +349,6 @@ namespace APVRising.Utils
                     }
                 }
 
-                
-
                 //Unlock blueprints
                 if (em.HasBuffer<TechUnlockBlueprintBuffer>(researchEntity))
                 {
@@ -378,7 +376,34 @@ namespace APVRising.Utils
                         unlockedBPBuffer.Add(new UnlockedBlueprintElement { UnlockedBlueprint = element.Guid, UserHasRequiredContentFlags = true });
                     }
                 }
-                
+
+                if (em.HasBuffer<ProgressionBookShapeshiftElement>(researchEntity))
+                {
+                    var progressionShapeshiftBuffer = em.GetBuffer<ProgressionBookShapeshiftElement>(researchEntity);
+                    var unlockedShapeshiftBuffer = em.GetBuffer<UnlockedShapeshiftElement>(entity);
+                    Plugin.BepinLogger.LogInfo($"Found {progressionShapeshiftBuffer.Length} blueprints to unlock for tech {techPrefab._Value}");
+                    for (int i = 0; i < progressionShapeshiftBuffer.Length; i++)
+                    {
+                        var element = progressionShapeshiftBuffer[i];
+
+                        bool alreadyUnlocked = false;
+                        for (int j = 0; j < unlockedShapeshiftBuffer.Length; j++)
+                        {
+                            if (unlockedShapeshiftBuffer[j].UnlockedShapeshift == element.Shapeshift)
+                            {
+                                Plugin.BepinLogger.LogInfo($"Blueprint {element.Shapeshift} already unlocked for player {userEntity.Index}, skipping");
+                                alreadyUnlocked = true;
+                                break;
+                            }
+                        }
+
+                        if (alreadyUnlocked)
+                            continue;
+                        Plugin.BepinLogger.LogInfo($"Adding element to unlocked buffer: {element.Shapeshift}");
+                        unlockedShapeshiftBuffer.Add(new UnlockedShapeshiftElement { UnlockedShapeshift = element.Shapeshift, UserHasRequiredContentFlags = true });
+                    }
+                }
+
             }
             entities.Dispose();
         }
@@ -448,6 +473,27 @@ namespace APVRising.Utils
                             {
                                 Plugin.BepinLogger.LogInfo($"Blueprint {element.Guid} should be locked but is in buffer, for player {userEntity.Index}");
                                 unlockedBPBuffer.RemoveAt(j);
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (em.HasBuffer<ProgressionBookShapeshiftElement>(researchEntity))
+                {
+                    var progressionUnlockBuffer = em.GetBuffer<ProgressionBookShapeshiftElement>(researchEntity);
+                    var unlockedShapeshiftBuffer = em.GetBuffer<UnlockedShapeshiftElement>(entity);
+                    Plugin.BepinLogger.LogInfo($"Found {progressionUnlockBuffer.Length} blueprints to unlock for tech {techPrefab._Value}");
+                    for (int i = 0; i < progressionUnlockBuffer.Length; i++)
+                    {
+                        var element = progressionUnlockBuffer[i];
+
+                        bool alreadyUnlocked = false;
+                        for (int j = unlockedShapeshiftBuffer.Length - 1; j >= 0; j--)
+                        {
+                            if (unlockedShapeshiftBuffer[j].UnlockedShapeshift == element.Shapeshift)
+                            {
+                                Plugin.BepinLogger.LogInfo($"Shapeshift {element.Shapeshift} should be locked but is in buffer, for player {userEntity.Index}");
+                                unlockedShapeshiftBuffer.RemoveAt(j);
                                 break;
                             }
                         }

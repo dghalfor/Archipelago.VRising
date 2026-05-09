@@ -162,8 +162,15 @@ public class ArchipelagoClient
 
     public void SendLocationCheck(string locationName)
     {
-        var apLocationId = session.Locations.GetLocationIdFromName(Game, DataDicts.EntityNameToAPLocation[locationName]);
-        session.Locations.CompleteLocationChecksAsync(apLocationId);
+        try {
+            var apLocationId = session.Locations.GetLocationIdFromName(Game, DataDicts.EntityNameToAPLocation[locationName]);
+            session.Locations.CompleteLocationChecksAsync(apLocationId);
+        }
+        catch (Exception e)
+        {
+            FixedString512Bytes fixedString = new($"Could not send location check, please make sure you are connected by entering the command '.connect'");
+            ServerChatUtils.SendSystemMessageToAllClients(Plugin.Server.EntityManager, ref fixedString);
+        }
     }
 
     /// <summary>

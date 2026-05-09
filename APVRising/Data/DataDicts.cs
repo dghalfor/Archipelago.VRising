@@ -12,8 +12,10 @@ namespace APVRising.Data
         public static readonly Dictionary<string, string> EntityNameToAPLocation = new Dictionary<string, string>
         {
             {"Tech_Collection_VBlood_T02_AlphaWolf", "Alpha the White Wolf (Wolf Form)" },
-            {"Tech_Collection_VBlood_T02_KeelyFrostArrow", "Keely the Frost Archer (Tannery)"}
-        };
+            {"Tech_Collection_VBlood_T02_KeelyFrostArrow", "Keely the Frost Archer (Tannery)"},
+            { "Tech_Collection_VBlood_T05_FerociousBear","Kodia the Ferocious Bear (Bear Form)" },
+            {"Tech_Collection_VBlood_T05_FerociousBear_Rugs","Kodia the Ferocious Bear (Fur Rugs)" },
+            };
             public static readonly Dictionary<string, PrefabGUID> TechToPrefab = new Dictionary<string, PrefabGUID>
             {
                 { "Tech_Ability_CommandingForm", new PrefabGUID(-1301155150) },
