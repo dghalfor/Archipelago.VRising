@@ -319,6 +319,21 @@ public static class TechToRecipeMapping
         }
     }
 
+    public static void LockRefinementStationRecipe(DynamicBuffer<RefinementstationRecipesBuffer> recipeBuffer, PrefabGUID unlockedRecipe)
+    {
+        // Tech is locked, only remove if the recipe is mapped
+        for (int i = 0; i < recipeBuffer.Length; i++)
+        {
+            if (recipeBuffer[i].RecipeGuid == unlockedRecipe)
+            {
+                var recipe = recipeBuffer[i];
+                recipe.Unlocked = false;
+                recipeBuffer[i] = recipe;
+                break;
+            }
+        }
+    }
+    
     public static void SyncWorkstation(DynamicBuffer<WorkstationRecipesBuffer> recipeBuffer, List<int> unlockedTech)
     {
         if (unlockedTech == null)
