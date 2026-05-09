@@ -32,6 +32,7 @@ internal class DiscoverResearchHandler
         Entity progressionEntity)
     {
         Plugin.BepinLogger.LogInfo($"[AP] UnlockProgression: {DebugTool.GetPrefabName(randomResearch.ResearchGuid)}");
+        Plugin.APClient.SendLocationCheck(DebugTool.GetPrefabName(randomResearch.ResearchGuid));
 
         _lastRolledResearchGuid = randomResearch.ResearchGuid;
         return true;

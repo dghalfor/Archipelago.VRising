@@ -18,26 +18,7 @@ namespace APVRising.Hooks;
 [HarmonyPatch]
 public static class UnlockResearch
 {
-    /*
-	// majority of this code adapted from VampireCommandFramework @ VCF.Core/Breadstone/ChatHook.cs
-	[HarmonyPatch(typeof(UnlockResearchSystem), nameof(UnlockResearchSystem.UnlockProgression))]
-    [HarmonyPrefix]
-    public static bool Prefix(
-    EntityManager entityManager,
-    UpdateUnlockedJobData progressionJobData,
-    PrefabGUID researchGuid,
-    Entity user,
-    EntityCommandBuffer commandBuffer,
-    PrefabLookupMap prefabMapping,
-    Entity progressionEntity,
-    bool logOnDuplicate = true)
-    {
-        var name = DebugTool.GetPrefabName(researchGuid);
-        Plugin.BepinLogger.LogInfo($"[AP] UnlockProgression: {DebugTool.GetPrefabName(researchGuid)}");
-        Plugin.EntityManager.GetBuffer<TechUnlockRecipeBuffer>(researchGuid);
-        return true;
-    }*/
-
+    
     [HarmonyPatch(typeof(UnlockResearchSystem), nameof(UnlockResearchSystem.UnlockProgression))]
     [HarmonyPrefix]
     public static bool Prefix(
@@ -51,6 +32,7 @@ public static class UnlockResearch
         bool logOnDuplicate = true)
     {
         Plugin.BepinLogger.LogInfo($"[AP] UnlockProgression: {DebugTool.GetPrefabName(researchGuid)}");
+        Plugin.APClient.SendLocationCheck(DebugTool.GetPrefabName(researchGuid));
         return true;
     }
 

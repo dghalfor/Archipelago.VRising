@@ -20,6 +20,7 @@ public static class ArchipelagoCommands
         ArchipelagoClient.ServerData.Password = password;
         ArchipelagoClient.ServerData.SlotName = slotName;
         Plugin.APClient.Connect();
+        Plugin.APClient.Resync();
     }
 
     //[Command("deathlink", shortHand: "dl", description: "Toggle Death Link", adminOnly: false)]
@@ -87,6 +88,6 @@ public static class ArchipelagoCommands
     public static void APSync(ICommandContext ctx)
     {
         Plugin.APClient.Resync();
-        ctx.Reply($"Syncing progression...");
+        ctx.Reply($"Synced Progression");
     }
 }

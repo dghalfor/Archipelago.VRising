@@ -407,6 +407,7 @@ namespace APVRising.Utils
             }
             entities.Dispose();
         }
+
         public static void LockResearchUnlocksForPlayer(Entity userEntity, PrefabGUID techPrefab)
         {
             EntityManager em;

@@ -39,7 +39,6 @@ public class BuffSystemSpawnServerPatch
                     {
                         _bossEntitiesToDestroy = entity;
                     }
-                    SendPlayerUpdate(__instance.EntityManager, entity, true);
                     break;
             }
         }
@@ -49,8 +48,10 @@ public class BuffSystemSpawnServerPatch
     [HarmonyPostfix]
     public static void Postfix(BuffSystem_Spawn_Server __instance)
     {
+        if (_bossEntitiesToDestroy == Entity.Null) return; // If no boss entity was marked for destruction, skip the rest of the logic
+
         var em = __instance.EntityManager;
-        // Get the boss entity from the buff before destroying
+        // Get the boss entity from the buff
 
         if (em.TryGetComponentData<SpellTarget>(_bossEntitiesToDestroy, out var spellTarget))
         {
@@ -61,7 +62,7 @@ public class BuffSystemSpawnServerPatch
                 Plugin.BepinLogger.LogDebug($"VBloodConsumeSource: School {consumeSource.SpellSchool}, Tier {consumeSource.Tier}, SchoolPoints {consumeSource.SpellSchoolPoints}, passivePoints {consumeSource.PassivePoints}");
             }
 
-            // Log VBloodUnlockTechBuffer buffer contents
+            // Handle VBloodUnlockTechBuffer buffer contents
             if (em.HasBuffer<VBloodUnlockTechBuffer>(bossEntity))
             {
                 var techBuffer = em.GetBuffer<VBloodUnlockTechBuffer>(bossEntity);
@@ -72,7 +73,7 @@ public class BuffSystemSpawnServerPatch
                 {
                     var tech = techBuffer[i];
 
-                    Plugin.BepinLogger.LogInfo($"[AP] Unlock Progression: {DebugTool.GetPrefabName(tech.Guid)}");
+                    Plugin.BepinLogger.LogInfo($"[AP] Lock Progression: {DebugTool.GetPrefabName(tech.Guid)}");
                     Plugin.APClient.SendLocationCheck(DebugTool.GetPrefabName(tech.Guid));
 
                     foreach (var userEntity in userEntities)
@@ -80,24 +81,8 @@ public class BuffSystemSpawnServerPatch
                         ProgressionHandler.LockResearchUnlocksForPlayer(userEntity, new Stunlock.Core.PrefabGUID(tech.Guid.GuidHash));
                         ChatMessage.NotifyClientLock(tech.Guid.GuidHash);
                     }
-                    break;
                 }
             }
-        }
-    }
-
-    private static void SendPlayerUpdate(EntityManager em, Entity entity, bool killOnly)
-    {
-        if (em.TryGetComponentData<SpellTarget>(entity, out var target))
-        {
-            // If the owner is not a player character, ignore this entity
-            if (!em.TryGetComponentData<EntityOwner>(entity, out var entityOwner)) return;
-            if (!em.TryGetComponentData<PlayerCharacter>(entityOwner.Owner, out var playerCharacter)) return;
-
-            PlayerCache.FindPlayer(playerCharacter.Name.ToString(), true, out _, out var userEntity);
-            // target.BloodConsumeSource can buff/debuff the blood quality
-            Plugin.BepinLogger.LogInfo($"user {userEntity.ToString}, killed {DebugTool.GetPrefabName(target.Target._Entity)}");
-            //Plugin.BepinLogger.LogInfo(userEntity, $"{(killOnly ? "Killed" : "Consumed")}: {DebugTool.GetPrefabName(target.Target._Entity)}");
         }
     }
 }
