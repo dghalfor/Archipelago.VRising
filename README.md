@@ -41,10 +41,10 @@ V Rising:
   * Locally save the progression buffers and reload upon server start
 * ~~DiscoverResearch needs to work like unlockProgression and remove the result~~
 * Make the progression buffers saved and written by startresearch/stopresearch actually connected to the archipelago's progression, not just variables in code
-* Refinement Station progress being blocked, there is some nuance here of refinement being locked/unlocked in station or even hidden in station.
+* ~~Refinement Station progress being blocked, there is some nuance here of refinement being locked/unlocked in station or even hidden in station.~~
 * Journal progress being blocked like the other progression.
 * ~~Connect to the archipelago~~
-* Change logs for AP progression to send to the archipelago (~~bosses~~, research, discover)
+* ~~Change logs for AP progression to send to the archipelago (~~bosses~~, research, discover)~~
 * ~~Make unlocks from the archipelago call~~ (working pending mapping)
 * Include all progression elements in the current lock/unlock functionality (~~UnlockedShapeshiftElement~~, ~~UnlockedRecipeElement~~, ~~UnlockedBlueprintElement~~, UnlockedSpellBookAbility, UnlockedSpellPointPassives)
 * ~~UnlockedVBlood likely should stay separate if possible, that would let players actually see what they've killed in the vblood menu~~
