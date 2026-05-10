@@ -1,5 +1,6 @@
 ﻿using APVRising.Data;
 using APVRising.Hooks;
+using APVRising.Systems;
 using APVRising.Utils;
 using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
@@ -69,7 +70,7 @@ public class ArchipelagoClient
         {
             ArchipelagoConsole.LogMessage(message.ToString());
             FixedString512Bytes fixedMessage = new(message.ToString());
-            ServerChatUtils.SendSystemMessageToAllClients(Plugin.Server.EntityManager, ref fixedMessage);
+            PendingMessages.Enqueue(fixedMessage.ToString());
         };
         session.Items.ItemReceived += OnItemReceived;
         session.Socket.ErrorReceived += OnSessionErrorReceived;
@@ -104,6 +105,8 @@ public class ArchipelagoClient
         }
     }
 
+    public static System.Collections.Concurrent.ConcurrentQueue<string> PendingMessages = new();
+
     /// <summary>
     /// handle the connection result and do things
     /// </summary>
@@ -137,15 +140,10 @@ public class ArchipelagoClient
         }
 
         FixedString512Bytes outTextFixed = new(outText);
-        ServerChatUtils.SendSystemMessageToAllClients(Plugin.Server.EntityManager, ref outTextFixed);
+        PendingMessages.Enqueue(outText.ToString());
         ArchipelagoConsole.LogMessage(outText);
+        ArchipelagoItemSystem.PendingResync = true;
         attemptingConnection = false;
-        if (Authenticated)
-        {
-            Resync();
-            FixedString512Bytes resyncMsg = new("##RESYNC##");
-            ServerChatUtils.SendSystemMessageToAllClients(Plugin.Server.EntityManager, ref resyncMsg);
-        }
     }
 
     /// <summary>
@@ -238,7 +236,21 @@ public class ArchipelagoClient
         var receivedItemLocationIds = session.Items.AllItemsReceived
             .Select(item => item.ItemId)
             .ToHashSet();
+        foreach (var checks in checkedLocations)
+        {
+            if (!ArchipelagoData.CheckedLocations.Contains((int)checks))
+            {
+                ArchipelagoData.CheckedLocations.Add((int)checks);
+            }
+        }
 
+        foreach (var received in receivedItemLocationIds)
+        {
+            if (!ArchipelagoData.ReceivedChecks.Contains((int)received))
+            {
+                ArchipelagoData.CheckedLocations.Add((int)received);
+            }
+        }
         var locationsToLock = checkedLocations
             .Where(locationId => !receivedItemLocationIds.Contains(locationId))
             .ToList();

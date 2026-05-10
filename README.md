@@ -34,6 +34,7 @@ V Rising:
 ## Known Issues
 
 * There is a big lag spike shortly after launching the server. (only tested in host+play)
+* Client entity manager getting hit on server logs during locks post sync
 
 ## To-do
 * Elements removed from research at runtime are re-added after saving and closing the game.

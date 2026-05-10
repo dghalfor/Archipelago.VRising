@@ -13,6 +13,7 @@ namespace APVRising.Data
         {
         public static readonly Dictionary<string, string> EntityNameToAPLocation = new Dictionary<string, string>
         {
+            /*
             // --- ABILITIES ---
             {"Tech_Ability_CommandingForm", "Quincey the Bandit King (Smithy)"}, // [?] Commanding Form is gained from Quincey
             {"Tech_Ability_PsychicForm", "Jade the Vampire Hunter (Pistols)"}, // [?] Psychic/Rat Form from Nibbles — but Commanding Form fits Quincey better; see note
@@ -208,7 +209,6 @@ namespace APVRising.Data
             { "Tech_Collection_VBlood_T02_RufusForeman_Crossbow", "Rufus the Foreman (Copper Crossbow)"},
             { "Tech_Storage_Pack_T01_A", "Errol the Stonebreaker (Material and Gem Storage)"},
             { "Tech_Collection_Brazier_01", "Errol the Stonebreaker (Copper Torch & Brazier)"},
-            { "Tech_Collection_VBlood_T02_StoneBreaker_CopperWeapons", "Errol the Stonebreaker (Copper Torch & Brazier)"}, // [?] Copper Weapons not a listed location — closest match
             { "Tech_Collection_VBlood_T03_Fisherman", "Finn the Fisherman (Fishing Pole)"},
             { "Tech_Collection_VBlood_T03_Goreswine", "Goreswine the Ravager (Tomb)"},
             { "Tech_Collection_VBlood_T03_Goreswine_MagicSource", "Goreswine the Ravager (Gravedigger Ring)"},
@@ -346,7 +346,7 @@ namespace APVRising.Data
             { "Tech_Collection_Carpet_T01", "Research Desk - Learn Simple Carpets"},
             { "Tech_Collection_Carpet_T02", "Study - Learn Dux Carpet Collection"},
             { "Tech_Collection_Carpet_T03", "Athenaeum - Learn Distinguished Carpet Collection"},
-            { "Tech_Collection_Castle_Paintings", "Maja the Dark Savant (Study)"},
+            //{ "Tech_Collection_Castle_Paintings", "Maja the Dark Savant (Study)"},
             { "Tech_Collection_Castle_Windows_T01", "Research Desk - Learn Assortment of Windows"},
 
             // --- T04 ARMOR (Merciless / Hollowfang tier) ---
@@ -422,11 +422,11 @@ namespace APVRising.Data
 
             // --- FLOOR TILES ---
             { "Tech_Floor_AlchemyLab", "Research Desk - Learn Alchemy Lab Flooring"},
-            { "Tech_Floor_Crypt", "Goreswine the Ravager (Tomb)"}, // [?]
+            //{ "Tech_Floor_Crypt", "Goreswine the Ravager (Tomb)"}, // [?]
             { "Tech_Floor_Forge", "Research Desk - Learn Forge Flooring"},
-            { "Tech_Floor_Jewelcrafting", "Errol the Stonebreaker (Material and Gem Storage)"}, // [?]
+            //{ "Tech_Floor_Jewelcrafting", "Errol the Stonebreaker (Material and Gem Storage)"}, // [?]
             { "Tech_Floor_Library", "Study - Learn Library Flooring"},
-            { "Tech_Floor_Prison", "Vincent the Frostbringer (Prison Framework)"},// [?]
+            //{ "Tech_Floor_Prison", "Vincent the Frostbringer (Prison Framework)"},// [?]
             { "Tech_Floor_Tailor", "Study - Learn Tailor's Flooring"},
 
             // --- LIQUID STATION ---
@@ -437,7 +437,7 @@ namespace APVRising.Data
             // T04 rings
             { "Tech_MagicSource_General_T04_Duskwatcher", "Research Desk - Learn Ring of the Duskwatcher"},
             { "Tech_MagicSource_General_T04_EmberChain", "Research Desk - Learn Ring of the Dawnrunner"},
-            { "Tech_MagicSource_General_T04_FrozenEye", "Research Desk - Learn Ring of the Warrior"},
+            { "Tech_MagicSource_General_T04_FrozenEye", "Research Desk - Learn Ring of the Warlock"},
             { "Tech_MagicSource_General_T04_KnightRing", "Research Desk - Learn Ring of the Warrior"},
             { "Tech_MagicSource_General_T04_MistSignet", "Research Desk - Learn Ring of the Spellweaver"},
             { "Tech_MagicSource_General_T04_SorcererRing", "Research Desk - Learn Ring of the Sorcerer"}, 
@@ -461,8 +461,8 @@ namespace APVRising.Data
             { "Tech_Weapon_Crossbow_T04", "Research Desk - Learn Merciless Copper Crossbow"},
             { "Tech_Weapon_Longbow_T04", "Research Desk - Learn Merciless Copper Longbow"},
             { "Tech_Weapon_Mace_T04", "Research Desk - Learn Merciless Copper Mace"},       
-            { "Tech_Weapon_Reaper_T04", ""}, // Don't think this exists
-            { "Tech_Weapon_Slashers_T04", ""},// Don't think this exists
+            //{ "Tech_Weapon_Reaper_T04", ""}, // Don't think this exists
+            //{ "Tech_Weapon_Slashers_T04", ""},// Don't think this exists
             { "Tech_Weapon_Spear_T04", "Research Desk - Learn Merciless Copper Spear"},
             { "Tech_Weapon_Sword_T04", "Research Desk - Learn Merciless Copper Sword"},
 

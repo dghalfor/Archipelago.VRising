@@ -1,4 +1,7 @@
 ﻿using APVRising.Archipelago;
+using APVRising.Data;
+using APVRising.Hooks;
+using APVRising.Utils;
 using Il2CppInterop.Runtime;
 using KindredCommands.Models;
 using ProjectM;
@@ -37,9 +40,22 @@ namespace APVRising.Systems
 
             Enabled = true;
         }
-
+        public static volatile bool PendingResync = false;
         public override void OnUpdate()
         {
+
+            if (Plugin.APClient != null && PendingResync)
+            {
+                PendingResync = false;
+                Plugin.APClient.Resync();
+            }
+
+            while (ArchipelagoClient.PendingMessages.TryDequeue(out var message))
+            {
+                FixedString512Bytes fixedMessage = new(message);
+                ServerChatUtils.SendSystemMessageToAllClients(Plugin.Server.EntityManager, ref fixedMessage);
+            }
+
             while (Plugin.APClient != null &&
                    ArchipelagoClient.PendingItems.TryDequeue(out var item))
             {
@@ -47,16 +63,26 @@ namespace APVRising.Systems
 
                 var userEntities = _userQuery.ToEntityArray(Allocator.Temp);
                 Plugin.BepinLogger.LogInfo($"[AP] Unlocking tech for {userEntities.Length} users");
+                var itemName = Plugin.APClient.GetItemNameFromId(item.ItemId);
 
                 // your unlock logic here per user entity
                 foreach (var userEntity in userEntities)
                 {
-                    var itemName = Plugin.APClient.GetItemNameFromId(item.ItemId);
-                    if (itemName.StartsWith("Item"))
+                    if (DataDicts.APLocationToEntityName.TryGetValue(itemName, out var entityName))
                     {
-                        //TODO Need item targets before this works
-                        //Utils.Helper.TryGiveItem(userEntity, itemName, 1, out var _);
+                        if (DataDicts.TechToPrefab.TryGetValue(entityName, out var prefab))
+                        {
+                            ProgressionHandler.UnlockResearchForPlayer(userEntity, prefab);
+                        }
+                        ChatMessage.NotifyClientUnlock(prefab.GuidHash);
                     }
+                }
+
+
+                if (itemName.StartsWith("Item"))
+                {
+                    //TODO Need item targets before this works
+                    //Utils.Helper.TryGiveItem(userEntity, itemName, 1, out var _);
                 }
                 userEntities.Dispose();
             }

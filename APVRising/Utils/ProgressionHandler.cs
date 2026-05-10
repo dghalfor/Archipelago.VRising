@@ -114,18 +114,18 @@ namespace APVRising.Utils
         {
             var query = Plugin.ClientEntityManager.CreateEntityQuery(ComponentType.ReadWrite<HaveUnlocksInStation>());
             if (query.IsEmpty) {
-                Plugin.BepinLogger.LogInfo($"No entities with HaveUnlocksInStation found, skipping ClearUnlockBuffers");
+                //Plugin.BepinLogger.LogInfo($"No entities with HaveUnlocksInStation found, skipping ClearUnlockBuffers");
                 return;
             }
             // Get and update the handle
-            Plugin.BepinLogger.LogInfo($"Clearing HaveUnlocksInStation buffers");
+            //Plugin.BepinLogger.LogInfo($"Clearing HaveUnlocksInStation buffers");
             var testUnlocks = Plugin.ClientEntityManager.GetComponentTypeHandle<HaveUnlocksInStation>(false);
 
             // Iterate chunks and zero out
             var chunks = query.ToArchetypeChunkArray(Allocator.Temp);
             foreach (var chunk in chunks)
             {
-                Plugin.BepinLogger.LogInfo($"Clearing");
+                //Plugin.BepinLogger.LogInfo($"Clearing");
 
                 var components = chunk.GetNativeArray(ref testUnlocks);
                 for (int i = 0; i < components.Length; i++)
@@ -141,7 +141,7 @@ namespace APVRising.Utils
         public static void CheckResearchStations(List<int> unlockedTechHashes)
         {
             var query = Plugin.EntityManager.CreateEntityQuery(ComponentType.ReadOnly<ResearchBuffer>());
-            Plugin.BepinLogger.LogInfo($"CheckResearchStations");
+            //Plugin.BepinLogger.LogInfo($"CheckResearchStations");
 
             // Iterate chunks and zero out
             var stations = query.ToEntityArray(Allocator.Temp);
@@ -155,11 +155,11 @@ namespace APVRising.Utils
         public static void CheckClientResearchStations(List<int> unlockedTechHashes)
         {
             var query = Plugin.ClientEntityManager.CreateEntityQuery(ComponentType.ReadOnly<ResearchBuffer>());
-            Plugin.BepinLogger.LogInfo($"CheckClientResearchStations");
+            //Plugin.BepinLogger.LogInfo($"CheckClientResearchStations");
 
             // Iterate chunks and zero out
             var stations = query.ToEntityArray(Allocator.Temp);
-            Plugin.BepinLogger.LogInfo($"Found {stations.Length} stations with Snapshot_ResearchBuffer to clear");
+            //Plugin.BepinLogger.LogInfo($"Found {stations.Length} stations with Snapshot_ResearchBuffer to clear");
             foreach (var stationEntity in stations)
             {
                 var buffer = Plugin.ClientEntityManager.GetBuffer<ResearchBuffer>(stationEntity);
@@ -179,7 +179,7 @@ namespace APVRising.Utils
                 em = Plugin.ClientEntityManager;
             }
             var query = em.CreateEntityQuery(ComponentType.ReadOnly<RefinementstationRecipesBuffer>());
-                Plugin.BepinLogger.LogInfo($"CheckRefinementStations");
+              //  Plugin.BepinLogger.LogInfo($"CheckRefinementStations");
     
                 // Iterate chunks and zero out
                 var stations = query.ToEntityArray(Allocator.Temp);
@@ -194,11 +194,11 @@ namespace APVRising.Utils
         public static void CheckWorkstations(List<int> unlockedTechHashes)
         {
             var query = Plugin.EntityManager.CreateEntityQuery(ComponentType.ReadOnly<WorkstationRecipesBuffer>());
-            Plugin.BepinLogger.LogInfo($"CheckWorkstations");
+            //Plugin.BepinLogger.LogInfo($"CheckWorkstations");
 
             // Iterate chunks and zero out
             var stations = query.ToEntityArray(Allocator.Temp);
-            Plugin.BepinLogger.LogInfo($"Found {stations.Length} workstations to check");
+           // Plugin.BepinLogger.LogInfo($"Found {stations.Length} workstations to check");
 
             foreach (var stationEntity in stations)
             {
@@ -210,11 +210,11 @@ namespace APVRising.Utils
         public static void CheckClientWorkstations(List<int> unlockedTechHashes)
         {
             var query = Plugin.ClientEntityManager.CreateEntityQuery(ComponentType.ReadOnly<WorkstationRecipesBuffer>());
-            Plugin.BepinLogger.LogInfo($"CheckClientWorkstations");
+           // Plugin.BepinLogger.LogInfo($"CheckClientWorkstations");
 
             // Iterate chunks and zero out
             var stations = query.ToEntityArray(Allocator.Temp);
-            Plugin.BepinLogger.LogInfo($"Found {stations.Length} stations with WorkstationRecipesBuffer to clear");
+           // Plugin.BepinLogger.LogInfo($"Found {stations.Length} stations with WorkstationRecipesBuffer to clear");
             foreach (var stationEntity in stations)
             {
                 var buffer = Plugin.ClientEntityManager.GetBuffer<WorkstationRecipesBuffer>(stationEntity);
@@ -226,7 +226,7 @@ namespace APVRising.Utils
         public static void ClearSnapshots(List<int> unlockedTechHashes)
         {
             var query = Plugin.EntityManager.CreateEntityQuery(ComponentType.ReadOnly<Snapshot_ResearchBuffer>());
-            Plugin.BepinLogger.LogInfo($"ClearSnapshots");
+           // Plugin.BepinLogger.LogInfo($"ClearSnapshots");
 
             var stations = query.ToEntityArray(Allocator.Temp);
             foreach (var stationEntity in stations)
@@ -239,10 +239,10 @@ namespace APVRising.Utils
         public static void ClearClientSnapshots(List<int> unlockedTechHashes)
         {
             var query = Plugin.ClientEntityManager.CreateEntityQuery(ComponentType.ReadOnly<Snapshot_ResearchBuffer>());
-            Plugin.BepinLogger.LogInfo($"ClearClientSnapshots");
+           // Plugin.BepinLogger.LogInfo($"ClearClientSnapshots");
 
             var stations = query.ToEntityArray(Allocator.Temp);
-            Plugin.BepinLogger.LogInfo($"Found {stations.Length} stations with Snapshot_ResearchBuffer to clear");
+          //  Plugin.BepinLogger.LogInfo($"Found {stations.Length} stations with Snapshot_ResearchBuffer to clear");
             foreach (var stationEntity in stations)
             {
                 var buffer = Plugin.ClientEntityManager.GetBuffer<Snapshot_ResearchBuffer>(stationEntity);
@@ -255,7 +255,7 @@ namespace APVRising.Utils
             var query = em.CreateEntityQuery(ComponentType.ReadOnly<ClientNetworkSnapshotState>());
             var clients = query.ToEntityArray(Allocator.Temp);
 
-            Plugin.BepinLogger.LogInfo($"Found {clients.Length} clients to force resend");
+           // Plugin.BepinLogger.LogInfo($"Found {clients.Length} clients to force resend");
 
             foreach (var clientEntity in clients)
             {
@@ -328,7 +328,7 @@ namespace APVRising.Utils
             {
                 ArchipelagoData.ReceivedChecks.Add(techPrefab._Value);
             }
-            Plugin.BepinLogger.LogInfo($"Unlocking research for player {userEntity.Index} and tech {techPrefab._Value}");
+           // Plugin.BepinLogger.LogInfo($"Unlocking research for player {userEntity.Index} and tech {techPrefab._Value}");
             var query = em.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
             if (query.IsEmpty) return;
 
@@ -341,11 +341,11 @@ namespace APVRising.Utils
                 buffer.Add(new UnlockedProgressionElement { UnlockedPrefab = techPrefab });
 
                 var recipeBuffer = em.GetBuffer<UnlockedRecipeElement>(entity);
-                Plugin.BepinLogger.LogInfo($"Tech {techPrefab._Value} unlock added to UnlockedProgressionElement buffer. Syncing recipes...");
+               // Plugin.BepinLogger.LogInfo($"Tech {techPrefab._Value} unlock added to UnlockedProgressionElement buffer. Syncing recipes...");
 
                 if (!prefabCollectionSystem._PrefabLookupMap.TryGetValue(techPrefab, out Entity researchEntity))
                 {
-                    Plugin.BepinLogger.LogWarning($"[AP] Could not find entity for PrefabGUID {techPrefab._Value}");
+                  //  Plugin.BepinLogger.LogWarning($"[AP] Could not find entity for PrefabGUID {techPrefab._Value}");
                     return;
                 }
 
@@ -354,7 +354,7 @@ namespace APVRising.Utils
                 {
                     var techBuffer = em.GetBuffer<TechUnlockRecipeBuffer>(researchEntity);
                     var unlockedBuffer = em.GetBuffer<UnlockedRecipeElement>(entity);
-                    Plugin.BepinLogger.LogInfo($"Found {techBuffer.Length} recipes to unlock for tech {techPrefab._Value}");
+                   // Plugin.BepinLogger.LogInfo($"Found {techBuffer.Length} recipes to unlock for tech {techPrefab._Value}");
                     for (int i = 0; i < techBuffer.Length; i++)
                     {
                         var element = techBuffer[i];
@@ -364,7 +364,7 @@ namespace APVRising.Utils
                         {
                             if (unlockedBuffer[j].UnlockedRecipe == element.Guid)
                             {
-                                Plugin.BepinLogger.LogInfo($"Recipe {element.Guid} already unlocked for player {userEntity.Index}, skipping");
+                            //    Plugin.BepinLogger.LogInfo($"Recipe {element.Guid} already unlocked for player {userEntity.Index}, skipping");
                                 alreadyUnlocked = true;
                                 break;
                             }
@@ -372,7 +372,7 @@ namespace APVRising.Utils
 
                         if (alreadyUnlocked)
                             continue;
-                        Plugin.BepinLogger.LogInfo($"Adding element to unlocked buffer: {element.Guid}");
+                       // Plugin.BepinLogger.LogInfo($"Adding element to unlocked buffer: {element.Guid}");
                         unlockedBuffer.Add(new UnlockedRecipeElement { UnlockedRecipe = element.Guid, UserHasRequiredContentFlags = true });
                     }
                 }
@@ -382,7 +382,7 @@ namespace APVRising.Utils
                 {
                     var blueprintBuffer = em.GetBuffer<TechUnlockBlueprintBuffer>(researchEntity);
                     var unlockedBPBuffer = em.GetBuffer<UnlockedBlueprintElement>(entity);
-                    Plugin.BepinLogger.LogInfo($"Found {blueprintBuffer.Length} blueprints to unlock for tech {techPrefab._Value}");
+                   // Plugin.BepinLogger.LogInfo($"Found {blueprintBuffer.Length} blueprints to unlock for tech {techPrefab._Value}");
                     for (int i = 0; i < blueprintBuffer.Length; i++)
                     {
                         var element = blueprintBuffer[i];
@@ -392,7 +392,7 @@ namespace APVRising.Utils
                         {
                             if (unlockedBPBuffer[j].UnlockedBlueprint == element.Guid)
                             {
-                                Plugin.BepinLogger.LogInfo($"Blueprint {element.Guid} already unlocked for player {userEntity.Index}, skipping");
+                              //  Plugin.BepinLogger.LogInfo($"Blueprint {element.Guid} already unlocked for player {userEntity.Index}, skipping");
                                 alreadyUnlocked = true;
                                 break;
                             }
@@ -400,7 +400,7 @@ namespace APVRising.Utils
 
                         if (alreadyUnlocked)
                             continue;
-                        Plugin.BepinLogger.LogInfo($"Adding element to unlocked buffer: {element.Guid}");
+                       // Plugin.BepinLogger.LogInfo($"Adding element to unlocked buffer: {element.Guid}");
                         unlockedBPBuffer.Add(new UnlockedBlueprintElement { UnlockedBlueprint = element.Guid, UserHasRequiredContentFlags = true });
                     }
                 }
@@ -409,7 +409,7 @@ namespace APVRising.Utils
                 {
                     var progressionShapeshiftBuffer = em.GetBuffer<ProgressionBookShapeshiftElement>(researchEntity);
                     var unlockedShapeshiftBuffer = em.GetBuffer<UnlockedShapeshiftElement>(entity);
-                    Plugin.BepinLogger.LogInfo($"Found {progressionShapeshiftBuffer.Length} blueprints to unlock for tech {techPrefab._Value}");
+                  //  Plugin.BepinLogger.LogInfo($"Found {progressionShapeshiftBuffer.Length} blueprints to unlock for tech {techPrefab._Value}");
                     for (int i = 0; i < progressionShapeshiftBuffer.Length; i++)
                     {
                         var element = progressionShapeshiftBuffer[i];
@@ -419,7 +419,7 @@ namespace APVRising.Utils
                         {
                             if (unlockedShapeshiftBuffer[j].UnlockedShapeshift == element.Shapeshift)
                             {
-                                Plugin.BepinLogger.LogInfo($"Blueprint {element.Shapeshift} already unlocked for player {userEntity.Index}, skipping");
+                              //  Plugin.BepinLogger.LogInfo($"Blueprint {element.Shapeshift} already unlocked for player {userEntity.Index}, skipping");
                                 alreadyUnlocked = true;
                                 break;
                             }
@@ -427,7 +427,7 @@ namespace APVRising.Utils
 
                         if (alreadyUnlocked)
                             continue;
-                        Plugin.BepinLogger.LogInfo($"Adding element to unlocked buffer: {element.Shapeshift}");
+                       // Plugin.BepinLogger.LogInfo($"Adding element to unlocked buffer: {element.Shapeshift}");
                         unlockedShapeshiftBuffer.Add(new UnlockedShapeshiftElement { UnlockedShapeshift = element.Shapeshift, UserHasRequiredContentFlags = true });
                     }
                 }
@@ -454,7 +454,7 @@ namespace APVRising.Utils
             {
                 ArchipelagoData.CheckedLocations.Add(techPrefab._Value);
             }
-            Plugin.BepinLogger.LogInfo($"Lock research for player {userEntity.Index} and tech {techPrefab._Value}");
+            //Plugin.BepinLogger.LogInfo($"Lock research for player {userEntity.Index} and tech {techPrefab._Value}");
             var query = em.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
             if (query.IsEmpty) return;
 
@@ -462,11 +462,11 @@ namespace APVRising.Utils
             foreach (var entity in entities)
             {
                 //UnlockedRecipeElement, UnlockedBlueprintElement, UnlockedVBlood, (maybe) UnlockedSpellBookAbility
-                Plugin.BepinLogger.LogInfo($"Tech {techPrefab._Value} should be locked but is in buffer, removing it");
+               // Plugin.BepinLogger.LogInfo($"Tech {techPrefab._Value} should be locked but is in buffer, removing it");
 
                 if (!prefabCollectionSystem._PrefabLookupMap.TryGetValue(techPrefab, out Entity researchEntity))
                 {
-                    Plugin.BepinLogger.LogWarning($"[AP] Could not find entity for PrefabGUID {techPrefab._Value}");
+                   // Plugin.BepinLogger.LogWarning($"[AP] Could not find entity for PrefabGUID {techPrefab._Value}");
                     return;
                 }
 
@@ -474,8 +474,8 @@ namespace APVRising.Utils
                 {
                     var techBuffer = em.GetBuffer<TechUnlockRecipeBuffer>(researchEntity);
                     var unlockedBuffer = em.GetBuffer<UnlockedRecipeElement>(entity);
-                    Plugin.BepinLogger.LogInfo($"Found {unlockedBuffer.Length} unlocked recipes for player {entity.Index}");
-                    Plugin.BepinLogger.LogInfo($"Found {techBuffer.Length} recipes to lock for tech {techPrefab._Value}");
+                    //Plugin.BepinLogger.LogInfo($"Found {unlockedBuffer.Length} unlocked recipes for player {entity.Index}");
+                    //Plugin.BepinLogger.LogInfo($"Found {techBuffer.Length} recipes to lock for tech {techPrefab._Value}");
                     for (int j = 0; j < techBuffer.Length; j++)
                     {
                         var element = techBuffer[j];
@@ -483,7 +483,7 @@ namespace APVRising.Utils
                         {
                             if (unlockedBuffer[i].UnlockedRecipe == element.Guid)
                             {
-                                Plugin.BepinLogger.LogInfo($"Tech {techPrefab} should be locked but is in buffer, removing it");
+                             //   Plugin.BepinLogger.LogInfo($"Tech {techPrefab} should be locked but is in buffer, removing it");
                                 unlockedBuffer.RemoveAt(i);
                                 CheckRefinementStations(element.Guid);
                                 break;
@@ -495,7 +495,7 @@ namespace APVRising.Utils
                 {
                     var blueprintBuffer = em.GetBuffer<TechUnlockBlueprintBuffer>(researchEntity);
                     var unlockedBPBuffer = em.GetBuffer<UnlockedBlueprintElement>(entity);
-                    Plugin.BepinLogger.LogInfo($"Found {blueprintBuffer.Length} blueprints to lock for tech {techPrefab._Value}");
+                   // Plugin.BepinLogger.LogInfo($"Found {blueprintBuffer.Length} blueprints to lock for tech {techPrefab._Value}");
                     for (int i = 0; i < blueprintBuffer.Length; i++)
                     {
                         var element = blueprintBuffer[i];
@@ -505,7 +505,7 @@ namespace APVRising.Utils
                         {
                             if (unlockedBPBuffer[j].UnlockedBlueprint == element.Guid)
                             {
-                                Plugin.BepinLogger.LogInfo($"Blueprint {element.Guid} should be locked but is in buffer, for player {userEntity.Index}");
+                               // Plugin.BepinLogger.LogInfo($"Blueprint {element.Guid} should be locked but is in buffer, for player {userEntity.Index}");
                                 unlockedBPBuffer.RemoveAt(j);
                                 break;
                             }
@@ -516,7 +516,7 @@ namespace APVRising.Utils
                 {
                     var progressionUnlockBuffer = em.GetBuffer<ProgressionBookShapeshiftElement>(researchEntity);
                     var unlockedShapeshiftBuffer = em.GetBuffer<UnlockedShapeshiftElement>(entity);
-                    Plugin.BepinLogger.LogInfo($"Found {progressionUnlockBuffer.Length} blueprints to lock for tech {techPrefab._Value}");
+                   // Plugin.BepinLogger.LogInfo($"Found {progressionUnlockBuffer.Length} blueprints to lock for tech {techPrefab._Value}");
                     for (int i = 0; i < progressionUnlockBuffer.Length; i++)
                     {
                         var element = progressionUnlockBuffer[i];
@@ -526,7 +526,7 @@ namespace APVRising.Utils
                         {
                             if (unlockedShapeshiftBuffer[j].UnlockedShapeshift == element.Shapeshift)
                             {
-                                Plugin.BepinLogger.LogInfo($"Shapeshift {element.Shapeshift} should be locked but is in buffer, for player {userEntity.Index}");
+                               // Plugin.BepinLogger.LogInfo($"Shapeshift {element.Shapeshift} should be locked but is in buffer, for player {userEntity.Index}");
                                 unlockedShapeshiftBuffer.RemoveAt(j);
                                 break;
                             }
