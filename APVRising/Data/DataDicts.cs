@@ -31,35 +31,15 @@ namespace APVRising.Data
             // --- COLLECTIONS: CRAFTING / STATION ---
             { "Tech_Collection_ArtisansCorner", "Rufus the Foreman (Simple Furniture)"},
             { "Tech_Collection_BloodTracking", "Rufus the Foreman (Woodworking Bench)"}, // [?] Blood tracking feels like an early Rufus unlock
-            { "Tech_Collection_Brazier_01", "Errol the Stonebreaker (Copper Torch & Brazier)"},
-            { "Tech_Collection_Braziers02", "Clive the Firestarter (Alchemy Table)"}, // [?] tier 2 braziers
-            { "Tech_Collection_Braziers03", "Grethel the Glassblower (Wall Hanging Mirrors)"}, // [?] tier 3 braziers
-
-            // --- COLLECTIONS: DECORATIVE ---
-            { "Tech_Collection_BustStatues_Vampire", "Beatrice the Tailor (Loom)"}, // [?]
-            { "Tech_Collection_CandleStands_T02", "Christina the Sun Priestess (Candles)"},
-            { "Tech_Collection_Carpet_T01", "Grayson the Armourer (Workshop Flooring)"},
-            { "Tech_Collection_Carpet_T02", "Quincey the Bandit King (Ebonite Stairs & Doors)"}, // [?]
-            { "Tech_Collection_Carpet_T03", "Beatrice the Tailor (Assortment of Curtains)"}, // [?]
-            { "Tech_Collection_Castle_Paintings", "Maja the Dark Savant (Study)"},
-            { "Tech_Collection_Castle_Windows_T01", "Quincey the Bandit King (Ebonite Stairs & Doors)"}, // [?]
+            
+                        { "Tech_Collection_BustStatues_Vampire", "Beatrice the Tailor (Loom)"}, // [?]
 
             
 
-            // --- COLLECTIONS: DRACULA ARMOR ---
-            { "Tech_Collection_Dracula_Armor_Boots", "Dracula (Armor)"},
-            { "Tech_Collection_Dracula_Armor_Chest", "Dracula (Armor)"},
-            { "Tech_Collection_Dracula_Armor_Gloves", "Dracula (Armor)"},
-            { "Tech_Collection_Dracula_Armor_Legs", "Dracula (Armor)"},
-
-            // --- COLLECTIONS: FENCING / OUTDOOR ---
             
-            { "Tech_Collection_FenceFountain_Noble_T02", "Octavian the Militia Commander (Wide Gate)"}, // [?]
-            { "Tech_Collection_Fireplaces", "Clive the Firestarter (Alchemy Table)"}, // [?]
-            { "Tech_Collection_FlyingCandles_T03", "Nicholaus the Fallen (Assortment of Simple Candle Stands)"}, // [?]
 
-            // --- COLLECTIONS: FOUNTAINS ---
-            { "Tech_Collection_Fountain_T03", "Polora the Feywalker (Garden Foundations)"}, // [?]
+        
+
 
             // --- COLLECTIONS: FRAMEWORK / CASTLE BUILDING ---
             { "Tech_Collection_Framework_CastleHeart", "Rufus the Foreman (Woodworking Bench)"}, // Castle Heart is very early
@@ -73,83 +53,39 @@ namespace APVRising.Data
             { "Tech_Collection_Framework_T02_Stone_DLC_Strongblade", "Tristan the Vampire Hunter (Greatsword)"}, // [?]
             { "Tech_Collection_Framework_T02_Stone_Halloween2022", "Nicholaus the Fallen (Frayed Rugs, Banners & Curtains)"}, // [?]
 
-            // --- COLLECTIONS: MISC DECOR ---
-            { "Tech_Collection_Furniture_Chairs_T02", "Rufus the Foreman (Simple Furniture)"},   // [?]
-            { "Tech_Collection_Furniture_Desk_Chairs_T02", "Maja the Dark Savant (Study)"},
-            { "Tech_Collection_Furniture_Desks_T02", "Maja the Dark Savant (Study)"},
-            { "Tech_Collection_Furniture_DressingTables_T03", "Beatrice the Tailor (Loom)"}, // [?]
             
-            { "Tech_Collection_Furniture_Sofas_T03", "Maja the Dark Savant (Study)"}, // [?]
-            { "Tech_Collection_Furniture_Tables_T02", "Rufus the Foreman (Simple Furniture)"}, // [?]
 
-            // --- COLLECTIONS: GARDEN ---
-            { "Tech_Collection_Garden_Furniture_Lanterns_T02", "Polora the Feywalker (Garden Foundations)"},
-            { "Tech_Collection_Garden_PlantersDecor_T01", "Polora the Feywalker (Large Growing Plots)"},
-            { "Tech_Collection_Garden_PlantersDecor_T02", "Polora the Feywalker (Growing Plot Collection)"},
-            { "Tech_Collection_Garden_PlantersDecor_T03", "Polora the Feywalker (Growing Plot Collection)"}, // [?]
+ 
 
-            // --- COLLECTIONS: LIGHTING ---
-            { "Tech_Collection_HangingLanterns_T02", "Clive the Firestarter (Minor Explosive Box)"}, // [?]
-            { "Tech_Collection_Light_GardenLampPosts_T03", "Polora the Feywalker (Garden Foundations)"}, // [?]
+
 
             // --- COLLECTIONS: MIRRORS ---
             { "Tech_Collection_Mirrors", "Grethel the Glassblower (Wall Hanging Mirrors)"},
             { "Tech_Collection_Mirrors_Halloween2022", "Grethel the Glassblower (Wall Hanging Mirrors)"}, // [?]
 
-            // --- COLLECTIONS: ORNAMENTS / BANNERS ---
-            { "Tech_Collection_Ornaments_Banners_T02", "Rufus the Foreman (Dueling Banner)"},
-            { "Tech_Collection_Ornaments_Stone_T01", "Errol the Stonebreaker (Copper Torch & Brazier)"},
+
 
             // --- COLLECTIONS: OUTDOOR FLOORS / PAVEMENT ---
             { "Tech_Collection_Outdoor_Floors", "Grayson the Armourer (Workshop Flooring)"},
-            { "Tech_Collection_Pavement_Cobblestone", "Errol the Stonebreaker (Material and Gem Storage)"}, // [?]
             { "Tech_Collection_Pavement_Dirt", "Grayson the Armourer (Workshop Flooring)"}, // [?]
 
             // --- COLLECTIONS: SALVE ---
             { "Tech_Collection_Salve", "Keely the Frost Archer (Traveller's Wrap)"}, // [?] Salve relates to bone/early crafting
 
             // --- COLLECTIONS: STABLES / STATUES ---
-            { "Tech_Collection_Stables_Furnishing", "Sir Erwin the Gallant Cavalier (Stables Furnishing Decor)"},
             { "Tech_Collection_Statues_Vampire", "Tristan the Vampire Hunter (Blood Hunter)"}, // [?]
             { "Tech_Collection_Structures_T01", "Rufus the Foreman (Woodworking Bench)"},
-            { "Tech_Collection_Vases01", "Grethel the Glassblower (Glass)"},
-
-            // --- COLLECTIONS: VBLOOD ARENA / MISC REWARDS ---
-            { "Tech_Collection_VBlood_ArenaDecorations", "Voltatia the Power Master (Arena Champion)"}, // [?]
-            { "Tech_Collection_VBlood_CrystalLamp", "Grethel the Glassblower (Glass)"}, // [?]
-            
-
-  
-
-
-
-            
-
-
-
-
-
 
 
             // --- COLLECTIONS: WALLPAPERS / SHELVES / MIRRORS ---
             
-            
-            { "Tech_Collection_Wallpapers_Bricks01", "Errol the Stonebreaker (Material and Gem Storage)"}, // [?]
-            { "Tech_Collection_Wallpapers_Classical01", "Quincey the Bandit King (Ebonite Stairs & Doors)"}, // [?]
-            { "Tech_Collection_Wallpapers_Cordial01", "Beatrice the Tailor (Loom)"}, // [?]
             { "Tech_Collection_Wallpapers_Imperious01", "Octavian the Militia Commander (Iron Weapons)"}, // [?]
-            { "Tech_Collection_Wallpapers_Prison01", "Vincent the Frostbringer (Prison Framework)"},
-            { "Tech_Collection_Wallpapers_Stone01", "Errol the Stonebreaker (Material and Gem Storage)"},
-            { "Tech_Collection_Wallpapers_WoodPanel01", "Rufus the Foreman (Woodworking Bench)"},
+            { "Tech_Collection_Wallpapers_Bricks01", "Errol the Stonebreaker (Material and Gem Storage)"}, // [?]
+            
 
             // --- COLLECTIONS: WAYPOINT / WORKSHOP ---
             { "Tech_Collection_Waypoint", "Rufus the Foreman (Woodworking Bench)"}, // [?] Waygates are early unlocks
             { "Tech_Collection_Workshop_Decoration", "Grayson the Armourer (Workshop Flooring)"},
-
-            
-
-            // --- CURTAINS ---
-            { "Tech_Curtains_T03_Royal", "Beatrice the Tailor (Assortment of Curtains)"},
 
             
 
@@ -187,6 +123,7 @@ namespace APVRising.Data
             { "Tech_SpellPassive_Unholy_T04_EmbraceMayhem", "Cyril the Cursed Smith (Cursed Smith)"}, // [?]
 
             // --- STORAGE ---
+            /*
             { "Tech_Storage_Alchemy_T02", "Clive the Firestarter (Alchemy Table)"},
             { "Tech_Storage_Alchemy_T03", "Ziva the Engineer (Archmage)"}, // [?]
             { "Tech_Storage_Armor_T02", "Quincey the Bandit King (Tailoring Bench)"},
@@ -205,7 +142,6 @@ namespace APVRising.Data
             { "Tech_Storage_Knowledge_T03", "Raziel the Shepherd (Magic Source)"}, // [?]
             { "Tech_Storage_Minerals_T01", "Errol the Stonebreaker (Material and Gem Storage)"},
             { "Tech_Storage_Minerals_T02", "Quincey the Bandit King (Iron Ingot)"},
-            { "Tech_Storage_Pack_T01_A", "Rufus the Foreman (Woodworking Bench)"},
             { "Tech_Storage_Pack_T01_B", "Rufus the Foreman (Simple Furniture)"},
             { "Tech_Storage_T01", "Rufus the Foreman (Woodworking Bench)"},
             { "Tech_Storage_T02", "Quincey the Bandit King (Smithy)"},
@@ -215,9 +151,50 @@ namespace APVRising.Data
             { "Tech_Storage_Weapons_T02", "Quincey the Bandit King (Smithy)"},
             { "Tech_Storage_Woodworking_T01", "Rufus the Foreman (Woodworking Bench)"},
             { "Tech_Storage_Woodworking_T02", "Quincey the Bandit King (Smithy)"},
-
+            */
 
             //-------------------------- BELOW THIS LINE IS Analyzed-------------------------
+            { "Tech_Collection_Wallpapers_Classical01", "Athenaeum - Learn Stately Stone Walls"}, // [?]
+            { "Tech_Collection_Wallpapers_Cordial01", "Study - Learn Cordial Wall Panels"},
+            { "Tech_Collection_Wallpapers_Prison01", "Study - Learn Prison Walls"},
+            { "Tech_Collection_Wallpapers_Stone01", "Research Desk - Learn Decorative Stone Walls"},
+            { "Tech_Collection_Wallpapers_WoodPanel01", "Research Desk - Learn Hearth Wall Panels"},
+
+            // --- COLLECTIONS: ORNAMENTS / BANNERS ---
+            { "Tech_Collection_Ornaments_Banners_T02", "Study - Learn Banners"},
+            { "Tech_Collection_Ornaments_Stone_T01", "Research Desk - Learn Stone Ornaments"},
+
+            { "Tech_Collection_Pavement_Cobblestone", "Study - Learn Cobblestone Paths"}, // [?]
+
+            // --- COLLECTIONS: MISC DECOR ---
+            { "Tech_Collection_Furniture_Chairs_T02", "Study - Learn Assortment of Castle Chairs" },
+            { "Tech_Collection_Furniture_Desk_Chairs_T02", "Study - Learn Assortment of Desk Chairs"},
+            { "Tech_Collection_Furniture_Desks_T02", "Study - Learn Assortment of Desks"},
+            { "Tech_Collection_Furniture_DressingTables_T03", "Athenaeum - Learn Dressing Tables & Folding Walls"},
+            { "Tech_Collection_Furniture_Sofas_T03", "Athenaeum - Learn Sofa & Divan Collection"},
+            { "Tech_Collection_Furniture_Tables_T02", "Study - Learn Fine Dining Table Collection"},
+            { "Tech_Collection_Vases01", "Research Desk - Learn Vases and Plants"},
+
+            // --- COLLECTIONS: LIGHTING ---
+            { "Tech_Collection_HangingLanterns_T02", "Study - Learn Hanging Lanterns"},
+            { "Tech_Collection_Light_GardenLampPosts_T03", "Athenaeum - Learn Lamp Posts"},
+
+            // --- COLLECTIONS: GARDEN ---
+            { "Tech_Collection_Garden_Furniture_Lanterns_T02", "Study - Learn Garden Furniture and Lanterns"},
+            { "Tech_Collection_Garden_PlantersDecor_T01", "Research Desk - Learn Simple Garden Planters"},
+            { "Tech_Collection_Garden_PlantersDecor_T02", "Study - Learn Modest Garden Planters"},
+            { "Tech_Collection_Garden_PlantersDecor_T03", "Athenaeum - Learn Garden Archways & Pergolas"},
+
+            // --- CURTAINS ---
+            { "Tech_Curtains_T03_Royal", "Athenaeum - Learn Assortment of Royal Curtains"},
+
+            // --- COLLECTIONS: FENCING / OUTDOOR ---
+            { "Tech_Collection_FenceFountain_Noble_T02", "Study - Learn Noble Fences & Fountains"},
+            { "Tech_Collection_Fireplaces", "Study - Learn Fireplaces"},
+            { "Tech_Collection_FlyingCandles_T03", "Athenaeum - Learn Flying Lights"}, 
+
+            // --- COLLECTIONS: FOUNTAINS ---
+            { "Tech_Collection_Fountain_T03", "Athenaeum - Learn Large Fountain"},
 
             // --- COLLECTIONS: ACT 1 VBLOOD ---
             { "Tech_Collection_VBlood_T02_AlphaWolf", "Alpha the White Wolf (Wolf Form)"},
@@ -229,7 +206,8 @@ namespace APVRising.Data
             { "Tech_Collection_VBlood_T02_RufusForeman", "Rufus the Foreman (Woodworking Bench)"},
             { "Tech_Collection_Furniture_Simple_T01", "Rufus the Foreman (Simple Furniture)"},
             { "Tech_Collection_VBlood_T02_RufusForeman_Crossbow", "Rufus the Foreman (Copper Crossbow)"},
-            { "Tech_Collection_VBlood_T02_StoneBreaker", "Errol the Stonebreaker (Material and Gem Storage)"},
+            { "Tech_Storage_Pack_T01_A", "Errol the Stonebreaker (Material and Gem Storage)"},
+            { "Tech_Collection_Brazier_01", "Errol the Stonebreaker (Copper Torch & Brazier)"},
             { "Tech_Collection_VBlood_T02_StoneBreaker_CopperWeapons", "Errol the Stonebreaker (Copper Torch & Brazier)"}, // [?] Copper Weapons not a listed location — closest match
             { "Tech_Collection_VBlood_T03_Fisherman", "Finn the Fisherman (Fishing Pole)"},
             { "Tech_Collection_VBlood_T03_Goreswine", "Goreswine the Ravager (Tomb)"},
@@ -270,8 +248,10 @@ namespace APVRising.Data
             // --- COLLECTIONS: ACT 2-3 VBLOOD ---
             { "Tech_Collection_VBlood_T05_ArenaChampion", "Gaius the Cursed Champion (Arena Station)"},
             { "Tech_Collection_VBlood_T05_ArenaChampion_TwinBlades", "Gaius the Cursed Champion (Twinblades)"},
+            { "Tech_Collection_VBlood_ArenaDecorations", "Gaius the Cursed Champion (Arena Decorations)"}, // [?]
             { "Tech_Collection_VBlood_T05_BishopOfShadow", "Leandra the Shadow Priestess (Scourgestone Pendant)"},
             { "Tech_Collection_VBlood_T05_Fabian", "Sir Erwin the Gallant Cavalier (Stables)"},
+            { "Tech_Collection_Stables_Furnishing", "Sir Erwin the Gallant Cavalier (Stables Furnishing Decor)"},
             { "Tech_Collection_VBlood_T05_FerociousBear", "Kodia the Ferocious Bear (Bear Form)"},
             { "Tech_Collection_VBlood_T05_FerociousBear_Rugs", "Kodia the Ferocious Bear (Fur Rugs)"},
             { "Tech_Collection_VBlood_T05_GlassBlower", "Grethel the Glassblower (Glass)"},
@@ -322,6 +302,7 @@ namespace APVRising.Data
             // --- COLLECTIONS: ACT 3-4 VBLOOD (T07) ---
             { "Tech_Collection_VBlood_T07_Archmage", "Mairwyn the Elementalist (Holy Resistance Flask)"},
             { "Tech_Collection_VBlood_T07_Archmage_JewelsT03", "Mairwyn the Elementalist (Greater Jewels)"},
+            { "Tech_Collection_VBlood_CrystalLamp", "Mairwyn the Elementalist (Crystal Light)"},
             { "Tech_Collection_VBlood_T07_CardinalPriest", "Azariel the Sunbringer (Gold Ingot)"},
             { "Tech_Collection_Carpet_Ostenstatious", "Azariel the Sunbringer (Ostentatious Carpets)"},
             { "Tech_Collection_VBlood_T07_Carver", "Stavros the Carver (Advanced Sawmill)"},
@@ -351,10 +332,22 @@ namespace APVRising.Data
             { "Tech_Collection_VBlood_JewelsT04", "General Valencia the Depraved (Primal Jewels)"},
             { "Tech_Collection_CoatOfArms", "General Valencia the Depraved (Coat of Arms)"},
             //{ "Tech_Collection_VBlood_T08_Dracula", "Dracula (Dracula)"},
-            { "Tech_Collection_VBlood_T08_Manticore", "Solarus the Immaculate (Pedestal of Solarus)"},
+            { "Tech_Collection_VBlood_T08_Manticore", "Talzur the Winged Horror (Pedestal of the Winged Horror)"},
+            { "Tech_Collection_Dracula_Armor_Gloves", "Talzur the Winged Horror (Dracula's Gloves)"},
             { "Tech_Collection_VBlood_T08_Monster", "Adam the Firstborn (Pedestal of the Monster)"},
+            { "Tech_Collection_Dracula_Armor_Chest", "Adam the Firstborn (Dracula's Chestguard)"},
             { "Tech_Collection_VBlood_T08_Morgana", "Megara the Serpent Queen (Pedestal of the Serpent)"},
+            { "Tech_Collection_Dracula_Armor_Legs", "Megara the Serpent Queen (Dracula's Leggings)"},
             { "Tech_Collection_VBlood_T08_Paladin", "Solarus the Immaculate (Pedestal of Solarus)"},
+            { "Tech_Collection_Dracula_Armor_Boots", "Solarus the Immaculate (Dracula's Boots)"},
+
+            // --- COLLECTIONS: DECORATIVE ---
+            { "Tech_Collection_CandleStands_T02", "Study - Learn Assortment of Fine Candle Stands"},
+            { "Tech_Collection_Carpet_T01", "Research Desk - Learn Simple Carpets"},
+            { "Tech_Collection_Carpet_T02", "Study - Learn Dux Carpet Collection"},
+            { "Tech_Collection_Carpet_T03", "Athenaeum - Learn Distinguished Carpet Collection"},
+            { "Tech_Collection_Castle_Paintings", "Maja the Dark Savant (Study)"},
+            { "Tech_Collection_Castle_Windows_T01", "Research Desk - Learn Assortment of Windows"},
 
             // --- T04 ARMOR (Merciless / Hollowfang tier) ---
             // Quincey unlocks Hollowfang Battlegear (Cotton armor set)
@@ -422,6 +415,10 @@ namespace APVRising.Data
             { "Tech_Consumable_SpellBrew_Potion_T03", "Athenaeum - Learn Witch Potion" },
             { "Tech_Consumable_SunResistance_Canteen_T01", "Research Desk - Learn Minor Sun Resistance Brew"},
             { "Tech_Consumable_WranglersTea_GlassBottle_T01", "Study - Learn Wrangler's Potion"},
+
+            // --- BRAZIERS ---
+            { "Tech_Collection_Braziers02", "Study - Learn Assortment of Fine Braziers"}, // [?] tier 2 braziers
+            { "Tech_Collection_Braziers03", "Athenaeum - Learn Assortment of Great Braziers"}, // [?] tier 3 braziers
 
             // --- FLOOR TILES ---
             { "Tech_Floor_AlchemyLab", "Research Desk - Learn Alchemy Lab Flooring"},

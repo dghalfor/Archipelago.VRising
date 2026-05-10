@@ -104,7 +104,7 @@
               "RelativeDocumentMoniker": "Data\\DataDicts.cs",
               "ToolTip": "C:\\Users\\dghal\\source\\repos\\Archipelago.VRising\\APVRising\\Data\\DataDicts.cs",
               "RelativeToolTip": "Data\\DataDicts.cs",
-              "ViewState": "AgIAAD0BAAAAAAAAAAAQwFoBAAAMAAAAAAAAAA==",
+              "ViewState": "AgIAAE0AAAAAAAAAAAAQwKAAAABkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-05-09T21:54:45.729Z",
               "EditorCaption": ""
@@ -119,8 +119,7 @@
               "RelativeToolTip": "Data\\EntityQueryDescriptions.txt",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
-              "WhenOpened": "2026-05-09T21:54:45.191Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-09T21:54:45.191Z"
             },
             {
               "$type": "Document",
@@ -132,8 +131,7 @@
               "RelativeToolTip": "Data\\TechToGuid.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-05-09T21:54:22.778Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-09T21:54:22.778Z"
             },
             {
               "$type": "Document",
@@ -157,8 +155,7 @@
               "RelativeToolTip": "Data\\AllPrefabsReference.json",
               "ViewState": "AgIAANM6AAAAAAAAAAAnwAI7AAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-05-09T18:54:02.344Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-09T18:54:02.344Z"
             },
             {
               "$type": "Document",
@@ -206,8 +203,7 @@
               "RelativeToolTip": "Systems\\ArchipelagoItemReceive.cs",
               "ViewState": "AgIAAEEAAAAAAAAAAAA9wCsAAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-09T18:52:06.708Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-09T18:52:06.708Z"
             },
             {
               "$type": "Document",
