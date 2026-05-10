@@ -28,20 +28,20 @@ namespace APVRising.Utils
             if (IsResearching)
             {
                 Plugin.BepinLogger.LogInfo($"Switching to researched progression");
-                TechToRecipeMapping.SyncUnlockedTechs(progressionBuffer, ArchipelagoData.GetResearchProgression());
+                TechToRecipeMapping.SyncUnlockedTechs(progressionBuffer, ArchipelagoData.GetCheckedLocations());
                 //ClearUnlockBuffers();
                 Plugin.BepinLogger.LogInfo(Plugin.IsServer.ToString());
 
                 if (Plugin.IsServer)
                 {
-                    CheckResearchStations(ArchipelagoData.GetResearchProgression());
-                    ClearSnapshots(ArchipelagoData.GetResearchProgression());
+                    CheckResearchStations(ArchipelagoData.GetCheckedLocations());
+                    ClearSnapshots(ArchipelagoData.GetCheckedLocations());
                     ForceSnapshotResend();
                 }
                 else
                 {
-                    CheckClientResearchStations(ArchipelagoData.GetResearchProgression());
-                    ClearClientSnapshots(ArchipelagoData.GetResearchProgression());
+                    CheckClientResearchStations(ArchipelagoData.GetCheckedLocations());
+                    ClearClientSnapshots(ArchipelagoData.GetCheckedLocations());
                     ForceClientSnapshotResend();
                 }
                 //CheckClientResearchStations(ResearchedProgression);
@@ -50,19 +50,19 @@ namespace APVRising.Utils
             else
             {
                 Plugin.BepinLogger.LogInfo($"Switching to AP progression");
-                TechToRecipeMapping.SyncUnlockedTechs(progressionBuffer, ArchipelagoData.GetAPProgression());
+                TechToRecipeMapping.SyncUnlockedTechs(progressionBuffer, ArchipelagoData.GetReceivedChecks());
 
                 Plugin.BepinLogger.LogInfo(Plugin.IsServer.ToString());
                 if (Plugin.IsServer)
                 {
-                    CheckResearchStations(ArchipelagoData.GetAPProgression());
-                    ClearSnapshots(ArchipelagoData.GetAPProgression());
+                    CheckResearchStations(ArchipelagoData.GetReceivedChecks());
+                    ClearSnapshots(ArchipelagoData.GetReceivedChecks());
                     ForceSnapshotResend();
                 }
                 else
                 {
-                    CheckClientResearchStations(ArchipelagoData.GetAPProgression());
-                    ClearClientSnapshots(ArchipelagoData.GetAPProgression());
+                    CheckClientResearchStations(ArchipelagoData.GetReceivedChecks());
+                    ClearClientSnapshots(ArchipelagoData.GetReceivedChecks());
                     ForceClientSnapshotResend();
                 }
                 //CheckClientResearchStations(APProgression);
@@ -324,6 +324,10 @@ namespace APVRising.Utils
                 em = Plugin.ClientEntityManager;
                 prefabCollectionSystem = Plugin.ClientCollectionSystem;
             }
+            if (!ArchipelagoData.ReceivedChecks.Contains(techPrefab._Value))
+            {
+                ArchipelagoData.ReceivedChecks.Add(techPrefab._Value);
+            }
             Plugin.BepinLogger.LogInfo($"Unlocking research for player {userEntity.Index} and tech {techPrefab._Value}");
             var query = em.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
             if (query.IsEmpty) return;
@@ -445,6 +449,10 @@ namespace APVRising.Utils
             {
                 em = Plugin.ClientEntityManager;
                 prefabCollectionSystem = Plugin.ClientCollectionSystem;
+            }
+            if (!ArchipelagoData.CheckedLocations.Contains(techPrefab._Value))
+            {
+                ArchipelagoData.CheckedLocations.Add(techPrefab._Value);
             }
             Plugin.BepinLogger.LogInfo($"Lock research for player {userEntity.Index} and tech {techPrefab._Value}");
             var query = em.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());

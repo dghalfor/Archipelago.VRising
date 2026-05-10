@@ -91,6 +91,23 @@ public static class ChatMessage
 
         users.Dispose();
     }
+    public static void NotifyClientSync()
+    {
+        // Find the chat message system
+        var em = Plugin.EntityManager;
+        var userQuery = em.CreateEntityQuery(ComponentType.ReadOnly<User>());
+        var users = userQuery.ToEntityArray(Allocator.Temp);
+        Plugin.BepinLogger.LogInfo($"Notifying clients of Resync");
+        foreach (var userEntity in users)
+        {
+            var user = em.GetComponentData<User>(userEntity);
+            // Send a special prefixed message the client can intercept
+            var message = (FixedString512Bytes)$"##RESYNC##";
+            ServerChatUtils.SendSystemMessageToClient(em, user, ref message);
+        }
+
+        users.Dispose();
+    }
 
     [HarmonyPatch(typeof(ClientChatSystem), "OnUpdate")]
     [HarmonyPrefix]
@@ -125,7 +142,6 @@ public static class ChatMessage
                     if (int.TryParse(guidStr, out int guid))
                     {
                         Plugin.BepinLogger.LogInfo($"Client AP unlock: GUID={guid}");
-                        ArchipelagoData.APProgression.Add(guid);
                         var userQuery = em.CreateEntityQuery(ComponentType.ReadOnly<User>(), ComponentType.ReadOnly<ProgressionMapper>());
                         var userEntities = userQuery.ToEntityArray(Allocator.Temp);
                         foreach (var userEntity in userEntities)
@@ -146,7 +162,6 @@ public static class ChatMessage
                     if (int.TryParse(guidStr, out int guid))
                     {
                         Plugin.BepinLogger.LogInfo($"Client lock: GUID={guid}");
-                        ArchipelagoData.APProgression.Add(guid);
                         var userQuery = em.CreateEntityQuery(ComponentType.ReadOnly<User>(), ComponentType.ReadOnly<ProgressionMapper>());
                         var userEntities = userQuery.ToEntityArray(Allocator.Temp);
                         foreach (var userEntity in userEntities)
@@ -158,6 +173,13 @@ public static class ChatMessage
                     {
                         Plugin.BepinLogger.LogError($"Failed to parse AP unlock GUID from message: {message}");
                     }
+                    // Destroy so it doesn't appear in chat UI
+                    em.DestroyEntity(eventEntity);
+                }
+                if (message.StartsWith("##RESYNC#"))
+                {
+                    Plugin.BepinLogger.LogInfo($"Client Resync");
+                    Plugin.APClient.Resync();
                     // Destroy so it doesn't appear in chat UI
                     em.DestroyEntity(eventEntity);
                 }

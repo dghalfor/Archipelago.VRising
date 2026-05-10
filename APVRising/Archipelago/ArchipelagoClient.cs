@@ -119,7 +119,7 @@ public class ArchipelagoClient
             Authenticated = true;
 
             DeathLinkHandler = new(session.CreateDeathLinkService(), ServerData.SlotName);
-            session.Locations.CompleteLocationChecksAsync(ServerData.CheckedLocations.ToArray());
+            session.Locations.CompleteLocationChecksAsync(ServerData.CheckedLocations1.ToArray());
             outText = $"Successfully connected to {ServerData.Uri} as {ServerData.SlotName}!";
 
             ArchipelagoConsole.LogMessage(outText);
@@ -140,6 +140,12 @@ public class ArchipelagoClient
         ServerChatUtils.SendSystemMessageToAllClients(Plugin.Server.EntityManager, ref outTextFixed);
         ArchipelagoConsole.LogMessage(outText);
         attemptingConnection = false;
+        if (Authenticated)
+        {
+            Resync();
+            FixedString512Bytes resyncMsg = new("##RESYNC##");
+            ServerChatUtils.SendSystemMessageToAllClients(Plugin.Server.EntityManager, ref resyncMsg);
+        }
     }
 
     /// <summary>

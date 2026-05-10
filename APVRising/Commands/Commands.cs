@@ -20,7 +20,6 @@ public static class ArchipelagoCommands
         ArchipelagoClient.ServerData.Password = password;
         ArchipelagoClient.ServerData.SlotName = slotName;
         Plugin.APClient.Connect();
-        Plugin.APClient.Resync();
     }
 
     //[Command("deathlink", shortHand: "dl", description: "Toggle Death Link", adminOnly: false)]
@@ -60,7 +59,6 @@ public static class ArchipelagoCommands
         {
             ProgressionHandler.UnlockResearchForPlayer(userEntity, new Stunlock.Core.PrefabGUID(guid));
         }
-        ArchipelagoData.APProgression.Add(guid);
         userEntities.Dispose();
         ChatMessage.NotifyClientUnlock(guid);
         ctx.Reply($"Unlocking tech with GUID: {guid}");
@@ -78,7 +76,6 @@ public static class ArchipelagoCommands
         {
             ProgressionHandler.LockResearchUnlocksForPlayer(userEntity, new Stunlock.Core.PrefabGUID(guid));
         }
-        ArchipelagoData.APProgression.Add(guid);
         userEntities.Dispose();
         ChatMessage.NotifyClientLock(guid);
         ctx.Reply($"Locking tech with GUID: {guid}");
