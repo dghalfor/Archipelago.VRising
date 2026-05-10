@@ -41,12 +41,10 @@ V Rising:
   * ~~Function to re-sync to the archipelago in case of crash or other unrecoverable state~~ - resync command
   * Locally save the progression buffers and reload upon server start
 
-* Make the progression buffers saved and written by startresearch/stopresearch actually connected to the archipelago's progression, not just variables in code
 * Journal progress being blocked like the other progression.
 
 * Include all progression elements in the current lock/unlock functionality (~~UnlockedShapeshiftElement~~, ~~UnlockedRecipeElement~~, ~~UnlockedBlueprintElement~~, UnlockedSpellBookAbility, UnlockedSpellPointPassives)
 * Add give item functions to support filler, should be straightforward
-  * Add dictionary between the nicely formatted names and the Tech_collection entity names
 * LockResearch needs to be aware if the player has actually earned this in the archipelago or not.
 
 ## Done
@@ -57,7 +55,9 @@ V Rising:
 * ~~DiscoverResearch needs to work like unlockProgression and remove the result~~
 * ~~Refinement Station progress being blocked, there is some nuance here of refinement being locked/unlocked in station or even hidden in station.~~
 * ~~UnlockedVBlood likely should stay separate if possible, that would let players actually see what they've killed in the vblood menu~~
-  
+* ~~Add dictionary between the nicely formatted names and the Tech_collection entity names~~
+* ~~ Make the progression buffers saved and written by startresearch/stopresearch actually connected to the archipelago's progression, not just variables in code~~
+
 ## Ideas
 
 * Implement Armipotent's original concept as "Killsanity", killing creatures sends checks
