@@ -72,7 +72,7 @@ namespace APVRising.Systems
                     {
                         if (DataDicts.TechToPrefab.TryGetValue(entityName, out var prefab))
                         {
-                            ProgressionHandler.UnlockResearchForPlayer(userEntity, prefab);
+                            ProgressionHandler.UnlockTechForPlayer(userEntity, prefab);
                         }
                         ChatMessage.NotifyClientUnlock(prefab.GuidHash);
                     }

@@ -266,8 +266,17 @@ public class ArchipelagoClient
                 {
                     if (DataDicts.TechToPrefab.TryGetValue(entityName, out var prefab))
                     {
-                        ProgressionHandler.LockResearchUnlocksForPlayer(userEntity, prefab);
-                        ChatMessage.NotifyClientLock(prefab.GuidHash);
+                        //spells
+                        if (entityName.StartsWith("AB"))
+                        {
+                            ProgressionHandler.LockSpellAbilityForPlayer(userEntity, prefab);
+                            ChatMessage.NotifyClientLockSpell(prefab.GuidHash);
+                        } else
+                        {
+                            ProgressionHandler.LockTechForPlayer(userEntity, prefab);
+                            ChatMessage.NotifyClientLock(prefab.GuidHash);
+                        }
+                        
                     }
                 } 
             }

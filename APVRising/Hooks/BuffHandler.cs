@@ -78,7 +78,7 @@ public class BuffSystemSpawnServerPatch
 
                     foreach (var userEntity in userEntities)
                     {
-                        ProgressionHandler.LockResearchUnlocksForPlayer(userEntity, new Stunlock.Core.PrefabGUID(tech.Guid.GuidHash));
+                        ProgressionHandler.LockTechForPlayer(userEntity, new Stunlock.Core.PrefabGUID(tech.Guid.GuidHash));
                         ChatMessage.NotifyClientLock(tech.Guid.GuidHash);
                     }
                 }

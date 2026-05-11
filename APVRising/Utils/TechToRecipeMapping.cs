@@ -1,4 +1,5 @@
-﻿using ProjectM;
+﻿using APVRising.Data;
+using ProjectM;
 using ProjectM.Network;
 using Stunlock.Core;
 using System;
@@ -159,6 +160,7 @@ public static class TechToRecipeMapping
     /// </summary>
     /// <param name="recipeBuffer">The DynamicBuffer of UnlockedRecipeElement to modify in-place</param>
     /// <param name="unlockedTech">The list of currently unlocked tech hashes</param>
+    
     public static void SyncTechRecipes(DynamicBuffer<UnlockedRecipeElement> recipeBuffer, List<int> unlockedTech)
     {
         if (unlockedTech == null)
@@ -219,25 +221,18 @@ public static class TechToRecipeMapping
             }
         }
     }
+    
 
-    /// <summary>
-    /// Synchronizes tech unlocks in a DynamicBuffer based on the mapping.
-    /// Only adds/removes techs that exist in the TechToRecipeMapping.
-    /// Unmapped techs are left untouched.
-    /// </summary>
-    /// <param name="techBuffer">The DynamicBuffer of UnlockedProgressionElement containing techs to modify in-place</param>
-    /// <param name="unlockedTech">The list of tech hashes that should be unlocked</param>
     public static void SyncUnlockedTechs(DynamicBuffer<UnlockedProgressionElement> techBuffer, List<int> unlockedTech)
     {
         if (unlockedTech == null)
         {
             return;
         }
-
-        foreach (var techHash in TechToRecipes.Keys)
+        
+        foreach (var techPrefab in DataDicts.PrefabToTech.Keys)
         {
-            PrefabGUID techPrefab = new PrefabGUID(techHash);
-            bool techShouldBeUnlocked = unlockedTech.Contains(techHash);
+            bool techShouldBeUnlocked = unlockedTech.Contains(techPrefab.GuidHash);
 
             if (techShouldBeUnlocked)
             {
@@ -274,6 +269,54 @@ public static class TechToRecipeMapping
             }
         }
     }
+
+    public static void SyncUnlockedSpells(DynamicBuffer<UnlockedSpellBookAbility> spellbuffer, List<int> unlockedSpells)
+    {
+        if (unlockedSpells == null)
+        {
+            return;
+        }
+
+        foreach (var techHash in TechToRecipes.Keys)
+        {
+            PrefabGUID unlockedSpell = new PrefabGUID(techHash);
+            bool techShouldBeUnlocked = unlockedSpells.Contains(techHash);
+
+            if (techShouldBeUnlocked)
+            {
+                // Tech should be unlocked, ensure it's in the buffer
+                bool techExists = false;
+                for (int i = 0; i < spellbuffer.Length; i++)
+                {
+                    if (spellbuffer[i].Ability == unlockedSpell)
+                    {
+                        Plugin.BepinLogger.LogInfo($"Spell {unlockedSpell} already exists in buffer, skipping add");
+                        techExists = true;
+                        break;
+                    }
+                }
+
+                if (!techExists)
+                {
+                    Plugin.BepinLogger.LogInfo($"Spell {unlockedSpell} should be unlocked but is not in buffer, adding it");
+                    spellbuffer.Add(new UnlockedSpellBookAbility { Ability = unlockedSpell });
+                }
+            }
+            else
+            {
+                // Tech should be locked, remove it if it exists
+                for (int i = spellbuffer.Length - 1; i >= 0; i--)
+                {
+                    if (spellbuffer[i].Ability == unlockedSpell)
+                    {
+                        Plugin.BepinLogger.LogInfo($"Spell {unlockedSpell} should be locked but is in buffer, removing it");
+                        unlockedSpells.RemoveAt(i);
+                        break;
+                    }
+                }
+            }
+        }
+    }
     public static void SyncResearchStation(DynamicBuffer<ResearchBuffer> techBuffer, List<int> unlockedTech)
     {
         if (unlockedTech == null)
@@ -281,10 +324,9 @@ public static class TechToRecipeMapping
             return;
         }
 
-        foreach (var techHash in TechToRecipes.Keys)
+        foreach (var techPrefab in DataDicts.PrefabToTech.Keys)
         {
-            PrefabGUID techPrefab = new PrefabGUID(techHash);
-            bool techShouldBeUnlocked = unlockedTech.Contains(techHash);
+            bool techShouldBeUnlocked = unlockedTech.Contains(techPrefab.GuidHash);
 
             if (techShouldBeUnlocked)
             {
@@ -412,7 +454,7 @@ public static class TechToRecipeMapping
                 ref Snapshot_ResearchBuffer_Data data = ref snapshotPtr.Elements[i];
                 int hash = data.ResearchGuid.GetHashCode();
 
-                if (!TechToRecipes.ContainsKey(hash)) continue;
+                if (!DataDicts.PrefabToTech.ContainsKey(data.ResearchGuid)) continue;
 
                 bool shouldBeUnlocked = unlockedTech.Contains(hash);
 

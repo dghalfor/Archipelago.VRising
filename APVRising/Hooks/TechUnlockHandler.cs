@@ -48,7 +48,7 @@ public static class UnlockResearch
         Entity progressionEntity,
         bool logOnDuplicate = true)
     {
-        ProgressionHandler.LockResearchUnlocksForPlayer(user, researchGuid);
+        ProgressionHandler.LockTechForPlayer(user, researchGuid);
         ChatMessage.NotifyClientLock(researchGuid.GuidHash);
     }
 }

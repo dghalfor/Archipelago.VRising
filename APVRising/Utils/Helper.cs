@@ -1,5 +1,6 @@
 ﻿using APVRising;
 using BepInEx.Logging;
+using Epic.OnlineServices;
 using ProjectM;
 using ProjectM.CastleBuilding;
 using ProjectM.Network;
@@ -98,7 +99,24 @@ namespace APVRising.Utils
                 return false;
             }
         }
-
+        public static Entity AddItemToInventory(Entity recipient, PrefabGUID guid, int amount, out bool result)
+        {
+            result = false;
+            try
+            {
+                ServerGameManager serverGameManager = Plugin.Server.GetExistingSystemManaged<ServerScriptMapper>()._ServerGameManager;
+                var inventoryResponse = serverGameManager.TryAddInventoryItem(recipient, guid, amount);
+                if (inventoryResponse.Success) {
+                    result = true;
+                        }
+                return inventoryResponse.NewEntity;
+            }
+            catch (System.Exception e)
+            {
+                Plugin.BepinLogger.LogInfo("didn't work");
+            }
+            return new Entity();
+        }
         public static void DropItemNearby(Entity characterEntity, PrefabGUID itemGuid, int amount)
         {
             InventoryUtilitiesServer.CreateDropItem(Plugin.Server.EntityManager, characterEntity, itemGuid, amount, new Entity());

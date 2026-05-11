@@ -3,9 +3,11 @@ using APVRising.Hooks;
 using APVRising.Utils;
 using ProjectM;
 using ProjectM.Network;
+using Stunlock.Core;
 using System;
 using Unity.Collections;
 using Unity.Entities;
+using UnityEngine.TextCore.Text;
 using VampireCommandFramework;
 
 namespace APVRising.Commands;
@@ -57,7 +59,7 @@ public static class ArchipelagoCommands
         log.LogInfo($"Unlocking tech for {userEntities.Length} users");
         foreach (var userEntity in userEntities)
         {
-            ProgressionHandler.UnlockResearchForPlayer(userEntity, new Stunlock.Core.PrefabGUID(guid));
+            ProgressionHandler.UnlockTechForPlayer(userEntity, new Stunlock.Core.PrefabGUID(guid));
         }
         userEntities.Dispose();
         ChatMessage.NotifyClientUnlock(guid);
@@ -74,13 +76,64 @@ public static class ArchipelagoCommands
         log.LogInfo($"Locking tech for {userEntities.Length} users");
         foreach (var userEntity in userEntities)
         {
-            ProgressionHandler.LockResearchUnlocksForPlayer(userEntity, new Stunlock.Core.PrefabGUID(guid));
+            ProgressionHandler.LockTechForPlayer(userEntity, new Stunlock.Core.PrefabGUID(guid));
         }
         userEntities.Dispose();
         ChatMessage.NotifyClientLock(guid);
         ctx.Reply($"Locking tech with GUID: {guid}");
     }
 
+    [Command("lockSpell")]
+    public static void APLockSpell(ICommandContext ctx, int guid)
+    {
+        var log = Plugin.BepinLogger;
+
+        var query = Plugin.EntityManager.CreateEntityQuery(ComponentType.ReadOnly<User>(), ComponentType.ReadOnly<ProgressionMapper>());
+        var userEntities = query.ToEntityArray(Allocator.Temp);
+        log.LogInfo($"Locking spell for {userEntities.Length} users");
+        foreach (var userEntity in userEntities)
+        {
+            ProgressionHandler.LockSpellAbilityForPlayer(userEntity, new Stunlock.Core.PrefabGUID(guid));
+        }
+        userEntities.Dispose();
+        ChatMessage.NotifyClientLockSpell(guid);
+        ctx.Reply($"Locking spell with GUID: {guid}");
+    }
+
+    [Command("unlockSpell")]
+    public static void APUnlockSpell(ICommandContext ctx, int guid)
+    {
+        var log = Plugin.BepinLogger;
+
+        var query = Plugin.EntityManager.CreateEntityQuery(ComponentType.ReadOnly<User>(), ComponentType.ReadOnly<ProgressionMapper>());
+        var userEntities = query.ToEntityArray(Allocator.Temp);
+        log.LogInfo($"unlocking spell for {userEntities.Length} users");
+        foreach (var userEntity in userEntities)
+        {
+            ProgressionHandler.UnlockSpellAbilityForPlayer(userEntity, new Stunlock.Core.PrefabGUID(guid));
+        }
+        userEntities.Dispose();
+        ChatMessage.NotifyClientUnlockSpell(guid);
+        ctx.Reply($"Unlock spell with GUID: {guid}");
+    }
+
+    [Command("giveItem")]
+    public static void GiveItem(ICommandContext ctx, int guid)
+    {
+
+        var query = Plugin.EntityManager.CreateEntityQuery(ComponentType.ReadOnly<User>());
+        var userEntities = query.ToEntityArray(Allocator.Temp);
+        foreach (var userEntity in userEntities)
+        {
+            var user = Plugin.EntityManager.GetComponentData<User>(userEntity);
+
+            var entity = Helper.AddItemToInventory(user.LocalCharacter._Entity, new PrefabGUID(guid), 1, out var result);
+            if (result) {
+                ctx.Reply($"Gave item with guid: {guid}");
+            }
+            ctx.Reply($"Could not give item with guid: {guid}");
+        }
+    }
     [Command("sync")]
     public static void APSync(ICommandContext ctx)
     {

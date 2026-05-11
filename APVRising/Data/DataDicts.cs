@@ -155,6 +155,69 @@ namespace APVRising.Data
             */
 
             //-------------------------- BELOW THIS LINE IS Analyzed-------------------------
+            // Blood Magic
+            { "AB_Blood_BloodRage_AbilityGroup",           "Blood Rage" },
+            { "AB_Blood_BloodFountain_AbilityGroup",       "Blood Fountain" },
+            { "AB_Blood_SanguineCoil_AbilityGroup",        "Sanguine Coil" },
+            { "AB_Blood_CarrionSwarm_AbilityGroup",        "Carrion Swarm" },
+            { "AB_Vampire_VeilOfBlood_Group",              "Veil of Blood" },
+            { "AB_Blood_CrimsonBeam_AbilityGroup",         "Crimson Beam" },
+            { "AB_Blood_HeartStrike_AbilityGroup",         "Heart Strike" },
+
+            // Chaos Magic
+            { "AB_Chaos_Volley_AbilityGroup",              "Chaos Volley" },
+            { "AB_Chaos_PowerSurge_AbilityGroup",          "Power Surge" },
+            { "AB_Chaos_Aftershock_Group",                 "Aftershock" },
+            { "AB_Chaos_Void_AbilityGroup",                "Void" },
+            { "AB_Chaos_Barrier_AbilityGroup",             "Chaos Barrier" },
+            { "AB_Chaos_RainOfChaos_AbilityGroup",         "Rain of Chaos" },
+            { "AB_Vampire_VeilOfChaos_Group",              "Veil of Chaos" },
+            { "AB_Chaos_MercilessCharge_AbilityGroup",     "Merciless Charge" },
+            { "AB_Chaos_ChaosBarrage_AbilityGroup",        "Chaos Barrage" },
+
+            // Unholy Magic
+            { "AB_Unholy_CorruptedSkull_AbilityGroup",     "Corrupted Skull" },
+            { "AB_Unholy_WardOfTheDamned_AbilityGroup",    "Ward of the Damned" },
+            { "AB_Unholy_CorpseExplosion_AbilityGroup",    "Bone Explosion" },
+            { "AB_Unholy_DeathKnight_AbilityGroup",        "Death Knight" },
+            { "AB_Unholy_Soulburn_AbilityGroup",           "Soulburn" },
+            { "AB_Unholy_ChainsOfDeath_AbilityGroup",      "Unholy Chains" },
+            { "AB_Vampire_VeilOfBones_AbilityGroup",       "Veil of Bones" },
+            { "AB_Unholy_ArmyOfTheDead_AbilityGroup",      "Army of the Dead" },
+            { "AB_Unholy_UnstableArachnid_AbilityGroup",   "Volatile Arachnid" },
+
+            // Illusion Magic
+            { "AB_Illusion_SpectralWolf_AbilityGroup",     "Spectral Wolf" },
+            { "AB_Illusion_PhantomAegis_AbilityGroup",     "Phantom Aegis" },
+            { "AB_Illusion_WraithSpear_AbilityGroup",      "Wraith Spear" },
+            { "AB_Illusion_Mosquito_AbilityGroup",         "Mosquito" },
+            { "AB_Illusion_MistTrance_AbilityGroup",       "Mist Trance" },
+            { "AB_Illusion_Curse_Group",                   "Curse" },
+            { "AB_Vampire_VeilOfIllusion_AbilityGroup",    "Veil of Illusion" },
+            { "AB_Illusion_SpectralGuardian_AbilityGroup", "Spectral Guardian" },
+            { "AB_Illusion_WispDance_AbilityGroup",        "Wisp Dance" },
+
+            // Frost Magic
+            { "AB_Frost_FrostBat_AbilityGroup",            "Frost Bat" },
+            { "AB_Frost_ColdSnap_AbilityGroup",            "Cold Snap" },
+            { "AB_Frost_IceNova_AbilityGroup",             "Ice Nova" },
+            { "AB_Frost_CrystalLance_AbilityGroup",        "Crystal Lance" },
+            { "AB_FrostBarrier_AbilityGroup",              "Frost Barrier" },
+            { "AB_Vampire_VeilOfFrost_Group",              "Veil of Frost" },
+            { "AB_Frost_ArcticLeap_AbilityGroup",          "Arctic Leap" },
+            { "AB_Frost_IceBlockVortex_AbilityGroup",      "Ice Block" },
+
+            // Storm Magic
+            { "AB_Storm_Cyclone_AbilityGroup",             "Cyclone" },
+            { "AB_Storm_Discharge_AbilityGroup",           "Discharge" },
+            { "AB_Storm_BallLightning_AbilityGroup",       "Ball Lightning" },
+            { "AB_Storm_PolarityShift_AbilityGroup",       "Polarity Shift" },
+            { "AB_Storm_LightningWall_AbilityGroup",       "Lightning Curtain" },
+            { "AB_Storm_LightningTendrils_AbilityGroup",   "Lightning Tendrils" },
+            { "AB_Vampire_VeilOfStorm_Group",              "Veil of Storm" },
+            { "AB_Storm_RagingTempest_AbilityGroup",       "Raging Tempest" },
+            { "AB_Storm_LightningTyphoon_AbilityGroup",    "Lightning Typhoon" },
+
             { "Tech_Collection_Wallpapers_Classical01", "Athenaeum - Learn Stately Stone Walls"}, // [?]
             { "Tech_Collection_Wallpapers_Cordial01", "Study - Learn Cordial Wall Panels"},
             { "Tech_Collection_Wallpapers_Prison01", "Study - Learn Prison Walls"},
@@ -503,6 +566,74 @@ namespace APVRising.Data
 
         public static readonly Dictionary<string, PrefabGUID> TechToPrefab = new Dictionary<string, PrefabGUID>
             {
+                // Blood Magic
+                { "AB_Blood_Shadowbolt_AbilityGroup",          new PrefabGUID(-880131926) },
+                { "AB_Blood_BloodRite_AbilityGroup",           new PrefabGUID(1191439206) },
+                { "AB_Blood_BloodRage_AbilityGroup",           new PrefabGUID(651613264) },
+                { "AB_Blood_BloodFountain_AbilityGroup",       new PrefabGUID(2067760264) },
+                { "AB_Blood_SanguineCoil_AbilityGroup",        new PrefabGUID(189403977) },
+                { "AB_Blood_CarrionSwarm_AbilityGroup",        new PrefabGUID(-1380116221) },
+                { "AB_Blood_CrimsonBeam_AbilityGroup",         new PrefabGUID(375131842) },
+                { "AB_Blood_HeartStrike_AbilityGroup",         new PrefabGUID(-1432604486) },
+
+                // Chaos Magic
+                { "AB_Chaos_Volley_AbilityGroup",              new PrefabGUID(1019568127) },
+                { "AB_Chaos_PowerSurge_AbilityGroup",          new PrefabGUID(1112116762) },
+                { "AB_Chaos_Aftershock_Group",                 new PrefabGUID(1575317901) },
+                { "AB_Chaos_Void_AbilityGroup",                new PrefabGUID(-358319417) },
+                { "AB_Chaos_Barrier_AbilityGroup",             new PrefabGUID(-1016145613) },
+                { "AB_Chaos_RainOfChaos_AbilityGroup",         new PrefabGUID(2012523607) },
+                { "AB_Chaos_MercilessCharge_AbilityGroup",     new PrefabGUID(245173408) },
+                { "AB_Chaos_ChaosBarrage_AbilityGroup",        new PrefabGUID(1174831223) },
+
+                // Unholy Magic
+                { "AB_Unholy_CorruptedSkull_AbilityGroup",     new PrefabGUID(-1204819086) },
+                { "AB_Unholy_WardOfTheDamned_AbilityGroup",    new PrefabGUID(-1136860480) },
+                { "AB_Unholy_CorpseExplosion_AbilityGroup",    new PrefabGUID(481411985) },
+                { "AB_Unholy_DeathKnight_AbilityGroup",        new PrefabGUID(1961570821) },
+                { "AB_Unholy_Soulburn_AbilityGroup",           new PrefabGUID(2138402840) },
+                { "AB_Unholy_ChainsOfDeath_AbilityGroup",      new PrefabGUID(-1845982676) },
+                { "AB_Unholy_ArmyOfTheDead_AbilityGroup",      new PrefabGUID(-1781779733) },
+                { "AB_Unholy_UnstableArachnid_AbilityGroup",   new PrefabGUID(-859352730) },
+
+                // Illusion Magic
+                { "AB_Illusion_SpectralWolf_AbilityGroup",     new PrefabGUID(247896794) },
+                { "AB_Illusion_PhantomAegis_AbilityGroup",     new PrefabGUID(-2053450457) },
+                { "AB_Illusion_WraithSpear_AbilityGroup",      new PrefabGUID(-242769430) },
+                { "AB_Illusion_Mosquito_AbilityGroup",         new PrefabGUID(268059675) },
+                { "AB_Illusion_MistTrance_AbilityGroup",       new PrefabGUID(110097606) },
+                { "AB_Illusion_Curse_Group",                   new PrefabGUID(-1432758970) },
+                { "AB_Illusion_SpectralGuardian_AbilityGroup", new PrefabGUID(1650878435) },
+                { "AB_Illusion_WispDance_AbilityGroup",        new PrefabGUID(-1745021468) },
+
+                // Frost Magic
+                { "AB_Frost_FrostBat_AbilityGroup",            new PrefabGUID(78384915) },
+                { "AB_Frost_ColdSnap_AbilityGroup",            new PrefabGUID(-1000260252) },
+                { "AB_Frost_IceNova_AbilityGroup",             new PrefabGUID(91249849) },
+                { "AB_Frost_CrystalLance_AbilityGroup",        new PrefabGUID(295045820) },
+                { "AB_FrostBarrier_AbilityGroup",              new PrefabGUID(1293609465) },
+                { "AB_FrostCone_AbilityGroup",                 new PrefabGUID(1119012588) },
+                { "AB_Frost_ArcticLeap_AbilityGroup",          new PrefabGUID(1966330719) },
+                { "AB_Frost_IceBlockVortex_AbilityGroup",      new PrefabGUID(1887600892) },
+
+                // Vampire Veils
+                { "AB_Vampire_VeilOfShadow_Group",             new PrefabGUID(-433204738) },
+                { "AB_Vampire_VeilOfBlood_Group",              new PrefabGUID(305230608) },
+                { "AB_Vampire_VeilOfFrost_Group",              new PrefabGUID(1709284795) },
+                { "AB_Vampire_VeilOfBones_AbilityGroup",       new PrefabGUID(-498302954) },
+                { "AB_Vampire_VeilOfStorm_Group",              new PrefabGUID(-84816111) },
+                { "AB_Vampire_VeilOfChaos_Group",              new PrefabGUID(711231628) },
+                { "AB_Vampire_VeilOfIllusion_AbilityGroup",    new PrefabGUID(-935015750) },
+
+                // Storm Magic
+                { "AB_Storm_Discharge_AbilityGroup",           new PrefabGUID(1952703098) },
+                { "AB_Storm_BallLightning_AbilityGroup",       new PrefabGUID(1249925269) },
+                { "AB_Storm_Cyclone_AbilityGroup",             new PrefabGUID(-356990326) },
+                { "AB_Storm_PolarityShift_AbilityGroup",       new PrefabGUID(-987810170) },
+                { "AB_Storm_LightningWall_AbilityGroup",       new PrefabGUID(1071205195) },
+                { "AB_Storm_LightningTendrils_AbilityGroup",   new PrefabGUID(-1184139778) },
+                { "AB_Storm_RagingTempest_AbilityGroup",       new PrefabGUID(2111431121) },
+                { "AB_Storm_LightningTyphoon_AbilityGroup",    new PrefabGUID(-914344112) },
                 { "Tech_Ability_CommandingForm", new PrefabGUID(-1301155150) },
                 { "Tech_Ability_PsychicForm", new PrefabGUID(-647200166) },
                 { "Tech_Armor_Boots_T04_Brute", new PrefabGUID(676266407) },
@@ -882,6 +1013,144 @@ namespace APVRising.Data
                 { "Tech_Weapon_Whip_T08", new PrefabGUID(1515808838) },
             };
         public static readonly Dictionary<PrefabGUID, string> PrefabToTech = TechToPrefab.ToDictionary(kvp => kvp.Value, kvp => kvp.Key);
+
+        public static readonly Dictionary<string, string> SpellNameToAbilityPrefab = new()
+            {
+                // Blood Magic
+                { "Blood Rage",       "AB_Blood_BloodRage_AbilityGroup" },
+                { "Blood Fountain",   "AB_Blood_BloodFountain_AbilityGroup" },
+                { "Sanguine Coil",    "AB_Blood_SanguineCoil_AbilityGroup" },
+                { "Carrion Swarm",    "AB_Blood_CarrionSwarm_AbilityGroup" },
+                { "Veil of Blood",    "AB_Vampire_VeilOfBlood_Group" },
+                { "Crimson Beam",     "AB_Blood_CrimsonBeam_AbilityGroup" },
+                { "Heart Strike",     "AB_Blood_HeartStrike_AbilityGroup" },
+
+                // Chaos Magic
+                { "Chaos Volley",     "AB_Chaos_Volley_AbilityGroup" },
+                { "Power Surge",      "AB_Chaos_PowerSurge_AbilityGroup" },
+                { "Aftershock",       "AB_Chaos_Aftershock_Group" },
+                { "Void",             "AB_Chaos_Void_AbilityGroup" },
+                { "Chaos Barrier",    "AB_Chaos_Barrier_AbilityGroup" },
+                { "Rain of Chaos",    "AB_Chaos_RainOfChaos_AbilityGroup" },
+                { "Veil of Chaos",    "AB_Vampire_VeilOfChaos_Group" },
+                { "Merciless Charge", "AB_Chaos_MercilessCharge_AbilityGroup" },
+                { "Chaos Barrage",    "AB_Chaos_ChaosBarrage_AbilityGroup" },
+
+                // Unholy Magic
+                { "Corrupted Skull",  "AB_Unholy_CorruptedSkull_AbilityGroup" },
+                { "Ward of the Damned","AB_Unholy_WardOfTheDamned_AbilityGroup" },
+                { "Bone Explosion",   "AB_Unholy_CorpseExplosion_AbilityGroup" },
+                { "Death Knight",     "AB_Unholy_DeathKnight_AbilityGroup" },
+                { "Soulburn",         "AB_Unholy_Soulburn_AbilityGroup" },
+                { "Unholy Chains",    "AB_Unholy_ChainsOfDeath_AbilityGroup" },
+                { "Veil of Bones",    "AB_Vampire_VeilOfBones_AbilityGroup" },
+                { "Army of the Dead", "AB_Unholy_ArmyOfTheDead_AbilityGroup" },
+                { "Volatile Arachnid","AB_Unholy_UnstableArachnid_AbilityGroup" },
+
+                // Illusion Magic
+                { "Spectral Wolf",    "AB_Illusion_SpectralWolf_AbilityGroup" },
+                { "Phantom Aegis",    "AB_Illusion_PhantomAegis_AbilityGroup" },
+                { "Wraith Spear",     "AB_Illusion_WraithSpear_AbilityGroup" },
+                { "Mosquito",         "AB_Illusion_Mosquito_AbilityGroup" },
+                { "Mist Trance",      "AB_Illusion_MistTrance_AbilityGroup" },
+                { "Curse",            "AB_Illusion_Curse_Group" },
+                { "Veil of Illusion", "AB_Vampire_VeilOfIllusion_AbilityGroup" },
+                { "Spectral Guardian","AB_Illusion_SpectralGuardian_AbilityGroup" },
+                { "Wisp Dance",       "AB_Illusion_WispDance_AbilityGroup" },
+
+                // Frost Magic
+                { "Frost Bat",        "AB_Frost_FrostBat_AbilityGroup" },
+                { "Cold Snap",        "AB_Frost_ColdSnap_AbilityGroup" },
+                { "Ice Nova",         "AB_Frost_IceNova_AbilityGroup" },
+                { "Crystal Lance",    "AB_Frost_CrystalLance_AbilityGroup" },
+                { "Frost Barrier",    "AB_FrostBarrier_AbilityGroup" },
+                { "Veil of Frost",    "AB_Vampire_VeilOfFrost_Group" },
+                { "Arctic Leap",      "AB_Frost_ArcticLeap_AbilityGroup" },
+                { "Ice Block",        "AB_Frost_IceBlockVortex_AbilityGroup" },
+
+                // Storm Magic
+                { "Cyclone",          "AB_Storm_Cyclone_AbilityGroup" },
+                { "Discharge",        "AB_Storm_Discharge_AbilityGroup" },
+                { "Ball Lightning",   "AB_Storm_BallLightning_AbilityGroup" },
+                { "Polarity Shift",   "AB_Storm_PolarityShift_AbilityGroup" },
+                { "Lightning Curtain","AB_Storm_LightningWall_AbilityGroup" },
+                { "Lightning Tendrils","AB_Storm_LightningTendrils_AbilityGroup" },
+                { "Veil of Storm",    "AB_Vampire_VeilOfStorm_Group" },
+                { "Raging Tempest",   "AB_Storm_RagingTempest_AbilityGroup" },
+                { "Lightning Typhoon","AB_Storm_LightningTyphoon_AbilityGroup" },
+            };
+
+        public static readonly Dictionary<string, int> AbilityPrefabToGuid = new()
+            {
+                // Blood Magic
+                { "AB_Blood_Shadowbolt_AbilityGroup",         -880131926 },
+                { "AB_Blood_BloodRite_AbilityGroup",           1191439206 },
+                { "AB_Blood_BloodRage_AbilityGroup",            651613264 },
+                { "AB_Blood_BloodFountain_AbilityGroup",       2067760264 },
+                { "AB_Blood_SanguineCoil_AbilityGroup",         189403977 },
+                { "AB_Blood_CarrionSwarm_AbilityGroup",       -1380116221 },
+                { "AB_Blood_CrimsonBeam_AbilityGroup",          375131842 },
+                { "AB_Blood_HeartStrike_AbilityGroup",        -1432604486 },
+
+                // Chaos Magic
+                { "AB_Chaos_Volley_AbilityGroup",             1019568127 },
+                { "AB_Chaos_PowerSurge_AbilityGroup",         1112116762 },
+                { "AB_Chaos_Aftershock_Group",                1575317901 },
+                { "AB_Chaos_Void_AbilityGroup",               -358319417 },
+                { "AB_Chaos_Barrier_AbilityGroup",           -1016145613 },
+                { "AB_Chaos_RainOfChaos_AbilityGroup",        2012523607 },
+                { "AB_Chaos_MercilessCharge_AbilityGroup",     245173408 },
+                { "AB_Chaos_ChaosBarrage_AbilityGroup",       1174831223 },
+
+                // Unholy Magic
+                { "AB_Unholy_CorruptedSkull_AbilityGroup",   -1204819086 },
+                { "AB_Unholy_WardOfTheDamned_AbilityGroup",  -1136860480 },
+                { "AB_Unholy_CorpseExplosion_AbilityGroup",    481411985 },
+                { "AB_Unholy_DeathKnight_AbilityGroup",       1961570821 },
+                { "AB_Unholy_Soulburn_AbilityGroup",          2138402840 },
+                { "AB_Unholy_ChainsOfDeath_AbilityGroup",    -1845982676 },
+                { "AB_Unholy_ArmyOfTheDead_AbilityGroup",    -1781779733 },
+                { "AB_Unholy_UnstableArachnid_AbilityGroup",  -859352730 },
+
+                // Illusion Magic
+                { "AB_Illusion_SpectralWolf_AbilityGroup",     247896794 },
+                { "AB_Illusion_PhantomAegis_AbilityGroup",   -2053450457 },
+                { "AB_Illusion_WraithSpear_AbilityGroup",     -242769430 },
+                { "AB_Illusion_Mosquito_AbilityGroup",         268059675 },
+                { "AB_Illusion_MistTrance_AbilityGroup",       110097606 },
+                { "AB_Illusion_Curse_Group",                 -1432758970 },
+                { "AB_Illusion_SpectralGuardian_AbilityGroup",1650878435 },
+                { "AB_Illusion_WispDance_AbilityGroup",      -1745021468 },
+
+                // Frost Magic
+                { "AB_Frost_FrostBat_AbilityGroup",             78384915 },
+                { "AB_Frost_ColdSnap_AbilityGroup",          -1000260252 },
+                { "AB_Frost_IceNova_AbilityGroup",              91249849 },
+                { "AB_Frost_CrystalLance_AbilityGroup",        295045820 },
+                { "AB_FrostBarrier_AbilityGroup",             1293609465 },
+                { "AB_FrostCone_AbilityGroup",                1119012588 },
+                { "AB_Frost_ArcticLeap_AbilityGroup",         1966330719 },
+                { "AB_Frost_IceBlockVortex_AbilityGroup",     1887600892 },
+
+                // Vampire Veils
+                { "AB_Vampire_VeilOfShadow_Group",            -433204738 },
+                { "AB_Vampire_VeilOfBlood_Group",              305230608 },
+                { "AB_Vampire_VeilOfFrost_Group",             1709284795 },
+                { "AB_Vampire_VeilOfBones_AbilityGroup",      -498302954 },
+                { "AB_Vampire_VeilOfStorm_Group",              -84816111 },
+                { "AB_Vampire_VeilOfChaos_Group",              711231628 },
+                { "AB_Vampire_VeilOfIllusion_AbilityGroup",   -935015750 },
+
+                // Storm Magic
+                { "AB_Storm_Discharge_AbilityGroup",          1952703098 },
+                { "AB_Storm_BallLightning_AbilityGroup",      1249925269 },
+                { "AB_Storm_Cyclone_AbilityGroup",            -356990326 },
+                { "AB_Storm_PolarityShift_AbilityGroup",      -987810170 },
+                { "AB_Storm_LightningWall_AbilityGroup",      1071205195 },
+                { "AB_Storm_LightningTendrils_AbilityGroup", -1184139778 },
+                { "AB_Storm_RagingTempest_AbilityGroup",      2111431121 },
+                { "AB_Storm_LightningTyphoon_AbilityGroup",   -914344112 },
+            };
 
     }
 
