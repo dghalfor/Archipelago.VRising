@@ -23,13 +23,14 @@ namespace APVRising.Utils
         public static bool IsResearching = false;
         public static bool isStale = false;
 
-        public static void SwitchProgression(DynamicBuffer<UnlockedProgressionElement> progressionBuffer)
+        public static void SwitchProgression(DynamicBuffer<UnlockedProgressionElement> progressionBuffer, DynamicBuffer<UnlockedSpellBookAbility> spellBuffer)
         {
             Plugin.BepinLogger.LogInfo($"Switching progression. IsResearching: {IsResearching}");
             if (IsResearching)
             {
                 Plugin.BepinLogger.LogInfo($"Switching to researched progression");
                 TechToRecipeMapping.SyncUnlockedTechs(progressionBuffer, ArchipelagoData.GetCheckedLocations());
+                TechToRecipeMapping.SyncUnlockedSpells(spellBuffer, ArchipelagoData.GetCheckedLocations());
                 //ClearUnlockBuffers();
                 Plugin.BepinLogger.LogInfo(Plugin.IsServer.ToString());
 
@@ -52,6 +53,7 @@ namespace APVRising.Utils
             {
                 Plugin.BepinLogger.LogInfo($"Switching to AP progression");
                 TechToRecipeMapping.SyncUnlockedTechs(progressionBuffer, ArchipelagoData.GetReceivedChecks());
+                TechToRecipeMapping.SyncUnlockedSpells(spellBuffer, ArchipelagoData.GetReceivedChecks());
 
                 Plugin.BepinLogger.LogInfo(Plugin.IsServer.ToString());
                 if (Plugin.IsServer)
@@ -105,8 +107,9 @@ namespace APVRising.Utils
                 {
                     //UnlockedRecipeElement, UnlockedBlueprintElement, UnlockedVBlood, (maybe) UnlockedSpellBookAbility
                     var buffer = em.GetBuffer<UnlockedProgressionElement>(entity);
+                    var spellBuffer = em.GetBuffer<UnlockedSpellBookAbility>(entity);
                     // Sync tech unlocks with recipe unlocks directly on the buffer
-                    SwitchProgression(buffer);
+                    SwitchProgression(buffer, spellBuffer);
                 }
                 entities.Dispose();
             }

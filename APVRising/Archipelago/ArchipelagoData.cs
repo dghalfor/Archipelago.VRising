@@ -63,6 +63,7 @@ public class ArchipelagoData
     /// <returns></returns>
     public override string ToString()
     {
-        return JsonConvert.SerializeObject($"{Uri} {SlotName} {Password} {Index} {seed} {slotData}");
+        //return JsonConvert.SerializeObject($"{Uri} {SlotName} {Password} {Index} {seed} {slotData}");
+        return "";
     }
 }

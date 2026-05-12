@@ -40,11 +40,12 @@ V Rising:
 * Elements removed from research at runtime are re-added after saving and closing the game.
   * ~~Function to re-sync to the archipelago in case of crash or other unrecoverable state~~ - resync command
   * Locally save the progression buffers and reload upon server start
+* Block spell assignment during research.
 
 * Journal progress being blocked like the other progression.
 
-* Include all progression elements in the current lock/unlock functionality (~~UnlockedShapeshiftElement~~, ~~UnlockedRecipeElement~~, ~~UnlockedBlueprintElement~~, UnlockedSpellBookAbility, UnlockedSpellPointPassives)
-* Add give item functions to support filler, should be straightforward
+* Include all progression elements in the current lock/unlock functionality (~~UnlockedShapeshiftElement~~, ~~UnlockedRecipeElement~~, ~~UnlockedBlueprintElement~~, ~~UnlockedSpellBookAbility~~, UnlockedSpellPointPassives)
+* Add give item from archipelago
 * LockResearch needs to be aware if the player has actually earned this in the archipelago or not.
 
 ## Done
@@ -57,6 +58,7 @@ V Rising:
 * ~~UnlockedVBlood likely should stay separate if possible, that would let players actually see what they've killed in the vblood menu~~
 * ~~Add dictionary between the nicely formatted names and the Tech_collection entity names~~
 * ~~ Make the progression buffers saved and written by startresearch/stopresearch actually connected to the archipelago's progression, not just variables in code~~
+* ~~Add give item functions to support filler, should be straightforward~~
 
 ## Ideas
 

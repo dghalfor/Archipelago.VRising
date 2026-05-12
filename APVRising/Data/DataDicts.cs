@@ -562,7 +562,533 @@ namespace APVRising.Data
             { "Tech_Weapon_Whip_T08", ""},// (I think this is just from the T06 whip tech, but confirm if there's a unique unlock for the T08 whip)
         };
 
-        public static readonly Dictionary<string, string> APLocationToEntityName = EntityNameToAPLocation.ToDictionary(kvp => kvp.Value, kvp => kvp.Key);
+        //public static readonly Dictionary<string, string> APLocationToEntityName = EntityNameToAPLocation.ToDictionary(kvp => kvp.Value, kvp => kvp.Key);
+
+        public static readonly Dictionary<string, string> APLocationToEntityName = new Dictionary<string, string>
+        {
+            /*
+            // --- ABILITIES ---
+            {"Quincey the Bandit King (Smithy)", "Tech_Ability_CommandingForm"}, // [?] Commanding Form is gained from Quincey
+            {"Jade the Vampire Hunter (Pistols)", "Tech_Ability_PsychicForm"}, // [?] Psychic/Rat Form from Nibbles — but Commanding Form fits Quincey better; see note
+
+            // --- COLLECTIONS: BONE / ACT 1 STRUCTURE ---
+            { "Errol the Stonebreaker (Material and Gem Storage)", "Tech_Collection_Armor_T01_BoneAll"},   // [?] Bone armor often tied to Stonebreaker or early crafting
+            { "Errol the Stonebreaker (Material and Gem Storage)", "Tech_Collection_Armor_T01_BoneLower"}, // [?]
+            { "Errol the Stonebreaker (Material and Gem Storage)", "Tech_Collection_Armor_T01_BoneUpper_Salve"}, // [?]
+
+            // --- COLLECTIONS: CRAFTING / STATION ---
+            { "Rufus the Foreman (Simple Furniture)", "Tech_Collection_ArtisansCorner"},
+            { "Rufus the Foreman (Woodworking Bench)", "Tech_Collection_BloodTracking"}, // [?] Blood tracking feels like an early Rufus unlock
+    
+            { "Beatrice the Tailor (Loom)", "Tech_Collection_BustStatues_Vampire"}, // [?]
+
+            // --- COLLECTIONS: FRAMEWORK / CASTLE BUILDING ---
+            { "Rufus the Foreman (Woodworking Bench)", "Tech_Collection_Framework_CastleHeart"}, // Castle Heart is very early
+            { "Dracula (Castle)", "Tech_Collection_Framework_Gargoyles_and_DLC"}, // [?]
+            { "Rufus the Foreman (Woodworking Bench)", "Tech_Collection_Framework_T01_Wood_Foundation"},
+            { "Rufus the Foreman (Simple Furniture)", "Tech_Collection_Framework_T01_Wood_Structures"},
+            { "Errol the Stonebreaker (Material and Gem Storage)", "Tech_Collection_Framework_T02_Stone"},
+            { "Dracula (Castle)", "Tech_Collection_Framework_T02_Stone_DLC_Dracula"}, // [?]
+            { "Ziva the Engineer (Gloomrot)", "Tech_Collection_Framework_T02_Stone_DLC_Gloomrot"}, // [?] Gloomrot DLC
+            { "Quincey the Bandit King (Ebonite Stairs & Doors)", "Tech_Collection_Framework_T02_Stone_DLC_ProjectK"}, // [?]
+            { "Tristan the Vampire Hunter (Greatsword)", "Tech_Collection_Framework_T02_Stone_DLC_Strongblade"}, // [?]
+            { "Nicholaus the Fallen (Frayed Rugs, Banners & Curtains)", "Tech_Collection_Framework_T02_Stone_Halloween2022"}, // [?]
+
+            // --- COLLECTIONS: MIRRORS ---
+            { "Grethel the Glassblower (Wall Hanging Mirrors)", "Tech_Collection_Mirrors"},
+            { "Grethel the Glassblower (Wall Hanging Mirrors)", "Tech_Collection_Mirrors_Halloween2022"}, // [?]
+
+            // --- COLLECTIONS: OUTDOOR FLOORS / PAVEMENT ---
+            { "Grayson the Armourer (Workshop Flooring)", "Tech_Collection_Outdoor_Floors"},
+            { "Grayson the Armourer (Workshop Flooring)", "Tech_Collection_Pavement_Dirt"}, // [?]
+
+            // --- COLLECTIONS: SALVE ---
+            { "Keely the Frost Archer (Traveller's Wrap)", "Tech_Collection_Salve"}, // [?] Salve relates to bone/early crafting
+
+            // --- COLLECTIONS: STABLES / STATUES ---
+            { "Tristan the Vampire Hunter (Blood Hunter)", "Tech_Collection_Statues_Vampire"}, // [?]
+            { "Rufus the Foreman (Woodworking Bench)", "Tech_Collection_Structures_T01"},
+
+            // --- COLLECTIONS: WALLPAPERS / SHELVES / MIRRORS ---
+            { "Octavian the Militia Commander (Iron Weapons)", "Tech_Collection_Wallpapers_Imperious01"}, // [?]
+            { "Errol the Stonebreaker (Material and Gem Storage)", "Tech_Collection_Wallpapers_Bricks01"}, // [?]
+
+            // --- COLLECTIONS: WAYPOINT / WORKSHOP ---
+            { "Rufus the Foreman (Woodworking Bench)", "Tech_Collection_Waypoint"}, // [?] Waygates are early unlocks
+            { "Grayson the Armourer (Workshop Flooring)", "Tech_Collection_Workshop_Decoration"},
+
+            // --- SPELL PASSIVES: BLOOD ---
+            { "Rufus the Foreman (Blood Tier 1)", "Tech_SpellPassive_Blood_T01_BloodSpray"}, // [?] Blood passives assigned to appropriate blood-tier bosses
+            { "Tristan the Vampire Hunter (Blood Tier 3)", "Tech_SpellPassive_Blood_T02_BloodTypeEfficiency"},
+            { "Tristan the Vampire Hunter (Greater Blood Essence)", "Tech_SpellPassive_Blood_T03_VBloodSlayer"},
+            { "General Valencia the Depraved (Blood Knight)", "Tech_SpellPassive_Blood_T04_Rampage"}, // [?]
+            // CHAOS
+            { "Errol the Stonebreaker (Chaos Tier 1)", "Tech_SpellPassive_Chaos_T01_ChaosKindling"},
+            { "Lidia the Chaos Archer (Chaos Tier 1)", "Tech_SpellPassive_Chaos_T02_RenewingFlames"},
+            { "Clive the Firestarter (Chaos Tier 2)", "Tech_SpellPassive_Chaos_T03_Overpower"},
+            { "Quincey the Bandit King (Chaos Tier 3)", "Tech_SpellPassive_Chaos_T04_RavenousStrikes"},
+            // FROST
+            { "Keely the Frost Archer (Frost Tier 1)", "Tech_SpellPassive_Frost_T01_ColdSoul"},
+            { "Finn the Fisherman (Frost Tier 1)", "Tech_SpellPassive_Frost_T02_ChillWeave"},
+            { "Vincent the Frostbringer (Veil of Frost)", "Tech_SpellPassive_Frost_T03_Bastion"},
+            { "Terrorclaw the Ogre (Yeti)", "Tech_SpellPassive_Frost_T04_DarkEnchantment"}, // [?]
+            // ILLUSION
+            { "Grayson the Armourer (Illusion Tier 1)", "Tech_SpellPassive_Illusion_T01_SpiritualInfusion"},
+            { "Polora the Feywalker (Illusion Tier 1)", "Tech_SpellPassive_Illusion_T02_FlowingSorcery"},
+            { "Maja the Dark Savant (Illusion Tier 1)", "Tech_SpellPassive_Illusion_T03_FeralHaste"}, // [?]
+            { "Mairwyn the Elementalist (Cursed Wanderer)", "Tech_SpellPassive_Illusion_T04_WickedPower"}, // [?]
+            // STORM
+            { "Sir Erwin the Gallant Cavalier (Storm Tier 1)", "Tech_SpellPassive_Storm_T01_LightningFastStrikes"},
+            { "Grethel the Glassblower (Storm Tier 1)", "Tech_SpellPassive_Storm_T02_EnhancedConductivity"},
+            { "Voltatia the Power Master (Voltage)", "Tech_SpellPassive_Storm_T03_HungerForPower"}, // [?]
+            { "Ziva the Engineer (Archmage)", "Tech_SpellPassive_Storm_T04_TurbulentVelocity"}, // [?]
+            // UNHOLY
+            { "Goreswine the Ravager (Unholy Tier 1)", "Tech_SpellPassive_Unholy_T01_ArcaneAnimator"},
+            { "Kriig the Undead General (Unholy Tier 2)", "Tech_SpellPassive_Unholy_T02_SoulDrinker"},
+            { "Nicholaus the Fallen (Unholy Tier 3)", "Tech_SpellPassive_Unholy_T03_LethalStrikes"},
+            { "Cyril the Cursed Smith (Cursed Smith)", "Tech_SpellPassive_Unholy_T04_EmbraceMayhem"}, // [?]
+
+            // --- STORAGE ---
+            /*
+            { "Clive the Firestarter (Alchemy Table)", "Tech_Storage_Alchemy_T02"},
+            { "Ziva the Engineer (Archmage)", "Tech_Storage_Alchemy_T03"}, // [?]
+            { "Quincey the Bandit King (Tailoring Bench)", "Tech_Storage_Armor_T02"},
+            { "Rufus the Foreman (Woodworking Bench)", "Tech_Storage_Blood_T02"},
+            { "Tristan the Vampire Hunter (Greater Blood Essence)", "Tech_Storage_Blood_T03"},
+            { "The Duke of Balaton (Coins)", "Tech_Storage_Coins_T02"},
+            { "Grethel the Glassblower (Blood Rose Potion)", "Tech_Storage_Consumable_T02"},
+            { "Ziva the Engineer (Elixirs)", "Tech_Storage_Consumable_T03"}, // [?]
+            { "Finn the Fisherman (Fishing Pole)", "Tech_Storage_Fish_T02"},
+            { "Errol the Stonebreaker (Material and Gem Storage)", "Tech_Storage_Gems_T01"},
+            { "Ungora the Spider Queen (Spider Queen)", "Tech_Storage_Gems_T02"}, // [?]
+            { "Polora the Feywalker (Large Growing Plots)", "Tech_Storage_Herbs_T01"},
+            { "Polora the Feywalker (Growing Plot Collection)", "Tech_Storage_Herbs_T02"},
+            { "Domina the Blade Dancer (Jewels)", "Tech_Storage_Jewels_T02"}, // [?]
+            { "Maja the Dark Savant (Study)", "Tech_Storage_Knowledge_T02"},
+            { "Raziel the Shepherd (Magic Source)", "Tech_Storage_Knowledge_T03"}, // [?]
+            { "Errol the Stonebreaker (Material and Gem Storage)", "Tech_Storage_Minerals_T01"},
+            { "Quincey the Bandit King (Iron Ingot)", "Tech_Storage_Minerals_T02"},
+            { "Rufus the Foreman (Simple Furniture)", "Tech_Storage_Pack_T01_B"},
+            { "Rufus the Foreman (Woodworking Bench)", "Tech_Storage_T01"},
+            { "Quincey the Bandit King (Smithy)", "Tech_Storage_T02"},
+            { "Raziel the Shepherd (Raziel)", "Tech_Storage_T03"}, // [?]
+            { "Beatrice the Tailor (Loom)", "Tech_Storage_Tailoring_T02"},
+            { "Octavian the Militia Commander (Iron Weapons)", "Tech_Storage_Tailoring_T03"}, // [?] Silk tailoring
+            { "Quincey the Bandit King (Smithy)", "Tech_Storage_Weapons_T02"},
+            { "Rufus the Foreman (Woodworking Bench)", "Tech_Storage_Woodworking_T01"},
+            { "Quincey the Bandit King (Smithy)", "Tech_Storage_Woodworking_T02"},
+            */
+
+            //-------------------------- BELOW THIS LINE IS Analyzed-------------------------
+            // Blood Magic
+            { "Blood Rage",           "AB_Blood_BloodRage_AbilityGroup" },
+            { "Blood Fountain",       "AB_Blood_BloodFountain_AbilityGroup" },
+            { "Sanguine Coil",        "AB_Blood_SanguineCoil_AbilityGroup" },
+            { "Carrion Swarm",        "AB_Blood_CarrionSwarm_AbilityGroup" },
+            { "Veil of Blood",        "AB_Vampire_VeilOfBlood_Group" },
+            { "Crimson Beam",         "AB_Blood_CrimsonBeam_AbilityGroup" },
+            { "Heart Strike",         "AB_Blood_HeartStrike_AbilityGroup" },
+
+            // Chaos Magic
+            { "Chaos Volley",         "AB_Chaos_Volley_AbilityGroup" },
+            { "Power Surge",          "AB_Chaos_PowerSurge_AbilityGroup" },
+            { "Aftershock",           "AB_Chaos_Aftershock_Group" },
+            { "Void",                 "AB_Chaos_Void_AbilityGroup" },
+            { "Chaos Barrier",        "AB_Chaos_Barrier_AbilityGroup" },
+            { "Rain of Chaos",        "AB_Chaos_RainOfChaos_AbilityGroup" },
+            { "Veil of Chaos",        "AB_Vampire_VeilOfChaos_Group" },
+            { "Merciless Charge",     "AB_Chaos_MercilessCharge_AbilityGroup" },
+            { "Chaos Barrage",        "AB_Chaos_ChaosBarrage_AbilityGroup" },
+
+            // Unholy Magic
+            { "Corrupted Skull",      "AB_Unholy_CorruptedSkull_AbilityGroup" },
+            { "Ward of the Damned",   "AB_Unholy_WardOfTheDamned_AbilityGroup" },
+            { "Bone Explosion",       "AB_Unholy_CorpseExplosion_AbilityGroup" },
+            { "Death Knight",         "AB_Unholy_DeathKnight_AbilityGroup" },
+            { "Soulburn",             "AB_Unholy_Soulburn_AbilityGroup" },
+            { "Unholy Chains",        "AB_Unholy_ChainsOfDeath_AbilityGroup" },
+            { "Veil of Bones",        "AB_Vampire_VeilOfBones_AbilityGroup" },
+            { "Army of the Dead",     "AB_Unholy_ArmyOfTheDead_AbilityGroup" },
+            { "Volatile Arachnid",    "AB_Unholy_UnstableArachnid_AbilityGroup" },
+
+            // Illusion Magic
+            { "Spectral Wolf",        "AB_Illusion_SpectralWolf_AbilityGroup" },
+            { "Phantom Aegis",        "AB_Illusion_PhantomAegis_AbilityGroup" },
+            { "Wraith Spear",         "AB_Illusion_WraithSpear_AbilityGroup" },
+            { "Mosquito",             "AB_Illusion_Mosquito_AbilityGroup" },
+            { "Mist Trance",          "AB_Illusion_MistTrance_AbilityGroup" },
+            { "Curse",                "AB_Illusion_Curse_Group" },
+            { "Veil of Illusion",     "AB_Vampire_VeilOfIllusion_AbilityGroup" },
+            { "Spectral Guardian",    "AB_Illusion_SpectralGuardian_AbilityGroup" },
+            { "Wisp Dance",           "AB_Illusion_WispDance_AbilityGroup" },
+
+            // Frost Magic
+            { "Frost Bat",            "AB_Frost_FrostBat_AbilityGroup" },
+            { "Cold Snap",            "AB_Frost_ColdSnap_AbilityGroup" },
+            { "Ice Nova",             "AB_Frost_IceNova_AbilityGroup" },
+            { "Crystal Lance",        "AB_Frost_CrystalLance_AbilityGroup" },
+            { "Frost Barrier",        "AB_FrostBarrier_AbilityGroup" },
+            { "Veil of Frost",        "AB_Vampire_VeilOfFrost_Group" },
+            { "Arctic Leap",          "AB_Frost_ArcticLeap_AbilityGroup" },
+            { "Ice Block",            "AB_Frost_IceBlockVortex_AbilityGroup" },
+
+            // Storm Magic
+            { "Cyclone",              "AB_Storm_Cyclone_AbilityGroup" },
+            { "Discharge",            "AB_Storm_Discharge_AbilityGroup" },
+            { "Ball Lightning",       "AB_Storm_BallLightning_AbilityGroup" },
+            { "Polarity Shift",       "AB_Storm_PolarityShift_AbilityGroup" },
+            { "Lightning Curtain",    "AB_Storm_LightningWall_AbilityGroup" },
+            { "Lightning Tendrils",   "AB_Storm_LightningTendrils_AbilityGroup" },
+            { "Veil of Storm",        "AB_Vampire_VeilOfStorm_Group" },
+            { "Raging Tempest",       "AB_Storm_RagingTempest_AbilityGroup" },
+            { "Lightning Typhoon",    "AB_Storm_LightningTyphoon_AbilityGroup" },
+
+            { "Stately Stone Walls",  "Tech_Collection_Wallpapers_Classical01"}, // [?]
+            { "Cordial Wall Panels",  "Tech_Collection_Wallpapers_Cordial01"},
+            { "Prison Walls",         "Tech_Collection_Wallpapers_Prison01"},
+            { "Decorative Stone Walls","Tech_Collection_Wallpapers_Stone01"},
+            { "Hearth Wall Panels",   "Tech_Collection_Wallpapers_WoodPanel01"},
+
+            // --- COLLECTIONS: ORNAMENTS / BANNERS ---
+            { "Banners",              "Tech_Collection_Ornaments_Banners_T02"},
+            { "Stone Ornaments",      "Tech_Collection_Ornaments_Stone_T01"},
+
+            { "Cobblestone Paths",    "Tech_Collection_Pavement_Cobblestone"}, // [?]
+
+            // --- COLLECTIONS: MISC DECOR ---
+            { "Assortment of Castle Chairs",    "Tech_Collection_Furniture_Chairs_T02" },
+            { "Assortment of Desk Chairs",      "Tech_Collection_Furniture_Desk_Chairs_T02"},
+            { "Assortment of Desks",            "Tech_Collection_Furniture_Desks_T02"},
+            { "Dressing Tables & Folding Walls","Tech_Collection_Furniture_DressingTables_T03"},
+            { "Sofa & Divan Collection",        "Tech_Collection_Furniture_Sofas_T03"},
+            { "Fine Dining Table Collection",   "Tech_Collection_Furniture_Tables_T02"},
+            { "Vases and Plants",               "Tech_Collection_Vases01"},
+
+            // --- COLLECTIONS: LIGHTING ---
+            { "Hanging Lanterns",     "Tech_Collection_HangingLanterns_T02"},
+            { "Lamp Posts",           "Tech_Collection_Light_GardenLampPosts_T03"},
+
+            // --- COLLECTIONS: GARDEN ---
+            { "Garden Furniture and Lanterns",  "Tech_Collection_Garden_Furniture_Lanterns_T02"},
+            { "Simple Garden Planters",         "Tech_Collection_Garden_PlantersDecor_T01"},
+            { "Modest Garden Planters",         "Tech_Collection_Garden_PlantersDecor_T02"},
+            { "Garden Archways & Pergolas",     "Tech_Collection_Garden_PlantersDecor_T03"},
+
+            // --- CURTAINS ---
+            { "Assortment of Royal Curtains",   "Tech_Curtains_T03_Royal"},
+
+            // --- COLLECTIONS: FENCING / OUTDOOR ---
+            { "Noble Fences & Fountains",       "Tech_Collection_FenceFountain_Noble_T02"},
+            { "Fireplaces",                     "Tech_Collection_Fireplaces"},
+            { "Flying Lights",                  "Tech_Collection_FlyingCandles_T03"},
+
+            // --- COLLECTIONS: FOUNTAINS ---
+            { "Large Fountain",                 "Tech_Collection_Fountain_T03"},
+
+            // --- COLLECTIONS: ACT 1 VBLOOD ---
+            { "Alpha the White Wolf (Wolf Form)",               "Tech_Collection_VBlood_T02_AlphaWolf"},
+            { "Keely the Frost Archer (Leather)",               "Tech_Collection_VBlood_T02_Keely_Armor"},
+            { "Keely the Frost Archer (Tannery)",               "Tech_Collection_VBlood_T02_KeelyFrostArrow"},
+            { "Keely the Frost Archer (Empty Waterskin)",       "Tech_Collection_VBlood_T02_KeelyFrostArrow_Canteen"},
+            { "Lidia the Chaos Archer (Leatherworking Station)","Tech_Collection_VBlood_T02_LidiaChaosArrow"},
+            { "Lidia the Chaos Archer (Longbow)",               "Tech_Collection_VBlood_T02_LidiaChaosArrow_Longbow"},
+            { "Rufus the Foreman (Woodworking Bench)",          "Tech_Collection_VBlood_T02_RufusForeman"},
+            { "Rufus the Foreman (Simple Furniture)",           "Tech_Collection_Furniture_Simple_T01"},
+            { "Rufus the Foreman (Copper Crossbow)",            "Tech_Collection_VBlood_T02_RufusForeman_Crossbow"},
+            { "Errol the Stonebreaker (Material and Gem Storage)","Tech_Storage_Pack_T01_A"},
+            { "Errol the Stonebreaker (Copper Torch & Brazier)","Tech_Collection_Brazier_01"},
+            { "Finn the Fisherman (Fishing Pole)",              "Tech_Collection_VBlood_T03_Fisherman"},
+            { "Goreswine the Ravager (Tomb)",                   "Tech_Collection_VBlood_T03_Goreswine"},
+            { "Goreswine the Ravager (Gravedigger Ring)",       "Tech_Collection_VBlood_T03_Goreswine_MagicSource"},
+            { "Goreswine the Ravager (Raise Skeleton & Ghouls)","Tech_Collection_VBlood_T03_Goreswine_Units"},
+            { "Goreswine the Ravager (Graveyard decor)",        "Tech_Collection_VBlood_T03_GoreswineFence"},
+            { "Grayson the Armourer (Whetstone)",               "Tech_Collection_VBlood_T03_Grayson"},
+            { "Grayson the Armourer (Workshop Flooring)",       "Tech_Collection_VBlood_T03_Grayson_Floors"},
+            { "Grayson the Armourer (Target Dummies)",          "Tech_Collection_VBlood_T03_Grayson_TargetDummies"},
+            { "Nibbles the Putrid Rat (Rat Form)",              "Tech_Collection_VBlood_T03_PutridRat"},
+
+            // --- COLLECTIONS: ACT 2 VBLOOD ---
+            { "Maja the Dark Savant (Midnight Ball Gown)",      "Tech_Collection_VBlood_T04_Ball_Cosmetic"},
+            { "Clive the Firestarter (Alchemy Table)",          "Tech_Collection_VBlood_T04_CliveTheFirestarter"},
+            { "Vincent the Frostbringer (Prison Cell)",         "Tech_Collection_VBlood_T04_FrostGuard"},
+            { "Vincent the Frostbringer (Prison Framework)",    "Tech_Collection_VBlood_T04_FrostGuard_PrisonFramework"},
+            { "Nicholaus the Fallen (Paper Press)",             "Tech_Collection_VBlood_T04_NicholausTheFallen"},
+            //{ "Nicholaus the Fallen (Treasury Flooring)", "Tech_Collection_VBlood_T04_NicholausTheFallen_MagicSource"}, // [?] MagicSource = ring/amulet; no longer has it?
+            { "Nicholaus the Fallen (Assortment of Simple Candle Stands)", "Tech_Collection_CandleStands_T01"},
+            { "Nicholaus the Fallen (Frayed Rugs, Banners & Curtains)",    "Tech_Collection_FrayedDecor"},
+            { "Nicholaus the Fallen (Treasury Flooring)",       "Tech_Floor_Treasury"},
+            { "Polora the Feywalker (Minor Garlic Resistance Brew)", "Tech_Collection_VBlood_T04_Poloma"},
+            { "Polora the Feywalker (Garden Foundations)",      "Tech_Collection_VBlood_T04_PolomaGardenFloors"},
+            { "Polora the Feywalker (Growing Plot Collection)", "Tech_Collection_VBlood_T04_PolomaPlantersExterior"},
+            { "Polora the Feywalker (Large Growing Plots)",     "Tech_Collection_VBlood_T04_PolomaPlantersInterior"},
+            { "Polora the Feywalker (Garden Hedges)",           "Tech_Collection_Garden_Hedges_T02"},
+            { "Quincey the Bandit King (Smithy)",               "Tech_Collection_VBlood_T04_Quincey"},
+            { "Quincey the Bandit King (Hollowfang Battlegear)","Tech_Collection_VBlood_T04_Quincey_CottonArmor"},
+            { "Quincey the Bandit King (Ebonite Stairs & Doors)","Tech_Collection_VBlood_T04_Quincey_Decoration"},
+            //{ "Quincey the Bandit King (Iron Ingot)", "Tech_Collection_VBlood_T04_Quincey_IronWeapons"}, -doesn't unlock anything
+            { "Beatrice the Tailor (Loom)",                     "Tech_Collection_VBlood_T04_Tailor"},
+            { "Beatrice the Tailor (Assortment of Curtains)",   "Tech_Collection_VBlood_T04_Tailor_Curtains"},
+            { "Tristan the Vampire Hunter (Blood Hunter)",      "Tech_Collection_VBlood_T04_VampireHunter"},
+            { "Tristan the Vampire Hunter (Greatsword)",        "Tech_Collection_VBlood_T04_VampireHunter_GreatSword"},
+            { "Frostmaw the Mountain Terror (Thick Leather)",   "Tech_Collection_VBlood_T04_Wendigo"},
+            { "Frostmaw the Mountain Terror (Claws)",           "Tech_Collection_VBlood_T04_Wendigo_Claws"},
+
+            // --- COLLECTIONS: ACT 2-3 VBLOOD ---
+            { "Gaius the Cursed Champion (Arena Station)",          "Tech_Collection_VBlood_T05_ArenaChampion"},
+            { "Gaius the Cursed Champion (Twinblades)",             "Tech_Collection_VBlood_T05_ArenaChampion_TwinBlades"},
+            { "Gaius the Cursed Champion (Arena Decorations)",      "Tech_Collection_VBlood_ArenaDecorations"}, // [?]
+            { "Leandra the Shadow Priestess (Scourgestone Pendant)","Tech_Collection_VBlood_T05_BishopOfShadow"},
+            { "Sir Erwin the Gallant Cavalier (Stables)",           "Tech_Collection_VBlood_T05_Fabian"},
+            { "Sir Erwin the Gallant Cavalier (Stables Furnishing Decor)", "Tech_Collection_Stables_Furnishing"},
+            { "Kodia the Ferocious Bear (Bear Form)",               "Tech_Collection_VBlood_T05_FerociousBear"},
+            { "Kodia the Ferocious Bear (Fur Rugs)",                "Tech_Collection_VBlood_T05_FerociousBear_Rugs"},
+            { "Grethel the Glassblower (Glass)",                    "Tech_Collection_VBlood_T05_GlassBlower"},
+            { "Grethel the Glassblower (Wall Hanging Mirrors)",     "Tech_Collection_WallHangingMirrors_T02"},
+            { "Terah the Geomancer (Gem Cutting Table)",            "Tech_Collection_VBlood_T05_Golem"},
+            { "Terah the Geomancer (Regular Gems)",                 "Tech_Collection_VBlood_T05_GolemGems"},
+            { "Terah the Geomancer (Obsidian)",                     "Tech_Collection_VBlood_T05_GolemObsidian"},
+            { "Christina the Sun Priestess (Wool Thread)",          "Tech_Collection_VBlood_T05_HolyNun"},
+            { "Christina the Sun Priestess (Candles)",              "Tech_Collection_Candles_T02"},
+            { "General Elena the Hollow (Altar of Stygian Awakening)", "Tech_Collection_VBlood_T05_IceRanger"},
+            { "General Elena the Hollow (Stately Carpets)",         "Tech_Collection_Carpet_Stately"},
+            { "Bane the Shadowblade (Human Form)",                  "Tech_Collection_VBlood_T05_Infiltrator"},
+            { "Bane the Shadowblade (Daggers)",                     "Tech_Collection_VBlood_T05_Infiltrator_Daggers"},
+            { "Meredith the Bright Archer (Holy Resistance Potion)","Tech_Collection_VBlood_T05_Meredith"},
+            { "Maja the Dark Savant (Study)",                       "Tech_Collection_VBlood_T05_Scribe"},
+            { "Maja the Dark Savant (Verdant Garden Fencing)",      "Tech_Collection_Fence_Verdant"},
+            { "Maja the Dark Savant (Wall Hanging Shelves)",        "Tech_Collection_WallHangingShelves_T02"},
+            { "Kriig the Undead General (Skeleton Priest)",         "Tech_Collection_VBlood_T05_UndeadLeader"},
+            { "Kriig the Undead General (Castle Door Bells)",       "Tech_Collection_VBlood_T05_UndeadLeader_Bells"},
+            { "Kriig the Undead General (Reaper)",                  "Tech_Collection_VBlood_T05_UndeadLeader_Reaper"},
+
+            // --- COLLECTIONS: ACT 3 VBLOOD (T06) ---
+            //{ "Simon Belmont the Vampire Hunter (Castleman)", "Tech_Collection_VBlood_T06_Castleman"}, // Dark silver?
+            { "Simon Belmont the Vampire Hunter (Sanguine Whip)",   "Tech_Collection_VBlood_T06_Castleman_SanguineWhip"}, // [?]
+            { "Ben the Old Wanderer (Pristine Leather)",             "Tech_Collection_VBlood_T06_CursedWanderer"},
+            //{ "Ben the Old Wanderer (Headless Horseman)", "Tech_Collection_VBlood_T06_HeadlessHorseman"}, // Nothing
+            { "General Cassius the Betrayer (Stygian Summoning Circle)", "Tech_Collection_VBlood_T06_HighLord"},
+            { "Ziva the Engineer (Fabricator)",                     "Tech_Collection_VBlood_T06_Iva"},
+            { "Jade the Vampire Hunter (Primal Blood Essence)",     "Tech_Collection_VBlood_T06_Jade"},
+            { "Jade the Vampire Hunter (Pistols)",                  "Tech_Collection_VBlood_T06_Jade_Pistols"},
+            { "Octavian the Militia Captain (Ancestral Forge)",     "Tech_Collection_VBlood_T06_MilitiaCommander"},
+            { "Octavian the Militia Commander (Wide Gate)",         "Tech_Collection_VBlood_T06_MilitiaCommander_WideGate"},
+            { "Octavian the Militia Captain (Equipment Storage)",   "Tech_Storage_Pack_Equipment_T02"},
+            { "Angram the Purifier (Mutated Rat)",                  "Tech_Collection_VBlood_T06_Purifier"},
+            { "Angram the Purifier (Irradiant Gruel)",              "Tech_Collection_VBlood_T06_Purifier_Gruel"},
+            { "Angram the Purifier (Dawnthorn Regalia)",            "Tech_Collection_VBlood_T06_Armor_Silk"},
+            { "Raziel the Shepherd (Jewelcrafting Table)",          "Tech_Collection_VBlood_T06_Raziel"},
+            { "(Cordial Stairs & Doors)",                           "Tech_Collection_VBlood_T06_Raziel_Decoration"},
+            { "Ungora the Spider Queen (Silk)",                     "Tech_Collection_VBlood_T06_SpiderQueen"},
+            { "Albert the Duke of Balaton (Toad Form)",             "Tech_Collection_VBlood_T06_ToadKing"},
+            { "Albert the Duke of Balaton (Coining)",               "Tech_Collection_VBlood_T06_ToadKing_Coins"},
+            { "Domina the Blade Dancer (Advanced Grinder)",         "Tech_Collection_VBlood_T06_Voltage"},
+            { "Domina the Blade Dancer (Iron Whip)",                "Tech_Collection_VBlood_T06_Whip"},
+            { "Willfred the Werewolf Chief (Pristine Leather Bag)", "Tech_Collection_VBlood_T06_Werewolf"},
+            { "Willfred the Werewolf Chief (Longcase Clocks)",      "Tech_Collection_Clocks"},
+            { "Terrorclaw the Ogre (Advanced Tannery)",             "Tech_Collection_VBlood_T06_Yeti"},
+
+            // --- COLLECTIONS: ACT 3-4 VBLOOD (T07) ---
+            { "Mairwyn the Elementalist (Holy Resistance Flask)",   "Tech_Collection_VBlood_T07_Archmage"},
+            { "Mairwyn the Elementalist (Greater Jewels)",          "Tech_Collection_VBlood_T07_Archmage_JewelsT03"},
+            { "Mairwyn the Elementalist (Crystal Light)",           "Tech_Collection_VBlood_CrystalLamp"},
+            { "Azariel the Sunbringer (Gold Ingot)",                "Tech_Collection_VBlood_T07_CardinalPriest"},
+            { "Azariel the Sunbringer (Ostentatious Carpets)",      "Tech_Collection_Carpet_Ostenstatious"},
+            { "Stavros the Carver (Advanced Sawmill)",              "Tech_Collection_VBlood_T07_Carver"},
+            { "Stavros the Carver (Weapon Coatings)",               "Tech_Collection_VBlood_T07_Carver_Coating"},
+            { "Cyril the Cursed Smith (Dark Silver Ingot)",         "Tech_Collection_VBlood_T07_CursedSmith"},
+            { "Morian the Stormwing Matriarch (Flawless Gems)",     "Tech_Collection_VBlood_T07_HarpyGems"},
+            { "Jakira the Shadow Huntress (Elixir of the Twisted)", "Tech_Collection_VBlood_T07_Livith"},
+            { "Jakira the Shadow Huntress (Slashers)",              "Tech_Collection_VBlood_T07_Livith_Slashers"},
+            { "Lucile the Venom Alchemist (Blood Homogenizer)",     "Tech_Collection_VBlood_T07_Lucie"},
+            //{ "Lucie the Iteration 3 (Elixirs)", "Tech_Collection_VBlood_T07_Lucie_Elixirs"},
+            { "Sir Magnus the Overseer (Phantom's Veil)",           "Tech_Collection_VBlood_T07_Overseer"},
+            { "Sir Magnus the Overseer (Assortment of Wide Storage Shelves)", "Tech_Storage_Pack_T02"},
+            { "Henry Blackbrew the Doctor (Athenaeum)",             "Tech_Collection_VBlood_T07_Professor"},
+            { "Voltatia the Power Master (Power Core)",             "Tech_Collection_VBlood_T07_RailgunSergeant"},
+            { "Baron du Bouchon the Sommelier (Barrel Disguise)",   "Tech_Collection_VBlood_T07_Sommelier"},
+            { "Baron du Bouchon the Sommelier (Blood Merlot)",      "Tech_Collection_VBlood_T07_Sommelier_Bloodwine"},
+            { "Baron du Bouchon the Sommelier (Blood Merlot Amulet)", "Tech_Collection_VBlood_T07_Sommelier_MagicSource"},
+            { "Baron du Bouchon the Sommelier (Rural Garden Fencing)", "Tech_Collection_Fence_Rural"},
+            { "Dantos the Forgebinder (Fusion Forge)",              "Tech_Collection_VBlood_T07_Valyr" },
+            { "Matka the Curse Weaver (Advanced Loom)",             "Tech_Collection_VBlood_T07_Witch"},
+            { "Foulrot the Soultaker (Spectral Dust)",              "Tech_Collection_VBlood_T07_ZealousCultist"},
+
+            // --- COLLECTIONS: ACT 4 VBLOOD (T08) ---
+            { "Lord Styx the Night Champion (Bat Form)",            "Tech_Collection_VBlood_T08_BatVampire"},
+            { "Gorecrusher the Behemoth (Bat Leather)",             "Tech_Collection_VBlood_T08_Behemoth"},
+            { "General Valencia the Depraved (Shadow Weave)",       "Tech_Collection_VBlood_T08_BloodKnight"},
+            { "General Valencia the Depraved (Primal Jewels)",      "Tech_Collection_VBlood_JewelsT04"},
+            { "General Valencia the Depraved (Coat of Arms)",       "Tech_Collection_CoatOfArms"},
+            //{ "Dracula (Dracula)", "Tech_Collection_VBlood_T08_Dracula"},
+            { "Talzur the Winged Horror (Pedestal of the Winged Horror)", "Tech_Collection_VBlood_T08_Manticore"},
+            { "Talzur the Winged Horror (Dracula's Gloves)",        "Tech_Collection_Dracula_Armor_Gloves"},
+            { "Adam the Firstborn (Pedestal of the Monster)",       "Tech_Collection_VBlood_T08_Monster"},
+            { "Adam the Firstborn (Dracula's Chestguard)",          "Tech_Collection_Dracula_Armor_Chest"},
+            { "Megara the Serpent Queen (Pedestal of the Serpent)", "Tech_Collection_VBlood_T08_Morgana"},
+            { "Megara the Serpent Queen (Dracula's Leggings)",      "Tech_Collection_Dracula_Armor_Legs"},
+            { "Solarus the Immaculate (Pedestal of Solarus)",       "Tech_Collection_VBlood_T08_Paladin"},
+            { "Solarus the Immaculate (Dracula's Boots)",           "Tech_Collection_Dracula_Armor_Boots"},
+
+            // --- COLLECTIONS: DECORATIVE ---
+            { "Assortment of Fine Candle Stands",   "Tech_Collection_CandleStands_T02"},
+            { "Simple Carpets",                     "Tech_Collection_Carpet_T01"},
+            { "Dux Carpet Collection",              "Tech_Collection_Carpet_T02"},
+            { "Distinguished Carpet Collection",    "Tech_Collection_Carpet_T03"},
+            //{ "Maja the Dark Savant (Study)", "Tech_Collection_Castle_Paintings"},
+            { "Assortment of Windows",              "Tech_Collection_Castle_Windows_T01"},
+
+            // --- T04 ARMOR (Merciless / Hollowfang tier) ---
+            { "Marauder Boots",         "Tech_Armor_Boots_T04_Brute"},
+            { "Shadewalker Boots",      "Tech_Armor_Boots_T04_Rogue"},
+            { "Warlock Boots",          "Tech_Armor_Boots_T04_Scholar"},
+            { "Grim Ranger Boots",      "Tech_Armor_Boots_T04_Warrior"},
+            { "Marauder Vest",          "Tech_Armor_Chest_T04_Brute"},
+            { "Shadewalker Vest",       "Tech_Armor_Chest_T04_Rogue"},
+            { "Warlock Vest",           "Tech_Armor_Chest_T04_Scholar"},
+            { "Grim Ranger Vest",       "Tech_Armor_Chest_T04_Warrior"},
+            { "Marauder Gloves",        "Tech_Armor_Gloves_T04_Brute"},
+            { "Shadewalker Gloves",     "Tech_Armor_Gloves_T04_Rogue"},
+            { "Warlock Gloves",         "Tech_Armor_Gloves_T04_Scholar"},
+            { "Grim Ranger Gloves",     "Tech_Armor_Gloves_T04_Warrior"},
+            { "Marauder Leggings",      "Tech_Armor_Legs_T04_Brute"},
+            { "Shadewalker Leggings",   "Tech_Armor_Legs_T04_Rogue"},
+            { "Warlock Leggings",       "Tech_Armor_Legs_T04_Scholar"},
+            { "Grim Ranger Leggings",   "Tech_Armor_Legs_T04_Warrior"},
+
+            // --- T06 ARMOR (Dawnthorn / Silk tier) ---
+            { "Crimson Templar Boots",      "Tech_Armor_Boots_T06_Brute"},
+            { "Duskwatcher Boots",          "Tech_Armor_Boots_T06_Rogue"},
+            { "Dark Magus Boots",           "Tech_Armor_Boots_T06_Scholar"},
+            { "Blood Hunter Boots",         "Tech_Armor_Boots_T06_Warrior"},
+            { "Crimson Templar Chestguard", "Tech_Armor_Chest_T06_Brute"},
+            { "Duskwatcher Chestguard",     "Tech_Armor_Chest_T06_Rogue"},
+            { "Dark Magus Chestguard",      "Tech_Armor_Chest_T06_Scholar"},
+            { "Blood Hunter Chestguard",    "Tech_Armor_Chest_T06_Warrior"},
+            { "Crimson Templar Gloves",     "Tech_Armor_Gloves_T06_Brute"},
+            { "Duskwatcher Gloves",         "Tech_Armor_Gloves_T06_Rogue"},
+            { "Dark Magus Gloves",          "Tech_Armor_Gloves_T06_Scholar"},
+            { "Blood Hunter Gloves",        "Tech_Armor_Gloves_T06_Warrior"},
+            { "Crimson Templar Leggings",   "Tech_Armor_Legs_T06_Brute"},
+            { "Duskwatcher Leggings",       "Tech_Armor_Legs_T06_Rogue"},
+            { "Dark Magus Leggings",        "Tech_Armor_Legs_T06_Scholar"},
+            { "Blood Hunter Leggings",      "Tech_Armor_Legs_T06_Warrior"},
+
+            // --- T08 ARMOR (Bloodmoon / Dark Silver tier) ---
+            { "Grim Knight Boots",              "Tech_Armor_Boots_T08_Brute"},
+            { "Shadowmoon Boots",               "Tech_Armor_Boots_T08_Rogue"},
+            { "Maleficer Scholar Boots",        "Tech_Armor_Boots_T08_Scholar"},
+            { "Dread Plate Boots",              "Tech_Armor_Boots_T08_Warrior"},
+            { "Grim Knight Chestguard",         "Tech_Armor_Chest_T08_Brute"},
+            { "Shadowmoon Chestguard",          "Tech_Armor_Chest_T08_Rogue"},
+            { "Maleficer Scholar Chestguard",   "Tech_Armor_Chest_T08_Scholar"},
+            { "Dread Plate Chestguard",         "Tech_Armor_Chest_T08_Warrior"},
+            { "Grim Knight Gloves",             "Tech_Armor_Gloves_T08_Brute"},
+            { "Shadowmoon Gloves",              "Tech_Armor_Gloves_T08_Rogue"},
+            { "Maleficer Scholar Gloves",       "Tech_Armor_Gloves_T08_Scholar"},
+            { "Dread Plate Gloves",             "Tech_Armor_Gloves_T08_Warrior"},
+            { "Grim Knight Leggings",           "Tech_Armor_Legs_T08_Brute"},
+            { "Shadowmoon Leggings",            "Tech_Armor_Legs_T08_Rogue"},
+            { "Maleficer Scholar Leggings",     "Tech_Armor_Legs_T08_Scholar"},
+            { "Dread Plate Leggings",           "Tech_Armor_Legs_T08_Warrior"},
+
+            // --- CONSUMABLES ---
+            { "Fire Resistance Brew",           "Tech_Consumable_FireResistance_Canteen_T01"},
+            { "Garlic Resistance Potion",       "Tech_Consumable_GarlicResistance_GlassBottle_T02"},
+            { "Brew of Ferocity",               "Tech_Consumable_PhysicalBrew_Canteen_T01"},
+            { "Potion of Rage",                 "Tech_Consumable_PhysicalBrew_Potion_T03"},
+            { "Blood Rose Brew",                "Tech_Consumable_RoseHealing_Canteen_T01"},
+            { "Silver Resistance Brew",         "Tech_Consumable_SilverBrew_Canteen_T01"},
+            { "Enchanted Brew",                 "Tech_Consumable_SpellBrew_Canteen_T01"},
+            { "Witch Potion",                   "Tech_Consumable_SpellBrew_Potion_T03" },
+            { "Minor Sun Resistance Brew",      "Tech_Consumable_SunResistance_Canteen_T01"},
+            { "Wrangler's Potion",              "Tech_Consumable_WranglersTea_GlassBottle_T01"},
+
+            // --- BRAZIERS ---
+            { "Assortment of Fine Braziers",    "Tech_Collection_Braziers02"}, // [?] tier 2 braziers
+            { "Assortment of Great Braziers",   "Tech_Collection_Braziers03"}, // [?] tier 3 braziers
+
+            // --- FLOOR TILES ---
+            { "Alchemy Lab Flooring",   "Tech_Floor_AlchemyLab"},
+            //{ "Goreswine the Ravager (Tomb)", "Tech_Floor_Crypt"}, // [?]
+            { "Forge Flooring",         "Tech_Floor_Forge"},
+            //{ "Errol the Stonebreaker (Material and Gem Storage)", "Tech_Floor_Jewelcrafting"}, // [?]
+            { "Library Flooring",       "Tech_Floor_Library"},
+            //{ "Vincent the Frostbringer (Prison Framework)", "Tech_Floor_Prison"},// [?]
+            { "Tailor's Flooring",      "Tech_Floor_Tailor"},
+
+            // --- LIQUID STATION ---
+            { "Water Well",             "Tech_LiquidStatiom_Water_Well01"}, // [?]
+
+            // --- MAGIC SOURCES (RINGS / AMULETS) ---
+            // T01
+            //{ "Errol the Stonebreaker (Material and Gem Storage)", "Tech_MagicSource_General_T01_BoneRing"},
+            // T04 rings
+            { "Ring of the Duskwatcher",    "Tech_MagicSource_General_T04_Duskwatcher"},
+            { "Ring of the Dawnrunner",     "Tech_MagicSource_General_T04_EmberChain"},
+            { "Ring of the Warlock",        "Tech_MagicSource_General_T04_FrozenEye"},
+            { "Ring of the Warrior",        "Tech_MagicSource_General_T04_KnightRing"},
+            { "Ring of the Spellweaver",    "Tech_MagicSource_General_T04_MistSignet"},
+            { "Ring of the Sorcerer",       "Tech_MagicSource_General_T04_SorcererRing"},
+            // T06 amulets/necklaces
+            { "Pendant of the Sorcerer",    "Tech_MagicSource_General_T06_AmethystPendant"},
+            { "Pendant of the Dawnrunner",  "Tech_MagicSource_General_T06_EmeraldNecklace"},
+            { "Pendant of the Spellweaver", "Tech_MagicSource_General_T06_MistStoneNecklace"},
+            { "Pendant of the Warrior",     "Tech_MagicSource_General_T06_RubyPendant"},
+            { "Pendant of the Warlock",     "Tech_MagicSource_General_T06_SapphirePendant"},
+            { "Pendant of the Duskwatcher", "Tech_MagicSource_General_T06_TopazAmulet"},
+            // T08 relics
+            { "Amulet of the Blademaster",          "Tech_MagicSource_General_T08_Beast"},
+            { "Amulet of the Crimson Commander",    "Tech_MagicSource_General_T08_CrimsonSky"},
+            { "Amulet of the Master Spellweaver",   "Tech_MagicSource_General_T08_Delusion"},
+            { "Amulet of the Arch-Warlock",         "Tech_MagicSource_General_T08_FrozenCrypt"},
+            { "Amulet of the Unyielding Charger",   "Tech_MagicSource_General_T08_Madness"},
+            { "Amulet of the Wicked Prophet",       "Tech_MagicSource_General_T08_WickedProphet"},
+
+            // --- WEAPONS ---
+            // T04 = Merciless Copper
+            { "Merciless Copper Axes",      "Tech_Weapon_Axe_T04"},
+            { "Merciless Copper Crossbow",  "Tech_Weapon_Crossbow_T04"},
+            { "Merciless Copper Longbow",   "Tech_Weapon_Longbow_T04"},
+            { "Merciless Copper Mace",      "Tech_Weapon_Mace_T04"},
+            //{ "", "Tech_Weapon_Reaper_T04"}, // Don't think this exists
+            //{ "", "Tech_Weapon_Slashers_T04"},// Don't think this exists
+            { "Merciless Copper Spear",     "Tech_Weapon_Spear_T04"},
+            { "Merciless Copper Sword",     "Tech_Weapon_Sword_T04"},
+
+            // T06 = Merciless Iron
+            { "Merciless Iron Axes",        "Tech_Weapon_Axe_T06"},
+            { "Merciless Iron Claws",       "Tech_Weapon_Claws_T06"},
+            { "Merciless Iron Crossbow",    "Tech_Weapon_Crossbow_T06"},
+            { "Merciless Iron Daggers",     "Tech_Weapon_Daggers_T06"},
+            { "Merciless Iron Greatsword",  "Tech_Weapon_GreatSword_T06"},
+            { "Merciless Iron Longbow",     "Tech_Weapon_Longbow_T06"},
+            { "Merciless Iron Mace",        "Tech_Weapon_Mace_T06"},
+            { "Merciless Iron Pistols",     "Tech_Weapon_Pistols_T06"},
+            { "Merciless Iron Reaper",      "Tech_Weapon_Reaper_T06"},
+            { "Merciless Iron Slashers",    "Tech_Weapon_Slashers_T06"},
+            { "Merciless Iron Spear",       "Tech_Weapon_Spear_T06"},
+            { "Merciless Iron Sword",       "Tech_Weapon_Sword_T06"},
+            { "Merciless Iron Twinblade",   "Tech_Weapon_TwinBlades_T06"},
+            { "Merciless Iron Whip",        "Tech_Weapon_Whip_T06"},
+
+            // T08 = Dark Silver
+            { "Sanguine Axes",      "Tech_Weapon_Axe_T08"},
+            { "Sanguine Claws",     "Tech_Weapon_Claws_T08"},
+            { "Sanguine Crossbow",  "Tech_Weapon_Crossbow_T08"},
+            { "Sanguine Daggers",   "Tech_Weapon_Daggers_T08"},
+            { "Sanguine Greatsword","Tech_Weapon_GreatSword_T08"},
+            { "Sanguine Longbow",   "Tech_Weapon_Longbow_T08"},
+            { "Sanguine Mace",      "Tech_Weapon_Mace_T08"},
+            { "Sanguine Pistols",   "Tech_Weapon_Pistols_T08"},
+            { "Sanguine Reaper",    "Tech_Weapon_Reaper_T08"},
+            { "Sanguine Slashers",  "Tech_Weapon_Slashers_T08"},
+            { "Sanguine Spear",     "Tech_Weapon_Spear_T08"},
+            { "Sanguine Sword",     "Tech_Weapon_Sword_T08"},
+            { "Sanguine Twinblade", "Tech_Weapon_TwinBlades_T08"},
+            { "",                   "Tech_Weapon_Whip_T08"},// (I think this is just from the T06 whip tech, but confirm if there's a unique unlock for the T08 whip)
+        };
+
+
 
         public static readonly Dictionary<string, PrefabGUID> TechToPrefab = new Dictionary<string, PrefabGUID>
             {

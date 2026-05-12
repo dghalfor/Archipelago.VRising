@@ -277,20 +277,19 @@ public static class TechToRecipeMapping
             return;
         }
 
-        foreach (var techHash in TechToRecipes.Keys)
+        foreach (var spellPrefab in DataDicts.PrefabToTech.Keys)
         {
-            PrefabGUID unlockedSpell = new PrefabGUID(techHash);
-            bool techShouldBeUnlocked = unlockedSpells.Contains(techHash);
+            bool spellShouldBeUnlocked = unlockedSpells.Contains(spellPrefab.GuidHash);
 
-            if (techShouldBeUnlocked)
+            if (spellShouldBeUnlocked)
             {
                 // Tech should be unlocked, ensure it's in the buffer
                 bool techExists = false;
                 for (int i = 0; i < spellbuffer.Length; i++)
                 {
-                    if (spellbuffer[i].Ability == unlockedSpell)
+                    if (spellbuffer[i].Ability == spellPrefab)
                     {
-                        Plugin.BepinLogger.LogInfo($"Spell {unlockedSpell} already exists in buffer, skipping add");
+                        Plugin.BepinLogger.LogInfo($"Spell {spellPrefab} already exists in buffer, skipping add");
                         techExists = true;
                         break;
                     }
@@ -298,8 +297,8 @@ public static class TechToRecipeMapping
 
                 if (!techExists)
                 {
-                    Plugin.BepinLogger.LogInfo($"Spell {unlockedSpell} should be unlocked but is not in buffer, adding it");
-                    spellbuffer.Add(new UnlockedSpellBookAbility { Ability = unlockedSpell });
+                    Plugin.BepinLogger.LogInfo($"Spell {spellPrefab} should be unlocked but is not in buffer, adding it");
+                    spellbuffer.Add(new UnlockedSpellBookAbility { Ability = spellPrefab });
                 }
             }
             else
@@ -307,9 +306,9 @@ public static class TechToRecipeMapping
                 // Tech should be locked, remove it if it exists
                 for (int i = spellbuffer.Length - 1; i >= 0; i--)
                 {
-                    if (spellbuffer[i].Ability == unlockedSpell)
+                    if (spellbuffer[i].Ability == spellPrefab)
                     {
-                        Plugin.BepinLogger.LogInfo($"Spell {unlockedSpell} should be locked but is in buffer, removing it");
+                        Plugin.BepinLogger.LogInfo($"Spell {spellPrefab} should be locked but is in buffer, removing it");
                         unlockedSpells.RemoveAt(i);
                         break;
                     }
