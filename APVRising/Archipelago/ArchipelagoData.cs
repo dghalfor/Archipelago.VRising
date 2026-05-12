@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace APVRising.Archipelago;
 public class ArchipelagoData
@@ -63,7 +63,6 @@ public class ArchipelagoData
     /// <returns></returns>
     public override string ToString()
     {
-        //return JsonConvert.SerializeObject($"{Uri} {SlotName} {Password} {Index} {seed} {slotData}");
-        return "";
+        return JsonConvert.SerializeObject($"{Uri} {SlotName} {Password} {Index} {seed} {slotData}");
     }
 }

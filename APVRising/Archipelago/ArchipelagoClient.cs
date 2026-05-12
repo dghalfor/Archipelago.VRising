@@ -9,7 +9,6 @@ using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Packets;
 using HarmonyLib;
-using Internal.Cryptography;
 using ProjectM;
 using ProjectM.Network;
 using System;

@@ -9,7 +9,6 @@
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<RootNamespace>APVRising</RootNamespace>
-		<BaseOutputPath>C:\Program Files (x86)\Steam\steamapps\common\VRising\BepInEx_Server\plugins</BaseOutputPath>
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 	</PropertyGroup>
@@ -38,39 +37,50 @@
 		<ErrorReport>prompt</ErrorReport>
 	</PropertyGroup>
 
-	<!-- ─── ILRepack: merge Newtonsoft + Archipelago deps into the mod DLL ─── -->
 	<Target Name="MergeAssemblies" AfterTargets="Build">
-		<Message Text="=== MergeAssemblies target is running ===" Importance="high" />
 		<ItemGroup>
-			<InputAssemblies Include="$(OutputPath)$(AssemblyName).dll" />
-			<InputAssemblies Include="$(OutputPath)Newtonsoft.Json.dll" />
+			<InputAssemblies Include="$(OutputPath)\$(AssemblyName).dll" />
+			<InputAssemblies Include="$(MSBuildProjectDirectory)\lib\Archipelago.MultiClient.Net.dll" />
+			<InputAssemblies Include="$(MSBuildProjectDirectory)\lib\Newtonsoft.Json.dll" />
 		</ItemGroup>
 
-		<ILRepack Parallel="true" Internalize="true" InputAssemblies="@(InputAssemblies)" TargetKind="Dll" OutputFile="$(OutputPath)$(AssemblyName).dll" LibraryPath="$(OutputPath);C:\Program Files (x86)\Steam\steamapps\common\VRising\VRising_Server\BepInEx\core;C:\Program Files (x86)\Steam\steamapps\common\VRising\VRising_Server\BepInEx\interop" />
+		<ILRepack
+			Parallel="true"
+			Internalize="true"
+			InputAssemblies="@(InputAssemblies)"
+			TargetKind="Dll"
+			OutputFile="$(OutputPath)\$(AssemblyName).dll"
+			LibraryPath="$(OutputPath);$(MSBuildProjectDirectory)\lib;C:\Program Files (x86)\Steam\steamapps\common\VRising\VRising_Server\BepInEx\core;C:\Program Files (x86)\Steam\steamapps\common\VRising\VRising_Server\BepInEx\interop"
+		/>
 	</Target>
-	
-	<Target Name="ZipMod" AfterTargets="PostBuildEvent" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+
+	<Target Name="ZipMod" AfterTargets="MergeAssemblies" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
 		<ZipDirectory SourceDirectory="bin\Release\$(AssemblyName)" DestinationFile="bin\Release\$(AssemblyName)-$(Version).zip" Overwrite="true" />
 	</Target>
 
 	<ItemGroup>
-		<PackageReference Include="Archipelago.MultiClient.Net" Version="6.7.0" />
+		<PackageReference Include="Archipelago.MultiClient.Net" Version="6.7.0" IncludeAssets="compile" />
 		<PackageReference Include="Archipelago.MultiClient.Net.Analyzers" Version="1.3.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.*" IncludeAssets="compile" />
-		<PackageReference Include="ILRepack" Version="2.0.44">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
 		<PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.44.2" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="UnityEngine.Modules" Version="2022.3.581" IncludeAssets="compile" />
 		<PackageReference Include="BepInEx.Core" Version="6.0.0-be.*" IncludeAssets="compile" />
 		<PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" />
 		<PackageReference Include="VRising.Unhollowed.Client" Version="1.1.*" />
 		<PackageReference Include="VRising.VampireCommandFramework" Version="0.9.*" />
+
+		<!-- Reference lib DLLs for compile, Private=false since ILRepack handles merging -->
+		<Reference Include="Archipelago.MultiClient.Net">
+			<HintPath>lib\Archipelago.MultiClient.Net.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+		<Reference Include="Newtonsoft.Json">
+			<HintPath>lib\Newtonsoft.Json.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
