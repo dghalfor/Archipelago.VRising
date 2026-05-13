@@ -22,10 +22,27 @@ V Rising:
 
 ## Connecting to an Archipelago Server
 
+* .connect [slotName] [ip:port] - this connects you to the archipelago. I highly recommend starting with this when you load your game.
+
+## Starting the game
+* Install BepInEx, which is required for modding VRising. Follow the manual instructions provided at BepInEx Installation Guide to set it up correctly in your VRising game directory. https://thunderstore.io/c/v-rising/p/BepInEx/BepInExPack_V_Rising/
+
+* Run the game once, fully launching a new world. This lets BepinEx build its library
+
+* After downloading, open plugins.zip which contains APVrising.dll and its dependencies. Move or copy these .dll files into the BepInEx\Plugins directory within your VRising installation folder.
+
+* After that, launch v rising and confirm you do not see any major "red errors" in the bepinex window.
+
+* Launch your world again, it may give you a connection error the first time you do this, just reattempt to start the world.
+
+* If you cannot get it to launch check Steam\steamapps\common\VRising\BepInEx and BepInEx_Server for the errorlogs and see if anything was logged in them. (edited)Tuesday, May 12, 2026 3:41 PM
+
+
 ## Changelog
 
 ## Current commands
 
+* .connect [slotName] [ip:port] - this connects you to the archipelago. I highly recommend starting with this when you load your game.
 * .startResearch - switches research progression buffers to allow for the collection of checks in your research desks (see todo)
 * .stopResearch - switches progression buffers to the elements that have been unlocked by the archipelago (see todo)
 * .unlockTech guid - unlocks the tech associated with a guid (see tech guids here https://wiki.vrisingmods.com/prefabs/Tech.html)
