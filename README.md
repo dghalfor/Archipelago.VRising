@@ -4,6 +4,11 @@ HEAVY WIP. Will need documentation. Yes, the skeleton of this readme is stolen f
 
 ## Gameplay
 
+* Every time you start your game you must use the .connect command before doing anything else.
+* When you are attempting to do research or unlock spells, you must first run the .startResearch command so your research/spells match what locaitons you've sent.
+  * Failure to do this could result in duplicated location checks. 
+* Once you are finished researching, use the .stopResearch command. This will set you back to the progression you've been granted.
+
 ## YAML Settings
 
 An example YAML would look like this:
@@ -26,15 +31,10 @@ V Rising:
 
 ## Starting the game
 * Install BepInEx, which is required for modding VRising. Follow the manual instructions provided at BepInEx Installation Guide to set it up correctly in your VRising game directory. https://thunderstore.io/c/v-rising/p/BepInEx/BepInExPack_V_Rising/
-
 * Run the game once, fully launching a new world. This lets BepinEx build its library
-
 * After downloading, open plugins.zip which contains APVrising.dll and its dependencies. Move or copy these .dll files into the BepInEx\Plugins directory within your VRising installation folder.
-
 * After that, launch v rising and confirm you do not see any major "red errors" in the bepinex window.
-
 * Launch your world again, it may give you a connection error the first time you do this, just reattempt to start the world.
-
 * If you cannot get it to launch check Steam\steamapps\common\VRising\BepInEx and BepInEx_Server for the errorlogs and see if anything was logged in them. (edited)Tuesday, May 12, 2026 3:41 PM
 
 
@@ -52,6 +52,10 @@ V Rising:
 
 * There is a big lag spike shortly after launching the server. (only tested in host+play)
 * Client entity manager getting hit on server logs during locks post sync
+* DLC variants of shapeshifts bypass the archipelago logic and will remain attached to the player
+* Killing V bloods will result in a "could not send locaiton check" error. This is intermittent and still needs to be diagnosed.
+* You can drag spells you've unlocked while in research mode to your hotbar and they will not be removed. 
+* Until you use .connect you will be able to use techs that should be locked.
 
 ## To-do
 * Elements removed from research at runtime are re-added after saving and closing the game.
