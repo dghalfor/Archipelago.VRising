@@ -99,11 +99,6 @@ V Rising:
 * Neutral research desks to prevent sharing of research
 * Change user queries to be based on specific users rather than all users 
 
-## Setup
-
-* Add archipelago.multiclient.net.dll to the plugins folder
-* Add ServerLaunchFix.dll to the plugins
-
 ## Kudos
 
 * ZFolmt from the V Rising Modding discord for techincal help and ideas. He is also the creator of Bloodcraft which helped guide how I approached this
