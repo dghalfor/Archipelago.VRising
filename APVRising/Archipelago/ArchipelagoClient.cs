@@ -176,7 +176,7 @@ public class ArchipelagoClient
         }
         catch (Exception e)
         {
-            FixedString512Bytes fixedString = new($"Could not send location check, please make sure you are connected by entering the command '.connect'");
+            FixedString512Bytes fixedString = new($"Could not send location check, please make sure you are connected by entering the command '.connect', or exception: {e.ToString()}");
             ServerChatUtils.SendSystemMessageToAllClients(Plugin.Server.EntityManager, ref fixedString);
         }
     }

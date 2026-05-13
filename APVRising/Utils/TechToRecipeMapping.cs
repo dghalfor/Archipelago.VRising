@@ -309,7 +309,7 @@ public static class TechToRecipeMapping
                     if (spellbuffer[i].Ability == spellPrefab)
                     {
                         Plugin.BepinLogger.LogInfo($"Spell {spellPrefab} should be locked but is in buffer, removing it");
-                        unlockedSpells.RemoveAt(i);
+                        spellbuffer.RemoveAt(i);
                         break;
                     }
                 }
