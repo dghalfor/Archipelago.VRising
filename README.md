@@ -50,7 +50,7 @@ Please use the provided yaml at https://github.com/dghalfor/V-Rising-APWorld/rel
 * Journal progress being blocked like the other progression.
 * Include all progression elements in the current lock/unlock functionality (~~UnlockedShapeshiftElement~~, ~~UnlockedRecipeElement~~, ~~UnlockedBlueprintElement~~, ~~UnlockedSpellBookAbility~~, UnlockedSpellPointPassives)
 * Add give item from archipelago
-* LockResearch needs to be aware if the player has actually earned this in the archipelago or not.
+
 
 ## Done
 * ~~Archipelago categorization of progression, spheres, etc.~~ -Phye's manual (https://github.com/PhyeBloodrose/V-Rising-Manual) is being adapted for this use case
@@ -64,7 +64,8 @@ Please use the provided yaml at https://github.com/dghalfor/V-Rising-APWorld/rel
 * ~~Make the progression buffers saved and written by startresearch/stopresearch actually connected to the archipelago's progression, not just variables in code~~
 * ~~Add give item functions to support filler, should be straightforward~~
 * ~~Block spell assignment during research.~~
-* 
+* ~~LockResearch needs to be aware if the player has actually earned this in the archipelago or not.~~
+  
 ## Ideas
 
 * Implement Armipotent's original concept as "Killsanity", killing creatures sends checks
