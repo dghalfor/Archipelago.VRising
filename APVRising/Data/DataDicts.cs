@@ -562,9 +562,9 @@ namespace APVRising.Data
             { "Tech_Weapon_Whip_T08", ""},// (I think this is just from the T06 whip tech, but confirm if there's a unique unlock for the T08 whip)
         };
 
-        //public static readonly Dictionary<string, string> APLocationToEntityName = EntityNameToAPLocation.ToDictionary(kvp => kvp.Value, kvp => kvp.Key);
+        public static readonly Dictionary<string, string> APLocationToEntityName = EntityNameToAPLocation.ToDictionary(kvp => kvp.Value, kvp => kvp.Key);
 
-        public static readonly Dictionary<string, string> APLocationToEntityName = new Dictionary<string, string>
+        public static readonly Dictionary<string, string> ItemToEntityName = new Dictionary<string, string>
         {
             /*
             // --- ABILITIES ---

@@ -237,18 +237,39 @@ public class ArchipelagoClient
             .ToHashSet();
         foreach (var checks in checkedLocations)
         {
-            if (!ArchipelagoData.CheckedLocations.Contains((int)checks))
+            Plugin.BepinLogger.LogInfo($"checked {checks}");
+
+            if (DataDicts.EntityNameToAPLocation.TryGetValue(session.Items.GetItemName(checks), out var locEntityName))
             {
-                ArchipelagoData.CheckedLocations.Add((int)checks);
-            }
+                Plugin.BepinLogger.LogInfo($"checked {locEntityName}");
+
+                if (DataDicts.TechToPrefab.TryGetValue(locEntityName, out var prefab))
+                {
+                    Plugin.BepinLogger.LogInfo($"checked {prefab.GuidHash}");
+
+                    if (!ArchipelagoData.CheckedLocations.Contains((int)prefab.GuidHash))
+                    {
+                        Plugin.BepinLogger.LogInfo($"checked {prefab.GuidHash}");
+                        ArchipelagoData.CheckedLocations.Add((int)checks);
+                    }
+                }
+                }
         }
 
-        foreach (var received in receivedItemLocationIds)
+        foreach (var received in receivedItemLocationIds) 
         {
-            if (!ArchipelagoData.ReceivedChecks.Contains((int)received))
-            {
-                ArchipelagoData.CheckedLocations.Add((int)received);
-            }
+                if (DataDicts.ItemToEntityName.TryGetValue(session.Locations.GetLocationNameFromId(received), out var checkEntityName))
+                {
+                    if (DataDicts.TechToPrefab.TryGetValue(checkEntityName, out var prefab))
+                    {
+                        if (!ArchipelagoData.ReceivedChecks.Contains((int)prefab.GuidHash))
+                        {
+                        Plugin.BepinLogger.LogInfo($"received {prefab.GuidHash}");
+
+                        ArchipelagoData.ReceivedChecks.Add((int)prefab.GuidHash);
+                        }
+                    }
+                }
         }
         var locationsToLock = checkedLocations
             .Where(locationId => !receivedItemLocationIds.Contains(locationId))

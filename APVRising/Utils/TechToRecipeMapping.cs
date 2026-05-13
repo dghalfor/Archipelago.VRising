@@ -232,6 +232,13 @@ public static class TechToRecipeMapping
         
         foreach (var techPrefab in DataDicts.PrefabToTech.Keys)
         {
+            if (DataDicts.PrefabToTech.TryGetValue(techPrefab, out var techName)) {
+                if (!techName.StartsWith("Tech"))
+                {
+                    continue;
+                }
+            }
+
             bool techShouldBeUnlocked = unlockedTech.Contains(techPrefab.GuidHash);
 
             if (techShouldBeUnlocked)
@@ -279,6 +286,13 @@ public static class TechToRecipeMapping
 
         foreach (var spellPrefab in DataDicts.PrefabToTech.Keys)
         {
+            if (DataDicts.PrefabToTech.TryGetValue(spellPrefab, out var spellName))
+            {
+                if (!spellName.StartsWith("AB"))
+                {
+                    continue;
+                }
+            }
             bool spellShouldBeUnlocked = unlockedSpells.Contains(spellPrefab.GuidHash);
 
             if (spellShouldBeUnlocked)

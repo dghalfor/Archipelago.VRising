@@ -332,6 +332,8 @@ namespace APVRising.Utils
             }
             if (!ArchipelagoData.ReceivedChecks.Contains(techPrefab._Value))
             {
+                Plugin.BepinLogger.LogInfo($"received {techPrefab._Value}");
+
                 ArchipelagoData.ReceivedChecks.Add(techPrefab._Value);
             }
             // Plugin.BepinLogger.LogInfo($"Unlocking research for player {userEntity.Index} and tech {techPrefab._Value}");
@@ -458,7 +460,15 @@ namespace APVRising.Utils
             }
             if (!ArchipelagoData.CheckedLocations.Contains(techPrefab._Value))
             {
+                Plugin.BepinLogger.LogInfo($"Checked {techPrefab._Value}");
+
                 ArchipelagoData.CheckedLocations.Add(techPrefab._Value);
+            }
+
+            if (ArchipelagoData.ReceivedChecks.Contains(techPrefab._Value))
+            {
+                Plugin.BepinLogger.LogInfo($"Player already has {techPrefab._Value}");
+                return;
             }
             //Plugin.BepinLogger.LogInfo($"Lock research for player {userEntity.Index} and tech {techPrefab._Value}");
             var query = em.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
@@ -506,7 +516,6 @@ namespace APVRising.Utils
                     {
                         var element = blueprintBuffer[i];
 
-                        bool alreadyUnlocked = false;
                         for (int j = unlockedBPBuffer.Length - 1; j >= 0; j--)
                         {
                             if (unlockedBPBuffer[j].UnlockedBlueprint == element.Guid)
@@ -527,7 +536,6 @@ namespace APVRising.Utils
                     {
                         var element = progressionUnlockBuffer[i];
 
-                        bool alreadyUnlocked = false;
                         for (int j = unlockedShapeshiftBuffer.Length - 1; j >= 0; j--)
                         {
                             if (unlockedShapeshiftBuffer[j].UnlockedShapeshift == element.Shapeshift)
@@ -558,9 +566,13 @@ namespace APVRising.Utils
                 em = Plugin.ClientEntityManager;
                 prefabCollectionSystem = Plugin.ClientCollectionSystem;
             }
-            if (!ArchipelagoData.ReceivedChecks.Contains(spellPrefab._Value))
+            if (!ArchipelagoData.CheckedLocations.Contains(spellPrefab._Value))
             {
-                ArchipelagoData.ReceivedChecks.Add(spellPrefab._Value);
+                ArchipelagoData.CheckedLocations.Add(spellPrefab._Value);
+            }
+            if (ArchipelagoData.ReceivedChecks.Contains(spellPrefab._Value))
+            {
+                return;
             }
             var query = em.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
             if (query.IsEmpty) return;
@@ -596,9 +608,9 @@ namespace APVRising.Utils
                 em = Plugin.ClientEntityManager;
                 prefabCollectionSystem = Plugin.ClientCollectionSystem;
             }
-            if (!ArchipelagoData.CheckedLocations.Contains(spellPrefab._Value))
+            if (!ArchipelagoData.ReceivedChecks.Contains(spellPrefab._Value))
             {
-                ArchipelagoData.CheckedLocations.Add(spellPrefab._Value);
+                ArchipelagoData.ReceivedChecks.Add(spellPrefab._Value);
             }
             if (!prefabCollectionSystem._PrefabLookupMap.TryGetValue(spellPrefab, out Entity spellEntity))
             {

@@ -68,7 +68,7 @@ namespace APVRising.Systems
                 // your unlock logic here per user entity
                 foreach (var userEntity in userEntities)
                 {
-                    if (DataDicts.APLocationToEntityName.TryGetValue(itemName, out var entityName))
+                    if (DataDicts.ItemToEntityName.TryGetValue(itemName, out var entityName))
                     {
                         if (DataDicts.TechToPrefab.TryGetValue(entityName, out var prefab))
                         {
