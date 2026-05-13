@@ -1,7 +1,5 @@
 # Archipelago V Rising Client
 
-HEAVY WIP. Will need documentation. Yes, the skeleton of this readme is stolen from [Archipelago.RiskOfRain2](https://github.com/Ijwu/Archipelago.RiskOfRain2/).
-
 ## Gameplay
 
 * Every time you start your game you must use the .connect command before doing anything else.
@@ -10,20 +8,7 @@ HEAVY WIP. Will need documentation. Yes, the skeleton of this readme is stolen f
 * Once you are finished researching, use the .stopResearch command. This will set you back to the progression you've been granted.
 
 ## YAML Settings
-
-An example YAML would look like this:
-```yaml
-description: Armi-VRising
-name: Armi
-
-game: V Rising
-V Rising:
-  
-```
-
-| Name | Description | Allowed Values |
-| ---- | ----------- | -------------- |
-| | |
+Please use the provided yaml at https://github.com/dghalfor/V-Rising-APWorld/releases/tag/0.0.1 for the time being
 
 ## Connecting to an Archipelago Server
 
