@@ -1,7 +1,5 @@
 # Archipelago V Rising Client
 
-HEAVY WIP. Will need documentation. Yes, the skeleton of this readme is stolen from [Archipelago.RiskOfRain2](https://github.com/Ijwu/Archipelago.RiskOfRain2/).
-
 ## Gameplay
 
 * Every time you start your game you must use the .connect command before doing anything else.
@@ -10,20 +8,7 @@ HEAVY WIP. Will need documentation. Yes, the skeleton of this readme is stolen f
 * Once you are finished researching, use the .stopResearch command. This will set you back to the progression you've been granted.
 
 ## YAML Settings
-
-An example YAML would look like this:
-```yaml
-description: Armi-VRising
-name: Armi
-
-game: V Rising
-V Rising:
-  
-```
-
-| Name | Description | Allowed Values |
-| ---- | ----------- | -------------- |
-| | |
+Please use the provided yaml at https://github.com/dghalfor/V-Rising-APWorld/releases/tag/0.0.1 for the time being
 
 ## Connecting to an Archipelago Server
 
@@ -61,10 +46,8 @@ V Rising:
 * Elements removed from research at runtime are re-added after saving and closing the game.
   * ~~Function to re-sync to the archipelago in case of crash or other unrecoverable state~~ - resync command
   * Locally save the progression buffers and reload upon server start
-* Block spell assignment during research.
 
 * Journal progress being blocked like the other progression.
-
 * Include all progression elements in the current lock/unlock functionality (~~UnlockedShapeshiftElement~~, ~~UnlockedRecipeElement~~, ~~UnlockedBlueprintElement~~, ~~UnlockedSpellBookAbility~~, UnlockedSpellPointPassives)
 * Add give item from archipelago
 * LockResearch needs to be aware if the player has actually earned this in the archipelago or not.
@@ -78,9 +61,10 @@ V Rising:
 * ~~Refinement Station progress being blocked, there is some nuance here of refinement being locked/unlocked in station or even hidden in station.~~
 * ~~UnlockedVBlood likely should stay separate if possible, that would let players actually see what they've killed in the vblood menu~~
 * ~~Add dictionary between the nicely formatted names and the Tech_collection entity names~~
-* ~~ Make the progression buffers saved and written by startresearch/stopresearch actually connected to the archipelago's progression, not just variables in code~~
+* ~~Make the progression buffers saved and written by startresearch/stopresearch actually connected to the archipelago's progression, not just variables in code~~
 * ~~Add give item functions to support filler, should be straightforward~~
-
+* ~~Block spell assignment during research.~~
+* 
 ## Ideas
 
 * Implement Armipotent's original concept as "Killsanity", killing creatures sends checks
@@ -98,11 +82,6 @@ V Rising:
 
 * Neutral research desks to prevent sharing of research
 * Change user queries to be based on specific users rather than all users 
-
-## Setup
-
-* Add archipelago.multiclient.net.dll to the plugins folder
-* Add ServerLaunchFix.dll to the plugins
 
 ## Kudos
 
