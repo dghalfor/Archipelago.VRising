@@ -30,8 +30,9 @@ Please use the provided yaml at https://github.com/dghalfor/V-Rising-APWorld/rel
 * .connect [slotName] [ip:port] - this connects you to the archipelago. I highly recommend starting with this when you load your game.
 * .startResearch - switches research progression buffers to allow for the collection of checks in your research desks (see todo)
 * .stopResearch - switches progression buffers to the elements that have been unlocked by the archipelago (see todo)
-* .unlockTech guid - unlocks the tech associated with a guid (see tech guids here https://wiki.vrisingmods.com/prefabs/Tech.html)
-* .lockTech guid - locks tech associated with a guid (see tech guids here https://wiki.vrisingmods.com/prefabs/Tech.html)
+* Below are admin commands
+  * .unlockTech guid - unlocks the tech associated with a guid (see tech guids here https://wiki.vrisingmods.com/prefabs/Tech.html)
+  * .lockTech guid - locks tech associated with a guid (see tech guids here https://wiki.vrisingmods.com/prefabs/Tech.html)
 
 ## Known Issues
 
