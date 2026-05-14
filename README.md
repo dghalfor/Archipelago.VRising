@@ -42,7 +42,8 @@ Please use the provided yaml at https://github.com/dghalfor/V-Rising-APWorld/rel
 * Killing V bloods will result in a "could not send locaiton check" error. This is intermittent and still needs to be diagnosed.
 * You can drag spells you've unlocked while in research mode to your hotbar and they will not be removed. 
 * Until you use .connect you will be able to use techs that should be locked.
-* There may be crashes on connect. 
+* There may be crashes on connect.
+* There is a bug when you unlock new blueprints, if you open your build menu and are suddenly missing massive amounts of blueprints you should have unlocked, close the game and reopen it, it should be fixed on restart.
 
 ## To-do
 * Elements removed from research at runtime are re-added after saving and closing the game.
