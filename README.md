@@ -8,7 +8,7 @@
 * Once you are finished researching, use the .stopResearch command. This will set you back to the progression you've been granted.
 
 ## YAML Settings
-Please use the provided yaml at https://github.com/dghalfor/V-Rising-APWorld/releases/tag/0.0.1 for the time being
+Please use the provided yaml at https://github.com/dghalfor/V-Rising-APWorld/releases/tag/0.0.2 for the time being
 
 ## Connecting to an Archipelago Server
 
