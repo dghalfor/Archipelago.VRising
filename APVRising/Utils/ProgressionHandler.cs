@@ -502,7 +502,6 @@ namespace APVRising.Utils
                                 //   Plugin.BepinLogger.LogInfo($"Tech {techPrefab} should be locked but is in buffer, removing it");
                                 unlockedBuffer.RemoveAt(i);
                                 CheckRefinementStations(element.Guid);
-                                break;
                             }
                         }
                     }
@@ -522,7 +521,6 @@ namespace APVRising.Utils
                             {
                                 // Plugin.BepinLogger.LogInfo($"Blueprint {element.Guid} should be locked but is in buffer, for player {userEntity.Index}");
                                 unlockedBPBuffer.RemoveAt(j);
-                                break;
                             }
                         }
                     }
@@ -542,7 +540,6 @@ namespace APVRising.Utils
                             {
                                 // Plugin.BepinLogger.LogInfo($"Shapeshift {element.Shapeshift} should be locked but is in buffer, for player {userEntity.Index}");
                                 unlockedShapeshiftBuffer.RemoveAt(j);
-                                break;
                             }
                         }
                     }

@@ -1093,8 +1093,8 @@ namespace APVRising.Data
         public static readonly Dictionary<string, PrefabGUID> TechToPrefab = new Dictionary<string, PrefabGUID>
             {
                 // Blood Magic
-                { "AB_Blood_Shadowbolt_AbilityGroup",          new PrefabGUID(-880131926) },
-                { "AB_Blood_BloodRite_AbilityGroup",           new PrefabGUID(1191439206) },
+                //{ "AB_Blood_Shadowbolt_AbilityGroup",          new PrefabGUID(-880131926) },
+                //{ "AB_Blood_BloodRite_AbilityGroup",           new PrefabGUID(1191439206) },
                 { "AB_Blood_BloodRage_AbilityGroup",           new PrefabGUID(651613264) },
                 { "AB_Blood_BloodFountain_AbilityGroup",       new PrefabGUID(2067760264) },
                 { "AB_Blood_SanguineCoil_AbilityGroup",        new PrefabGUID(189403977) },
@@ -1609,8 +1609,8 @@ namespace APVRising.Data
         public static readonly Dictionary<string, int> AbilityPrefabToGuid = new()
             {
                 // Blood Magic
-                { "AB_Blood_Shadowbolt_AbilityGroup",         -880131926 },
-                { "AB_Blood_BloodRite_AbilityGroup",           1191439206 },
+                //{ "AB_Blood_Shadowbolt_AbilityGroup",         -880131926 },
+                //{ "AB_Blood_BloodRite_AbilityGroup",           1191439206 },
                 { "AB_Blood_BloodRage_AbilityGroup",            651613264 },
                 { "AB_Blood_BloodFountain_AbilityGroup",       2067760264 },
                 { "AB_Blood_SanguineCoil_AbilityGroup",         189403977 },

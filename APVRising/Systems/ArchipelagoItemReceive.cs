@@ -59,6 +59,7 @@ namespace APVRising.Systems
             while (Plugin.APClient != null &&
                    ArchipelagoClient.PendingItems.TryDequeue(out var item))
             {
+                Task.Delay(3000);
                 Plugin.BepinLogger.LogInfo($"[AP] Processing item: {item.ItemName}");
 
                 var userEntities = _userQuery.ToEntityArray(Allocator.Temp);

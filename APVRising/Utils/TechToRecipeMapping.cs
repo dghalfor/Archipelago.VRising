@@ -212,7 +212,6 @@ public static class TechToRecipeMapping
                                     Plugin.BepinLogger.LogInfo($"Recipe {recipePrefab} should be locked but is in buffer, removing it");
 
                                     recipeBuffer.RemoveAt(i);
-                                    break;
                                 }
                             }
                         }
@@ -270,7 +269,6 @@ public static class TechToRecipeMapping
                     {
                         Plugin.BepinLogger.LogInfo($"Tech {techPrefab} should be locked but is in buffer, removing it");
                         techBuffer.RemoveAt(i);
-                        break;
                     }
                 }
             }
@@ -324,7 +322,6 @@ public static class TechToRecipeMapping
                     {
                         Plugin.BepinLogger.LogInfo($"Spell {spellPrefab} should be locked but is in buffer, removing it");
                         spellbuffer.RemoveAt(i);
-                        break;
                     }
                 }
             }
@@ -367,7 +364,6 @@ public static class TechToRecipeMapping
                         var tech = techBuffer[j];
                         tech.IsResearchByStation = false;
                         techBuffer[j] = tech;
-                        break;
                     }
                 }
             }
@@ -437,9 +433,7 @@ public static class TechToRecipeMapping
                                 if (recipeBuffer[i].RecipeGuid == recipePrefab)
                                 {
                                     Plugin.BepinLogger.LogInfo($"Recipe {recipePrefab} should be locked but is in buffer, removing it");
-
                                     recipeBuffer.RemoveAt(i);
-                                    break;
                                 }
                             }
                         }
@@ -465,11 +459,10 @@ public static class TechToRecipeMapping
             for (int i = 0; i < snapshotPtr.Length; i++)
             {
                 ref Snapshot_ResearchBuffer_Data data = ref snapshotPtr.Elements[i];
-                int hash = data.ResearchGuid.GetHashCode();
 
                 if (!DataDicts.PrefabToTech.ContainsKey(data.ResearchGuid)) continue;
 
-                bool shouldBeUnlocked = unlockedTech.Contains(hash);
+                bool shouldBeUnlocked = unlockedTech.Contains(data.ResearchGuid.GuidHash);
 
                 if (data.IsResearchByStation != shouldBeUnlocked)
                 {
