@@ -191,6 +191,18 @@ namespace APVRising.Utils
             public T system = default;
         }
 
+        public static EntityManager GetEntityManager()
+        {
+            if (Plugin.IsServer)
+            {
+                return Plugin.EntityManager;
+            }
+            else
+            {
+                return Plugin.ClientEntityManager;
+            }
+        }
+
         public static ModifyUnitStatBuff_DOTS MakeModifyUnitStatBuff_DOTS(UnitStatType type, float value,
             ModificationType modType)
         {

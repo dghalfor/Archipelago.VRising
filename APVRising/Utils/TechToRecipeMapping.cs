@@ -1,4 +1,6 @@
-﻿using APVRising.Data;
+﻿using APVRising;
+using APVRising.Data;
+using MS.Internal.Xml.XPath;
 using ProjectM;
 using ProjectM.Network;
 using Stunlock.Core;
@@ -8,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Unity.Entities;
+using Unity.Entities.UniversalDelegates;
 
 namespace APVRising.Utils;
 public static class TechToRecipeMapping
@@ -309,8 +312,25 @@ public static class TechToRecipeMapping
 
                 if (!techExists)
                 {
+                    EntityManager em;
+                    PrefabCollectionSystem pcs;
+                    if (Plugin.IsServer) {
+                        em = Plugin.EntityManager;
+                        pcs = Plugin.PrefabCollectionSystem;
+                    } else
+                    {
+                        em = Plugin.ClientEntityManager;
+                        pcs = Plugin.ClientCollectionSystem;
+                    }
+                    if (!pcs._PrefabLookupMap.TryGetValue(spellPrefab, out Entity spellEntity))
+                    {
+                        Plugin.BepinLogger.LogInfo($"[AP] Could not find entity for PrefabGUID {spellPrefab._Value}");
+                        return;
+                    }
+                    var abilityComp = em.GetComponentData<AbilitySpellSchool>(spellEntity);
+
                     Plugin.BepinLogger.LogInfo($"Spell {spellPrefab} should be unlocked but is not in buffer, adding it");
-                    spellbuffer.Add(new UnlockedSpellBookAbility { Ability = spellPrefab });
+                    spellbuffer.Add(new UnlockedSpellBookAbility { Ability = spellPrefab, Tier = abilityComp.Tier });
                 }
             }
             else
@@ -327,6 +347,7 @@ public static class TechToRecipeMapping
             }
         }
     }
+
     public static void SyncResearchStation(DynamicBuffer<ResearchBuffer> techBuffer, List<int> unlockedTech)
     {
         if (unlockedTech == null)

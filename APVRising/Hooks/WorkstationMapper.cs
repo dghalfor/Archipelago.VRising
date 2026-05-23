@@ -10,6 +10,7 @@ using Il2CppSystem.Net;
 using ProjectM;
 using ProjectM.CastleBuilding;
 using ProjectM.Network;
+using ProjectM.Shared;
 using ProjectM.UI;
 using Stunlock.Core;
 using System;
@@ -29,7 +30,7 @@ namespace APVRising.Hooks;
 public static unsafe class Workstation
 {
     private static bool _isPatching = false;
-    
+
     [HarmonyPatch(typeof(ResearchEntry), nameof(ResearchEntry.RefreshData))]
     [HarmonyPrefix]
     public static bool RefreshDataPrefix(

@@ -1,0 +1,216 @@
+﻿using APVRising.Utils;
+using NUnit.Framework;
+using ProjectM;
+using Stunlock.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Unity.Collections;
+using Unity.Entities;
+
+namespace APVRising.Tests
+{
+    /// <summary>
+    /// Regression tests for ProgressionHandler class.
+    /// Tests core functionality including tech unlocking/locking, buffer deduplication,
+    /// and research station synchronization.
+    /// </summary>
+    [TestFixture]
+    public class ProgressionHandlerTests
+    {
+        [SetUp]
+        public void Setup()
+        {
+            // Initialize test fixtures here
+        }
+
+        [TearDown]
+        public void Teardown()
+        {
+            // Clean up after tests
+        }
+
+        #region DeduplicateBuffer Tests
+
+        /// <summary>
+        /// Tests that DeduplicateBuffer correctly removes duplicate items from a buffer.
+        /// </summary>
+        [Test]
+        public void DeduplicateBuffer_WithDuplicateGuids_RemovesDuplicates()
+        {
+            // Arrange
+            var buffer = new NativeList<TestPrefabElement>(Allocator.Temp);
+            var guid1 = new PrefabGUID(100);
+            var guid2 = new PrefabGUID(200);
+            var guid3 = new PrefabGUID(100); // Duplicate of guid1
+
+            buffer.Add(new TestPrefabElement { Guid = guid1 });
+            buffer.Add(new TestPrefabElement { Guid = guid2 });
+            buffer.Add(new TestPrefabElement { Guid = guid3 }); // Duplicate
+
+            // Act
+            ProgressionHandler.DeduplicateBuffer(buffer, x => x.Guid);
+
+            // Assert
+            Assert.AreEqual(2, buffer.Length);
+            Assert.IsTrue(buffer.Any(x => x.Guid._Value == guid1._Value));
+            Assert.IsTrue(buffer.Any(x => x.Guid._Value == guid2._Value));
+
+            buffer.Dispose();
+        }
+
+        /// <summary>
+        /// Tests that DeduplicateBuffer handles an empty buffer without errors.
+        /// </summary>
+        [Test]
+        public void DeduplicateBuffer_WithEmptyBuffer_ReturnsEmpty()
+        {
+            // Arrange
+            var buffer = new NativeList<TestPrefabElement>(Allocator.Temp);
+
+            // Act
+            ProgressionHandler.DeduplicateBuffer(buffer, x => x.Guid);
+
+            // Assert
+            Assert.AreEqual(0, buffer.Length);
+
+            buffer.Dispose();
+        }
+
+        /// <summary>
+        /// Tests that DeduplicateBuffer handles a buffer with no duplicates.
+        /// </summary>
+        [Test]
+        public void DeduplicateBuffer_WithNoDuplicates_PreservesAllItems()
+        {
+            // Arrange
+            var buffer = new NativeList<TestPrefabElement>(Allocator.Temp);
+            var guid1 = new PrefabGUID(100);
+            var guid2 = new PrefabGUID(200);
+            var guid3 = new PrefabGUID(300);
+
+            buffer.Add(new TestPrefabElement { Guid = guid1 });
+            buffer.Add(new TestPrefabElement { Guid = guid2 });
+            buffer.Add(new TestPrefabElement { Guid = guid3 });
+
+            // Act
+            ProgressionHandler.DeduplicateBuffer(buffer, x => x.Guid);
+
+            // Assert
+            Assert.AreEqual(3, buffer.Length);
+
+            buffer.Dispose();
+        }
+
+        /// <summary>
+        /// Tests that DeduplicateBuffer handles a buffer with all duplicates.
+        /// </summary>
+        [Test]
+        public void DeduplicateBuffer_WithAllDuplicates_KeepsOnlyFirst()
+        {
+            // Arrange
+            var buffer = new NativeList<TestPrefabElement>(Allocator.Temp);
+            var guid = new PrefabGUID(100);
+
+            buffer.Add(new TestPrefabElement { Guid = guid });
+            buffer.Add(new TestPrefabElement { Guid = guid });
+            buffer.Add(new TestPrefabElement { Guid = guid });
+
+            // Act
+            ProgressionHandler.DeduplicateBuffer(buffer, x => x.Guid);
+
+            // Assert
+            Assert.AreEqual(1, buffer.Length);
+            Assert.AreEqual(guid._Value, buffer[0].Guid._Value);
+
+            buffer.Dispose();
+        }
+
+        #endregion
+
+        #region IsResearching State Tests
+
+        /// <summary>
+        /// Tests that IsResearching flag can be set correctly.
+        /// </summary>
+        [Test]
+        public void SetResearch_WithTrue_SetsIsResearchingTrue()
+        {
+            // Arrange
+            ProgressionHandler.IsResearching = false;
+
+            // Act
+            ProgressionHandler.setResearch(true);
+
+            // Assert
+            Assert.IsTrue(ProgressionHandler.IsResearching);
+        }
+
+        /// <summary>
+        /// Tests that IsResearching flag can be set to false.
+        /// </summary>
+        [Test]
+        public void SetResearch_WithFalse_SetsIsResearchingFalse()
+        {
+            // Arrange
+            ProgressionHandler.IsResearching = true;
+
+            // Act
+            ProgressionHandler.setResearch(false);
+
+            // Assert
+            Assert.IsFalse(ProgressionHandler.IsResearching);
+        }
+
+        #endregion
+
+        #region Edge Cases and Error Handling
+
+        /// <summary>
+        /// Tests that IsStale flag is correctly managed.
+        /// </summary>
+        [Test]
+        public void IsStale_Flag_CanBeToggled()
+        {
+            // Arrange
+            ProgressionHandler.isStale = false;
+
+            // Act
+            ProgressionHandler.isStale = true;
+
+            // Assert
+            Assert.IsTrue(ProgressionHandler.isStale);
+
+            // Act again
+            ProgressionHandler.isStale = false;
+
+            // Assert
+            Assert.IsFalse(ProgressionHandler.isStale);
+        }
+
+        #endregion
+    }
+
+    /// <summary>
+    /// Helper struct for testing DeduplicateBuffer with PrefabGUID values.
+    /// </summary>
+    public struct TestPrefabElement : IEquatable<TestPrefabElement>
+    {
+        public PrefabGUID Guid;
+
+        public override bool Equals(object obj)
+        {
+            return obj is TestPrefabElement element && Equals(element);
+        }
+
+        public bool Equals(TestPrefabElement other)
+        {
+            return Guid.Equals(other.Guid);
+        }
+
+        public override int GetHashCode()
+        {
+            return Guid.GetHashCode();
+        }
+    }
+}

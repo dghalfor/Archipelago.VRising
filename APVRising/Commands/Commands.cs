@@ -9,6 +9,7 @@ using Unity.Collections;
 using Unity.Entities;
 using UnityEngine.TextCore.Text;
 using VampireCommandFramework;
+using VRisingArchipelago;
 
 namespace APVRising.Commands;
 
@@ -38,17 +39,38 @@ public static class ArchipelagoCommands
     {
         ProgressionHandler.IsResearching = true;
         ProgressionHandler.UpdateProgression();
+        var progQuery = Helper.GetEntityManager().CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
+        var entities = progQuery.ToEntityArray(Allocator.Temp);
+        foreach (var entity in entities)
+        {
+            ProgressionSnapshot.Capture(Plugin.EntityManager, entity);
+        }
         ChatMessage.NotifyClient(true);
         ctx.Reply($"Starting research...");
     }
     [Command("stopresearch")]
     public static void APStopResearch(ICommandContext ctx)
     {
+        var progQuery = Helper.GetEntityManager().CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
+        var entities = progQuery.ToEntityArray(Allocator.Temp);
+        foreach (var entity in entities)
+        {
+            ProgressionSnapshot.Restore(Plugin.EntityManager, entity);
+        }
         ProgressionHandler.IsResearching = false;
         ProgressionHandler.UpdateProgression();
         ChatMessage.NotifyClient(false);
+        Plugin.APClient.Resync();
         ctx.Reply($"Stopping research...");
     }
+
+    [Command("srd")]
+    public static void APStopResearchDeferred(ICommandContext ctx)
+    {
+        DelaySystem.StopResearchDeferred();
+        ctx.Reply($"Stopping research deferred...");
+    }
+
     [Command("unlockTech")]
     public static void APUnlockTech(ICommandContext ctx, int guid)
     {
@@ -139,5 +161,45 @@ public static class ArchipelagoCommands
     {
         Plugin.APClient.Resync();
         ctx.Reply($"Synced Progression");
+    }
+    [Command("dedup", description: "Deduplicate progression buffers", adminOnly: true)]
+    public static void APDedup(ICommandContext ctx)
+    {
+        var em = Plugin.EntityManager;
+        var query = em.CreateEntityQuery(
+            ComponentType.ReadOnly<User>(),
+            ComponentType.ReadOnly<ProgressionMapper>());
+
+        if (query.IsEmpty)
+        {
+            ctx.Reply("No user entities found.");
+            return;
+        }
+
+        var userEntities = query.ToEntityArray(Allocator.Temp);
+        foreach (var userEntity in userEntities)
+        {
+            var progressionQuery = em.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
+            var progressionEntities = progressionQuery.ToEntityArray(Allocator.Temp);
+
+            foreach (var entity in progressionEntities)
+            {
+                int bpBefore = em.GetBuffer<UnlockedBlueprintElement>(entity).Length;
+                int recipeBefore = em.GetBuffer<UnlockedRecipeElement>(entity).Length;
+
+                ProgressionHandler.DeduplicateBuffer(em.GetBuffer<UnlockedBlueprintElement>(entity), e => e.UnlockedBlueprint);
+                ProgressionHandler.DeduplicateBuffer(em.GetBuffer<UnlockedRecipeElement>(entity), e => e.UnlockedRecipe);
+                ProgressionHandler.DeduplicateBuffer(em.GetBuffer<UnlockedShapeshiftElement>(entity), e => e.UnlockedShapeshift);
+
+                int bpAfter = em.GetBuffer<UnlockedBlueprintElement>(entity).Length;
+                int recipeAfter = em.GetBuffer<UnlockedRecipeElement>(entity).Length;
+
+                ctx.Reply($"Deduped: Blueprints {bpBefore}→{bpAfter}, Recipes {recipeBefore}→{recipeAfter}");
+            }
+            ProgressionHandler.DeduplicateBuffer(em.GetBuffer<UnlockedProgressionElement>(userEntity), e => e.UnlockedPrefab);
+
+            progressionEntities.Dispose();
+        }
+        userEntities.Dispose();
     }
 }

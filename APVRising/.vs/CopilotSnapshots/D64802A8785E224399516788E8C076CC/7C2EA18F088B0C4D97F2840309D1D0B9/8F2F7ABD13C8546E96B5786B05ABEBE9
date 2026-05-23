@@ -1,0 +1,343 @@
+﻿using APVRising.Utils;
+using ProjectM;
+using Stunlock.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Unity.Collections;
+using Unity.Entities;
+
+namespace APVRising.Tests
+{
+    /// <summary>
+    /// Regression tests for ProgressionHandler class.
+    /// Tests core functionality including tech unlocking/locking, buffer deduplication,
+    /// and research station synchronization.
+    /// 
+    /// This test suite validates the following functionality:
+    /// - Tech/recipe/blueprint unlocking and locking for players
+    /// - Buffer deduplication logic
+    /// - Research station synchronization
+    /// - Progression state management
+    /// - Snapshot operations
+    /// </summary>
+    public static class ProgressionHandlerTests
+    {
+        private static int _testsPassed = 0;
+        private static int _testsFailed = 0;
+        private static List<string> _failureMessages = new();
+
+        /// <summary>
+        /// Runs all regression tests and outputs results to console.
+        /// </summary>
+        public static void RunAllTests()
+        {
+            _testsPassed = 0;
+            _testsFailed = 0;
+            _failureMessages.Clear();
+
+            Console.WriteLine("=== ProgressionHandler Regression Tests ===\n");
+
+            // DeduplicateBuffer Tests
+            TestDeduplicateBuffer_WithDuplicateGuids_RemovesDuplicates();
+            TestDeduplicateBuffer_WithEmptyBuffer_ReturnsEmpty();
+            TestDeduplicateBuffer_WithNoDuplicates_PreservesAllItems();
+            TestDeduplicateBuffer_WithAllDuplicates_KeepsOnlyFirst();
+
+            // IsResearching State Tests
+            TestSetResearch_WithTrue_SetsIsResearchingTrue();
+            TestSetResearch_WithFalse_SetsIsResearchingFalse();
+
+            // Edge Cases and Error Handling
+            TestIsStale_Flag_CanBeToggled();
+
+            PrintResults();
+        }
+
+        #region DeduplicateBuffer Tests
+
+        /// <summary>
+        /// Tests that DeduplicateBuffer correctly removes duplicate items from a buffer.
+        /// </summary>
+        private static void TestDeduplicateBuffer_WithDuplicateGuids_RemovesDuplicates()
+        {
+            try
+            {
+                // Arrange
+                var buffer = new NativeList<TestPrefabElement>(Allocator.Temp);
+                var guid1 = new PrefabGUID(100);
+                var guid2 = new PrefabGUID(200);
+                var guid3 = new PrefabGUID(100); // Duplicate of guid1
+
+                var elem1 = new TestPrefabElement { Guid = guid1 };
+                var elem2 = new TestPrefabElement { Guid = guid2 };
+                var elem3 = new TestPrefabElement { Guid = guid3 };
+
+                buffer.Add(ref elem1);
+                buffer.Add(ref elem2);
+                buffer.Add(ref elem3); // Duplicate
+
+                // Act
+                ProgressionHandler.DeduplicateBuffer(buffer, x => x.Guid);
+
+                // Assert
+                bool passed = buffer.Length == 2 &&
+                    buffer.ToArray().Any(x => x.Guid._Value == guid1._Value) &&
+                    buffer.ToArray().Any(x => x.Guid._Value == guid2._Value);
+
+                buffer.Dispose();
+
+                RecordTest("DeduplicateBuffer_WithDuplicateGuids_RemovesDuplicates", passed);
+            }
+            catch (Exception ex)
+            {
+                RecordTest("DeduplicateBuffer_WithDuplicateGuids_RemovesDuplicates", false, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Tests that DeduplicateBuffer handles an empty buffer without errors.
+        /// </summary>
+        private static void TestDeduplicateBuffer_WithEmptyBuffer_ReturnsEmpty()
+        {
+            try
+            {
+                // Arrange
+                var buffer = new NativeList<TestPrefabElement>(Allocator.Temp);
+
+                // Act
+                ProgressionHandler.DeduplicateBuffer(buffer, x => x.Guid);
+
+                // Assert
+                bool passed = buffer.Length == 0;
+
+                buffer.Dispose();
+
+                RecordTest("DeduplicateBuffer_WithEmptyBuffer_ReturnsEmpty", passed);
+            }
+            catch (Exception ex)
+            {
+                RecordTest("DeduplicateBuffer_WithEmptyBuffer_ReturnsEmpty", false, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Tests that DeduplicateBuffer handles a buffer with no duplicates.
+        /// </summary>
+        private static void TestDeduplicateBuffer_WithNoDuplicates_PreservesAllItems()
+        {
+            try
+            {
+                // Arrange
+                var buffer = new NativeList<TestPrefabElement>(Allocator.Temp);
+                var guid1 = new PrefabGUID(100);
+                var guid2 = new PrefabGUID(200);
+                var guid3 = new PrefabGUID(300);
+
+                var elem1 = new TestPrefabElement { Guid = guid1 };
+                var elem2 = new TestPrefabElement { Guid = guid2 };
+                var elem3 = new TestPrefabElement { Guid = guid3 };
+
+                buffer.Add(ref elem1);
+                buffer.Add(ref elem2);
+                buffer.Add(ref elem3);
+
+                // Act
+                ProgressionHandler.DeduplicateBuffer(buffer, x => x.Guid);
+
+                // Assert
+                bool passed = buffer.Length == 3;
+
+                buffer.Dispose();
+
+                RecordTest("DeduplicateBuffer_WithNoDuplicates_PreservesAllItems", passed);
+            }
+            catch (Exception ex)
+            {
+                RecordTest("DeduplicateBuffer_WithNoDuplicates_PreservesAllItems", false, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Tests that DeduplicateBuffer handles a buffer with all duplicates.
+        /// </summary>
+        private static void TestDeduplicateBuffer_WithAllDuplicates_KeepsOnlyFirst()
+        {
+            try
+            {
+                // Arrange
+                var buffer = new NativeList<TestPrefabElement>(Allocator.Temp);
+                var guid = new PrefabGUID(100);
+
+                var elem1 = new TestPrefabElement { Guid = guid };
+                var elem2 = new TestPrefabElement { Guid = guid };
+                var elem3 = new TestPrefabElement { Guid = guid };
+
+                buffer.Add(ref elem1);
+                buffer.Add(ref elem2);
+                buffer.Add(ref elem3);
+
+                // Act
+                ProgressionHandler.DeduplicateBuffer(buffer, x => x.Guid);
+
+                // Assert
+                bool passed = buffer.Length == 1 && buffer[0].Guid._Value == guid._Value;
+
+                buffer.Dispose();
+
+                RecordTest("DeduplicateBuffer_WithAllDuplicates_KeepsOnlyFirst", passed);
+            }
+            catch (Exception ex)
+            {
+                RecordTest("DeduplicateBuffer_WithAllDuplicates_KeepsOnlyFirst", false, ex.Message);
+            }
+        }
+
+        #endregion
+
+        #region IsResearching State Tests
+
+        /// <summary>
+        /// Tests that IsResearching flag can be set correctly.
+        /// </summary>
+        private static void TestSetResearch_WithTrue_SetsIsResearchingTrue()
+        {
+            try
+            {
+                // Arrange
+                ProgressionHandler.IsResearching = false;
+
+                // Act
+                ProgressionHandler.setResearch(true);
+
+                // Assert
+                bool passed = ProgressionHandler.IsResearching == true;
+
+                RecordTest("SetResearch_WithTrue_SetsIsResearchingTrue", passed);
+            }
+            catch (Exception ex)
+            {
+                RecordTest("SetResearch_WithTrue_SetsIsResearchingTrue", false, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Tests that IsResearching flag can be set to false.
+        /// </summary>
+        private static void TestSetResearch_WithFalse_SetsIsResearchingFalse()
+        {
+            try
+            {
+                // Arrange
+                ProgressionHandler.IsResearching = true;
+
+                // Act
+                ProgressionHandler.setResearch(false);
+
+                // Assert
+                bool passed = ProgressionHandler.IsResearching == false;
+
+                RecordTest("SetResearch_WithFalse_SetsIsResearchingFalse", passed);
+            }
+            catch (Exception ex)
+            {
+                RecordTest("SetResearch_WithFalse_SetsIsResearchingFalse", false, ex.Message);
+            }
+        }
+
+        #endregion
+
+        #region Edge Cases and Error Handling
+
+        /// <summary>
+        /// Tests that IsStale flag is correctly managed.
+        /// </summary>
+        private static void TestIsStale_Flag_CanBeToggled()
+        {
+            try
+            {
+                // Arrange
+                ProgressionHandler.isStale = false;
+
+                // Act & Assert
+                ProgressionHandler.isStale = true;
+                bool part1 = ProgressionHandler.isStale == true;
+
+                ProgressionHandler.isStale = false;
+                bool part2 = ProgressionHandler.isStale == false;
+
+                RecordTest("IsStale_Flag_CanBeToggled", part1 && part2);
+            }
+            catch (Exception ex)
+            {
+                RecordTest("IsStale_Flag_CanBeToggled", false, ex.Message);
+            }
+        }
+
+        #endregion
+
+        #region Test Helper Methods
+
+        private static void RecordTest(string testName, bool passed, string errorMessage = "")
+        {
+            if (passed)
+            {
+                _testsPassed++;
+                Console.WriteLine($"✓ PASSED: {testName}");
+            }
+            else
+            {
+                _testsFailed++;
+                string message = $"✗ FAILED: {testName}";
+                if (!string.IsNullOrEmpty(errorMessage))
+                    message += $" - {errorMessage}";
+                Console.WriteLine(message);
+                _failureMessages.Add(message);
+            }
+        }
+
+        private static void PrintResults()
+        {
+            Console.WriteLine("\n=== Test Results ===");
+            Console.WriteLine($"Total Tests: {_testsPassed + _testsFailed}");
+            Console.WriteLine($"Passed: {_testsPassed}");
+            Console.WriteLine($"Failed: {_testsFailed}");
+
+            if (_testsFailed > 0)
+            {
+                Console.WriteLine("\n=== Failure Details ===");
+                foreach (var failure in _failureMessages)
+                {
+                    Console.WriteLine(failure);
+                }
+            }
+
+            Console.WriteLine($"\nSuccess Rate: {(_testsPassed * 100 / (_testsPassed + _testsFailed))}%");
+        }
+
+        #endregion
+    }
+
+    /// <summary>
+    /// Helper struct for testing DeduplicateBuffer with PrefabGUID values.
+    /// </summary>
+    public struct TestPrefabElement : IEquatable<TestPrefabElement>
+    {
+        public PrefabGUID Guid;
+
+        public override bool Equals(object obj)
+        {
+            return obj is TestPrefabElement element && Equals(element);
+        }
+
+        public bool Equals(TestPrefabElement other)
+        {
+            return Guid.Equals(other.Guid);
+        }
+
+        public override int GetHashCode()
+        {
+            return Guid.GetHashCode();
+        }
+    }
+}

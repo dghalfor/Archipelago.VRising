@@ -33,7 +33,25 @@ public class ArchipelagoData
     {
         return ReceivedChecks;
     }
+    public static void AddLocationCheck(int value)
+    {
+        if (!CheckedLocations.Contains(value))
+        {
+            Plugin.BepinLogger.LogInfo($"Checked {value}");
 
+            CheckedLocations.Add(value);
+        }
+    }
+
+    public static void AddReceivedCheck(int value)
+    {
+        if (!ReceivedChecks.Contains(value))
+        {
+            Plugin.BepinLogger.LogInfo($"received {value}");
+
+            ReceivedChecks.Add(value);
+        }
+    }
     public static List<int> GetCheckedLocations()
     {
         return CheckedLocations;

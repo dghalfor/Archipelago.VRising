@@ -1,9 +1,11 @@
 ﻿using APVRising.Archipelago;
+using APVRising.Hooks;
 using APVRising.Utils;
 using BepInEx;
 using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
+using Il2CppInterop.Runtime.Injection;
 using ProjectM;
 using ProjectM.Scripting;
 using ProjectM.UI;
@@ -13,6 +15,7 @@ using System.Linq;
 using Unity.Entities;
 using UnityEngine;
 using VampireCommandFramework;
+using VRisingArchipelago;
 
 namespace APVRising;
 
@@ -47,6 +50,8 @@ public class Plugin : BasePlugin
 
         var patched = _harmony.GetPatchedMethods().ToList();
         BepinLogger.LogInfo($"[Harmony] Total patched methods: {patched.Count}");
+
+        //UpdateUnlockedBuffersHook.Initialize();
         foreach (var m in patched)
             BepinLogger.LogInfo($"[Harmony] Patched -> {m.DeclaringType?.Name}.{m.Name}");
         CommandRegistry.RegisterAll();
@@ -56,8 +61,9 @@ public class Plugin : BasePlugin
             // Register all commands in the assembly with VCF
             ArchipelagoConsole.LogMessage($"{ModDisplayInfo} loaded!");
         }
-        Plugin.BepinLogger.LogInfo("Do I even exist");
-        Plugin.BepinLogger.LogInfo($"Is this the server? {Application.productName}");
+        ClassInjector.RegisterTypeInIl2Cpp<DeferredActionSystem>();
+
+
     }
 
     public override bool Unload()

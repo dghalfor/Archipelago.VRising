@@ -22,6 +22,7 @@ using System.Text.Json.Nodes;
 using System.Threading;
 using Unity.Collections;
 using Unity.Entities;
+using UnityEngine;
 
 namespace APVRising.Archipelago;
 
@@ -229,7 +230,7 @@ public class ArchipelagoClient
     // Resync removes all progression unlocks for locations that are checked but not received from the player. This undoes the progression changes that occur during startup.
     public void Resync()
     {
-        var query = Plugin.EntityManager.CreateEntityQuery(ComponentType.ReadOnly<User>(), ComponentType.ReadOnly<ProgressionMapper>());
+        var query = Helper.GetEntityManager().CreateEntityQuery(ComponentType.ReadOnly<User>(), ComponentType.ReadOnly<ProgressionMapper>());
         var userEntities = query.ToEntityArray(Allocator.Temp);
         var checkedLocations = session.Locations.AllLocationsChecked;
         var receivedItemLocationIds = session.Items.AllItemsReceived
@@ -239,35 +240,27 @@ public class ArchipelagoClient
         {
             Plugin.BepinLogger.LogInfo($"checked {checks}");
 
-            if (DataDicts.EntityNameToAPLocation.TryGetValue(session.Items.GetItemName(checks), out var locEntityName))
+            if (DataDicts.EntityNameToAPLocation.TryGetValue(session.Locations.GetLocationNameFromId(checks), out var locEntityName))
             {
-                Plugin.BepinLogger.LogInfo($"checked {locEntityName}");
 
                 if (DataDicts.TechToPrefab.TryGetValue(locEntityName, out var prefab))
                 {
                     Plugin.BepinLogger.LogInfo($"checked {prefab.GuidHash}");
-
-                    if (!ArchipelagoData.CheckedLocations.Contains((int)prefab.GuidHash))
-                    {
-                        Plugin.BepinLogger.LogInfo($"checked {prefab.GuidHash}");
-                        ArchipelagoData.CheckedLocations.Add((int)checks);
-                    }
+                    ArchipelagoData.AddLocationCheck(prefab.GuidHash);
                 }
-                }
+            }
         }
 
         foreach (var received in receivedItemLocationIds) 
         {
-                if (DataDicts.ItemToEntityName.TryGetValue(session.Locations.GetLocationNameFromId(received), out var checkEntityName))
+                if (DataDicts.ItemToEntityName.TryGetValue(session.Items.GetItemName(received), out var checkEntityName))
                 {
                     if (DataDicts.TechToPrefab.TryGetValue(checkEntityName, out var prefab))
                     {
-                        if (!ArchipelagoData.ReceivedChecks.Contains((int)prefab.GuidHash))
-                        {
-                        Plugin.BepinLogger.LogInfo($"received {prefab.GuidHash}");
+                    Plugin.BepinLogger.LogInfo($"Check Entity Name {checkEntityName}");
+                    Plugin.BepinLogger.LogInfo($"recieved {prefab.GuidHash}");
 
-                        ArchipelagoData.ReceivedChecks.Add((int)prefab.GuidHash);
-                        }
+                    ArchipelagoData.AddReceivedCheck(prefab.GuidHash);
                     }
                 }
         }

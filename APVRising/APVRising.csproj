@@ -44,14 +44,7 @@
 			<InputAssemblies Include="$(MSBuildProjectDirectory)\lib\Newtonsoft.Json.dll" />
 		</ItemGroup>
 
-		<ILRepack
-			Parallel="true"
-			Internalize="true"
-			InputAssemblies="@(InputAssemblies)"
-			TargetKind="Dll"
-			OutputFile="$(OutputPath)\$(AssemblyName).dll"
-			LibraryPath="$(OutputPath);$(MSBuildProjectDirectory)\lib;C:\Program Files (x86)\Steam\steamapps\common\VRising\VRising_Server\BepInEx\core;C:\Program Files (x86)\Steam\steamapps\common\VRising\VRising_Server\BepInEx\interop"
-		/>
+		<ILRepack Parallel="true" Internalize="true" InputAssemblies="@(InputAssemblies)" TargetKind="Dll" OutputFile="$(OutputPath)\$(AssemblyName).dll" LibraryPath="$(OutputPath);$(MSBuildProjectDirectory)\lib;C:\Program Files (x86)\Steam\steamapps\common\VRising\VRising_Server\BepInEx\core;C:\Program Files (x86)\Steam\steamapps\common\VRising\VRising_Server\BepInEx\interop" />
 	</Target>
 
 	<Target Name="ZipMod" AfterTargets="MergeAssemblies" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -85,6 +78,10 @@
 
 	<ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
 		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Tests\" />
 	</ItemGroup>
 
 </Project>

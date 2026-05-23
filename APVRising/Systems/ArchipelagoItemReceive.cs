@@ -56,10 +56,9 @@ namespace APVRising.Systems
                 ServerChatUtils.SendSystemMessageToAllClients(Plugin.Server.EntityManager, ref fixedMessage);
             }
 
-            while (Plugin.APClient != null &&
+            while (Plugin.APClient != null && ProgressionHandler.IsResearching == false &&
                    ArchipelagoClient.PendingItems.TryDequeue(out var item))
             {
-                Task.Delay(3000);
                 Plugin.BepinLogger.LogInfo($"[AP] Processing item: {item.ItemName}");
 
                 var userEntities = _userQuery.ToEntityArray(Allocator.Temp);

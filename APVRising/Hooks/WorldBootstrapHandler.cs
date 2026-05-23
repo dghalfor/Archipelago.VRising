@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Unity.Entities;
+using VRisingArchipelago;
 
 namespace APVRising.Hooks
 {
@@ -34,6 +35,9 @@ namespace APVRising.Hooks
                 if (world.Name.Equals("Server"))
                 {
                     RegisterArchipelagoSystem(world);
+                    DeferredActionSystem.Initialise(Plugin.BepinLogger);
+                    DeferredActionSystem.DefaultDelay = 1.0f;
+                    DeferredActionSystem.MaxActionsPerFrame = 5;
                 }
             }
             catch (Exception e)

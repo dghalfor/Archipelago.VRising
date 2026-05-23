@@ -1,4 +1,5 @@
-﻿using APVRising.Utils;
+﻿using APVRising.Archipelago;
+using APVRising.Utils;
 using HarmonyLib;
 using ProjectM;
 using ProjectM.Network;
@@ -29,7 +30,8 @@ namespace APVRising.Hooks
                 return false;
             }
             Plugin.APClient.SendLocationCheck(DebugTool.GetPrefabName(abilityGroup));
-
+            ArchipelagoData.AddLocationCheck(abilityGroup._Value);
+            ChatMessage.NotifyClientLocation(abilityGroup._Value);
             return true;
         }
 

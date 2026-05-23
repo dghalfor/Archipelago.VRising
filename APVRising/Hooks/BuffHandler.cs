@@ -8,9 +8,11 @@ using ProjectM;
 using ProjectM.Network;
 using ProjectM.Scripting;
 using ProjectM.Shared;
+using Stunlock.Core;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine.EventSystems;
+using VRisingArchipelago;
 
 namespace APVRising.Hooks;
 
@@ -30,6 +32,7 @@ public class BuffSystemSpawnServerPatch
         foreach (var entity in entities)
         {
             var prefabGuid = Helper.GetPrefabGUID(entity);
+
             switch (prefabGuid.GuidHash)
             {
                 case (int)Effects.AB_FeedBoss_03_Complete_Trigger:
@@ -37,6 +40,17 @@ public class BuffSystemSpawnServerPatch
                     var em = __instance.EntityManager;
                     if (em.HasBuffer<CreateGameplayEventsOnSpawn>(entity))
                     {
+                        ProgressionHandler.IsResearching = true;
+                        ChatMessage.NotifyClientResearch(true);
+                        ChatMessage.NotifyClientSnapshot();
+                        var progQuery = Helper.GetEntityManager().CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
+                        var ProgEntities = progQuery.ToEntityArray(Allocator.Temp);
+                        foreach (var progEntity in ProgEntities)
+                        {
+                            Plugin.BepinLogger.LogInfo("Saving buffer");
+
+                            ProgressionSnapshot.Capture(Plugin.EntityManager, progEntity);
+                        }
                         _bossEntitiesToDestroy = entity;
                     }
                     break;
@@ -57,14 +71,18 @@ public class BuffSystemSpawnServerPatch
         {
             var bossEntity = spellTarget.Target._Entity;
 
-            if (em.TryGetComponentData<VBloodConsumeSource>(bossEntity, out var consumeSource))
-            {
-                Plugin.BepinLogger.LogDebug($"VBloodConsumeSource: School {consumeSource.SpellSchool}, Tier {consumeSource.Tier}, SchoolPoints {consumeSource.SpellSchoolPoints}, passivePoints {consumeSource.PassivePoints}");
-            }
-
             // Handle VBloodUnlockTechBuffer buffer contents
             if (em.HasBuffer<VBloodUnlockTechBuffer>(bossEntity))
             {
+
+
+                var progQuery = Helper.GetEntityManager().CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
+                var ProgEntities = progQuery.ToEntityArray(Allocator.Temp);
+                foreach (var progEntity in ProgEntities)
+                {
+                    DelaySystem.RestoreDeferred(Plugin.EntityManager, progEntity);
+                }
+
                 var techBuffer = em.GetBuffer<VBloodUnlockTechBuffer>(bossEntity);
                 var userQuery = em.CreateEntityQuery(ComponentType.ReadOnly<User>(), ComponentType.ReadOnly<ProgressionMapper>());
                 var userEntities = userQuery.ToEntityArray(Allocator.Temp);
@@ -78,10 +96,11 @@ public class BuffSystemSpawnServerPatch
 
                     foreach (var userEntity in userEntities)
                     {
-                        ProgressionHandler.LockTechForPlayer(userEntity, new Stunlock.Core.PrefabGUID(tech.Guid.GuidHash));
-                        ChatMessage.NotifyClientLock(tech.Guid.GuidHash);
+                        DelaySystem.LockResearchDeferred(userEntity, new Stunlock.Core.PrefabGUID(tech.Guid.GuidHash));
                     }
                 }
+                DelaySystem.StopResearchDeferred();
+                DelaySystem.ResyncDeferred();
             }
         }
     }
