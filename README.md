@@ -37,13 +37,14 @@ Please use the provided yaml at https://github.com/dghalfor/V-Rising-APWorld/rel
 ## Known Issues
 
 * There is a big lag spike shortly after launching the server. (only tested in host+play)
-* Client entity manager getting hit on server logs during locks post sync
 * DLC variants of shapeshifts bypass the archipelago logic and will remain attached to the player
-* Killing V bloods will result in a "could not send locaiton check" error. This is intermittent and still needs to be diagnosed.
+* Some Vbloods will give "cannot send location check" for deprecated techs.
 * You can drag spells you've unlocked while in research mode to your hotbar and they will not be removed. 
 * Until you use .connect you will be able to use techs that should be locked.
 * There may be crashes on connect.
 * There is a bug when you unlock new blueprints, if you open your build menu and are suddenly missing massive amounts of blueprints you should have unlocked, close the game and reopen it, it should be fixed on restart.
+  * Fix is in to snapshot buffers. This should work in many cases.
+* Gravedigger ring appears to unlock early.
 
 ## To-do
 * Elements removed from research at runtime are re-added after saving and closing the game.
