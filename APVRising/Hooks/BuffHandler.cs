@@ -51,6 +51,7 @@ public class BuffSystemSpawnServerPatch
 
                             ProgressionSnapshot.Capture(Plugin.EntityManager, progEntity);
                         }
+
                         _bossEntitiesToDestroy = entity;
                     }
                     break;
@@ -74,8 +75,6 @@ public class BuffSystemSpawnServerPatch
             // Handle VBloodUnlockTechBuffer buffer contents
             if (em.HasBuffer<VBloodUnlockTechBuffer>(bossEntity))
             {
-
-
                 var progQuery = Helper.GetEntityManager().CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
                 var ProgEntities = progQuery.ToEntityArray(Allocator.Temp);
                 foreach (var progEntity in ProgEntities)
