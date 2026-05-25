@@ -69,7 +69,8 @@ public class Plugin : BasePlugin
     public override bool Unload()
     {
         Plugin.BepinLogger.LogInfo("Unload");
-
+        _serverWorld = null;
+        _clientWorld = null;
         CommandRegistry.UnregisterAssembly();
         _harmony?.UnpatchSelf();
         return true;
@@ -93,7 +94,8 @@ public class Plugin : BasePlugin
     {
         get
         {
-            if (_serverWorld != null) return _serverWorld;
+            if (_serverWorld != null && _serverWorld.IsCreated)
+                return _serverWorld;
 
             _serverWorld = GetWorld("Server")
                 ?? throw new System.Exception("There is no Server world (yet). Did you install a server mod on the client?");
@@ -105,11 +107,12 @@ public class Plugin : BasePlugin
     {
         get
         {
-            if (_clientWorld != null) return _clientWorld;
+            if (_clientWorld != null && _clientWorld.IsCreated)
+                return _clientWorld;
 
             _clientWorld = GetClientWorld("Client_0")
                 ?? throw new System.Exception("There is no Client world (yet). Did you install a client mod on the server?");
-            return _clientWorld ;
+            return _clientWorld;
         }
     }
 
