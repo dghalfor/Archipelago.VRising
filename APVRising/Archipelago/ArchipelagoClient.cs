@@ -94,7 +94,7 @@ public class ArchipelagoClient
                         ItemsHandlingFlags.AllItems, 
                         new Version(APVersion),
                         password: ServerData.Password,
-                        requestSlotData: false // ServerData.NeedSlotData
+                        requestSlotData: true // ServerData.NeedSlotData
                     )));
         }
         catch (Exception e)
@@ -171,14 +171,40 @@ public class ArchipelagoClient
 
     public void SendLocationCheck(string locationName)
     {
-        try {
-            var apLocationId = session.Locations.GetLocationIdFromName(Game, DataDicts.EntityNameToAPLocation[locationName]);
-            session.Locations.CompleteLocationChecksAsync(apLocationId);
+        try
+        {
+            var locationIds = new List<long>();
+
+            if (DataDicts.EntityNameToAPLocation.TryGetValue(locationName, out var primaryLocation))
+                locationIds.Add(session.Locations.GetLocationIdFromName(Game, primaryLocation));
+            CheckGoalLocation(primaryLocation);
+
+            var bonusLocationDicts = new[]
+            {
+            DataDicts.BonusVictoryLocations,
+            DataDicts.BonusSpellPointLocations,
+        };
+
+            foreach (var dict in bonusLocationDicts)
+                if (dict.TryGetValue(locationName, out var bonusLocation))
+                    locationIds.Add(session.Locations.GetLocationIdFromName(Game, bonusLocation));
+
+            if (locationIds.Count > 0)
+                session.Locations.CompleteLocationChecksAsync(locationIds.ToArray());
         }
         catch (Exception e)
         {
             FixedString512Bytes fixedString = new($"Could not send location check, please make sure you are connected by entering the command '.connect', or exception: {e.ToString()}");
             ServerChatUtils.SendSystemMessageToAllClients(Plugin.Server.EntityManager, ref fixedString);
+        }
+    }
+
+    private void CheckGoalLocation(string locationName)
+    {
+        Plugin.BepinLogger.LogInfo($"Checking if {locationName} is goal location {ServerData.SlotDataOpts()}");
+        if (locationName == ServerData.SlotDataOpts())
+        {
+            session.SetGoalAchieved();
         }
     }
 
@@ -192,7 +218,7 @@ public class ArchipelagoClient
     private void OnItemReceived(ReceivedItemsHelper helper)
     {
         var receivedItem = helper.DequeueItem();
-
+        Plugin.BepinLogger.LogInfo($"[AP] Received item: {receivedItem.ItemName} (ID: {receivedItem.ItemId})");
         if (helper.Index <= ServerData.Index) return;
 
         ServerData.Index++;

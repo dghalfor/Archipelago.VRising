@@ -18,12 +18,6 @@ namespace APVRising.Data
             {"Tech_Ability_CommandingForm", "Quincey the Bandit King (Smithy)"}, // [?] Commanding Form is gained from Quincey
             {"Tech_Ability_PsychicForm", "Jade the Vampire Hunter (Pistols)"}, // [?] Psychic/Rat Form from Nibbles — but Commanding Form fits Quincey better; see note
 
-
-
-
-
-
-
             // --- COLLECTIONS: BONE / ACT 1 STRUCTURE ---
             { "Tech_Collection_Armor_T01_BoneAll", "Errol the Stonebreaker (Material and Gem Storage)"},   // [?] Bone armor often tied to Stonebreaker or early crafting
             { "Tech_Collection_Armor_T01_BoneLower", "Errol the Stonebreaker (Material and Gem Storage)"}, // [?]
@@ -32,16 +26,7 @@ namespace APVRising.Data
             // --- COLLECTIONS: CRAFTING / STATION ---
             { "Tech_Collection_ArtisansCorner", "Rufus the Foreman (Simple Furniture)"},
             { "Tech_Collection_BloodTracking", "Rufus the Foreman (Woodworking Bench)"}, // [?] Blood tracking feels like an early Rufus unlock
-            
                         { "Tech_Collection_BustStatues_Vampire", "Beatrice the Tailor (Loom)"}, // [?]
-
-            
-
-            
-
-        
-
-
             // --- COLLECTIONS: FRAMEWORK / CASTLE BUILDING ---
             { "Tech_Collection_Framework_CastleHeart", "Rufus the Foreman (Woodworking Bench)"}, // Castle Heart is very early
             { "Tech_Collection_Framework_Gargoyles_and_DLC", "Dracula (Castle)"}, // [?]
@@ -53,19 +38,9 @@ namespace APVRising.Data
             { "Tech_Collection_Framework_T02_Stone_DLC_ProjectK", "Quincey the Bandit King (Ebonite Stairs & Doors)"}, // [?]
             { "Tech_Collection_Framework_T02_Stone_DLC_Strongblade", "Tristan the Vampire Hunter (Greatsword)"}, // [?]
             { "Tech_Collection_Framework_T02_Stone_Halloween2022", "Nicholaus the Fallen (Frayed Rugs, Banners & Curtains)"}, // [?]
-
-            
-
- 
-
-
-
             // --- COLLECTIONS: MIRRORS ---
             { "Tech_Collection_Mirrors", "Grethel the Glassblower (Wall Hanging Mirrors)"},
             { "Tech_Collection_Mirrors_Halloween2022", "Grethel the Glassblower (Wall Hanging Mirrors)"}, // [?]
-
-
-
             // --- COLLECTIONS: OUTDOOR FLOORS / PAVEMENT ---
             { "Tech_Collection_Outdoor_Floors", "Grayson the Armourer (Workshop Flooring)"},
 
@@ -85,10 +60,6 @@ namespace APVRising.Data
             // --- COLLECTIONS: WAYPOINT / WORKSHOP ---
             { "Tech_Collection_Waypoint", "Rufus the Foreman (Woodworking Bench)"}, // [?] Waygates are early unlocks
             { "Tech_Collection_Workshop_Decoration", "Grayson the Armourer (Workshop Flooring)"},
-
-            
-
-            
 
             // --- SPELL PASSIVES: BLOOD ---
             { "Tech_SpellPassive_Blood_T01_BloodSpray", "Rufus the Foreman (Blood Tier 1)"}, // [?] Blood passives assigned to appropriate blood-tier bosses
@@ -407,7 +378,7 @@ namespace APVRising.Data
             { "Tech_Collection_Dracula_Armor_Legs", "Megara the Serpent Queen (Dracula's Leggings)"},
             { "Tech_Collection_VBlood_T08_Paladin", "Solarus the Immaculate (Pedestal of Solarus)"},
             { "Tech_Collection_Dracula_Armor_Boots", "Solarus the Immaculate (Dracula's Boots)"},
-
+            { "Tech_Collection_VBlood_T08_Dracula",  "Dracula the Immortal King (Pedestal of Dracula)"},
             // --- COLLECTIONS: DECORATIVE ---
             { "Tech_Collection_CandleStands_T02", "Study - Learn Assortment of Fine Candle Stands"},
             { "Tech_Collection_Carpet_T01", "Research Desk - Learn Simple Carpets"},
@@ -934,6 +905,7 @@ namespace APVRising.Data
             { "Megara the Serpent Queen (Dracula's Leggings)",      "Tech_Collection_Dracula_Armor_Legs"},
             { "Solarus the Immaculate (Pedestal of Solarus)",       "Tech_Collection_VBlood_T08_Paladin"},
             { "Solarus the Immaculate (Dracula's Boots)",           "Tech_Collection_Dracula_Armor_Boots"},
+            { "Dracula the Immortal King (Pedestal of Dracula)",    "Tech_Collection_VBlood_T08_Dracula"},
 
             // --- COLLECTIONS: DECORATIVE ---
             { "Assortment of Fine Candle Stands",   "Tech_Collection_CandleStands_T02"},
@@ -1545,7 +1517,62 @@ namespace APVRising.Data
                 { "Tech_Weapon_Whip_T08", new PrefabGUID(1515808838) },
             };
         public static readonly Dictionary<PrefabGUID, string> PrefabToTech = TechToPrefab.ToDictionary(kvp => kvp.Value, kvp => kvp.Key);
+        public static readonly Dictionary<string, string> BonusSpellPointLocations = new Dictionary<string, string>
+            {
+                { "Tech_Collection_VBlood_T02_KeelyFrostArrow",        "Keely the Frost Archer (Frost Tier 1)" },
+                { "Tech_Collection_VBlood_T02_RufusForeman",           "Rufus the Foreman (Blood Tier 1)" },
+                { "Tech_Collection_VBlood_T02_LidiaChaosArrow",        "Lidia the Chaos Archer (Chaos Tier 1)" },
+                { "Tech_Collection_VBlood_T04_CliveTheFirestarter",    "Clive the Firestarter (Chaos Tier 2)" },
+                { "Tech_Collection_VBlood_T03_Fisherman",              "Finn the Fisherman (Frost Tier 1)" },
+                { "Tech_Collection_VBlood_T04_Poloma",                 "Polora the Feywalker (Illusion Tier 1)" },
+                { "Tech_Collection_VBlood_T04_NicholausTheFallen",     "Nicholaus the Fallen (Unholy Tier 3)" },
+                { "Tech_Collection_VBlood_T04_Quincey",                "Quincey the Bandit King (Chaos Tier 3)" },
+                { "Tech_Collection_VBlood_T05_HolyNun",                "Christina the Sun Priestess (Illusion Tier 2)" },
+                { "Tech_Collection_VBlood_T05_Fabian",                 "Sir Erwin the Gallant Cavalier (Storm Tier 1)" },
+                { "Tech_Collection_VBlood_T04_VampireHunter",          "Tristan the Vampire Hunter (Blood Tier 3)" },
+                { "Tech_Collection_VBlood_T05_UndeadLeader",           "Kriig the Undead General (Unholy Tier 2)" },
+                { "Tech_Collection_VBlood_T05_BishopOfShadow",         "Leandra the Shadow Priestess (Unholy Tier 1)" },
+                { "Tech_Collection_VBlood_T05_Scribe",                 "Maja the Dark Savant (Illusion Tier 1)" },
+                { "Tech_Collection_VBlood_T05_GlassBlower",            "Grethel the Glassblower (Storm Tier 1)" },
+                { "Tech_Collection_VBlood_T05_Golem",                  "Terah the Geomancer (Unholy Tier 3)" },
+                { "Tech_Collection_VBlood_T05_IceRanger",              "General Elena the Hollow (Frost Tier 2)" },
+                { "Tech_Collection_VBlood_T04_Wendigo",                "Frostmaw the Mountain Terror (Frost Tier 3)" },
+                { "Tech_Collection_VBlood_T05_ArenaChampion",          "Gaius the Cursed Champion (Unholy Tier 1)" },
+                { "Tech_Collection_VBlood_T06_HighLord",               "General Cassius the Betrayer (Unholy Tier 2)" },
+                { "Tech_Collection_VBlood_T06_Raziel",                 "Raziel the Shepherd (Blood Tier 2)" },
+                { "Tech_Collection_VBlood_T06_MilitiaCommander",       "Octavian the Militia Captain (Storm Tier 3)" },
+                { "Tech_Collection_VBlood_T06_Iva",                    "Ziva the Engineer (Storm Tier 2)" },
+                { "Tech_Collection_VBlood_T06_Voltage",                "Domina the Blade Dancer (Storm Tier 2)" },
+                { "Tech_Collection_VBlood_T06_Purifier",               "Angram the Purifier (Chaos Tier 3)" },
+                { "Tech_Collection_VBlood_T06_SpiderQueen",            "Ungora the Spider Queen (Unholy Tier 3)" },
+                { "Tech_Collection_VBlood_T06_CursedWanderer",         "Ben the Old Wanderer (Frost Tier 1)" },
+                { "Tech_Collection_VBlood_T07_ZealousCultist",         "Foulrot the Soultaker (Unholy Tier 2)" },
+                { "Tech_Collection_VBlood_T06_Werewolf",               "Willfred the Werewolf Chief (Blood Tier 3)" },
+                { "Tech_Collection_VBlood_T07_Overseer",               "Sir Magnus the Overseer (Frost Tier 1)" },
+                { "Tech_Collection_VBlood_T07_Sommelier",              "Baron du Bouchon the Sommelier (Blood Tier 2)" },
+                { "Tech_Collection_VBlood_T07_HarpyGems",              "Morian the Stormwing Matriarch (Chaos Tier 1)" },
+                { "Tech_Collection_VBlood_T07_Archmage",               "Mairwyn the Elementalist (Storm Tier 1)" },
+                { "Tech_Collection_VBlood_T07_Professor",              "Henry Blackbrew the Doctor (Storm Tier 3)" },
+                { "Tech_Collection_VBlood_T07_Livith",                 "Jakira the Shadow Huntress (Illusion Tier 2)" },
+                { "Tech_Collection_VBlood_T07_Carver",                 "Stavros the Carver (Chaos Tier 2)" },
+                { "Tech_Collection_VBlood_T07_Lucie",                  "Lucile the Venom Alchemist (Blood Tier 2)" },
+                { "Tech_Collection_VBlood_T07_Witch",                  "Matka the Curse Weaver (Illusion Tier 2)" },
+                { "Tech_Collection_VBlood_T06_Yeti",                   "Terrorclaw the Ogre (Frost Tier 3)" },
+                { "Tech_Collection_VBlood_T07_CardinalPriest",         "Azariel the Sunbringer (Chaos Tier 3)" },
+                { "Tech_Collection_VBlood_T07_RailgunSergeant",        "Voltatia the Power Master (Storm Tier 2)" },
+                { "Tech_Collection_VBlood_T07_Valyr",                  "Dantos the Forgebinder (Frost Tier 2)" },
+                { "Tech_Collection_VBlood_T08_Behemoth",               "Gorecrusher the Behemoth (Illusion Tier 3)" },
+                { "Tech_Storage_Pack_T01_A",                           "Errol the Stonebreaker (Chaos Tier 1)" },
+                { "Tech_Collection_VBlood_T03_Grayson",                "Grayson the Armourer (Illusion Tier 1)" },
+            };
 
+        public static readonly Dictionary<string, string> BonusVictoryLocations = new Dictionary<string, string>
+            {
+                { "Tech_Collection_VBlood_T04_Quincey", "Quincey Goal" },
+                { "Tech_Collection_VBlood_T06_MilitiaCommander", "Octavian Goal" },
+                { "Tech_Collection_VBlood_T07_CursedSmith", "Cyril Goal" },
+                { "Tech_Collection_VBlood_T08_Dracula", "Dracula Goal" },
+            };
     }
 
 }

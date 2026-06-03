@@ -83,4 +83,9 @@ public class ArchipelagoData
     {
         return JsonConvert.SerializeObject($"{Uri} {SlotName} {Password} {Index} {seed} {slotData}");
     }
+    public string SlotDataOpts ()
+    {
+        return slotData.TryGetValue("goal", out var goal) ? goal.ToString() : string.Empty;
+    }
+
 }

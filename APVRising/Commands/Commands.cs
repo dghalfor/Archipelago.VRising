@@ -162,6 +162,15 @@ public static class ArchipelagoCommands
         Plugin.APClient.Resync();
         ctx.Reply($"Synced Progression");
     }
+    [Command("slotData")]
+    public static void APSlotData(ICommandContext ctx)
+    {
+        Plugin.BepinLogger.LogInfo($"Slot Data: {ArchipelagoClient.ServerData.SlotDataOpts()}");
+        ctx.Reply($"Synced Progression");
+    }
+        
+
+
     [Command("dedup", description: "Deduplicate progression buffers", adminOnly: true)]
     public static void APDedup(ICommandContext ctx)
     {
