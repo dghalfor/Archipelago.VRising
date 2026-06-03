@@ -22,27 +22,10 @@ namespace APVRising.Hooks
         [HarmonyPrefix]
         public static bool PrefixServer(EntityManager entityManager, PrefabLookupMap prefabLookupMap, Entity userEntity, PrefabGUID abilityGroup, bool ignorePointCost = false)
         {
-            if (!ProgressionHandler.IsResearching)
-            {
-               var message = (FixedString512Bytes)"You just tried to unlock a spell, but are not in Research mode, type '.startResearch' to be able to send spell checks";
-                var user = entityManager.GetComponentData<User>(userEntity);
-                ServerChatUtils.SendSystemMessageToClient(entityManager, user, ref message);
-                return false;
-            }
-            Plugin.APClient.SendLocationCheck(DebugTool.GetPrefabName(abilityGroup));
-            ArchipelagoData.AddLocationCheck(abilityGroup._Value);
-            ChatMessage.NotifyClientLocation(abilityGroup._Value);
-            return true;
-        }
-
-        [HarmonyPatch(typeof(SpellSchoolProgressionUtility_Server), nameof(SpellSchoolProgressionUtility_Server.TryUnlockAbility))]
-        [HarmonyPostfix]
-        public static void PostfixServer(EntityManager entityManager, PrefabLookupMap prefabLookupMap, Entity userEntity, PrefabGUID abilityGroup, bool ignorePointCost = false)
-        {
-            //if not in researching mode, deny this
-            //ProgressionHandler.LockSpellAbilityForPlayer(userEntity, abilityGroup);
-            //ChatMessage.NotifyClientLock(abilityGroup.GuidHash);
-            return;
+            var message = (FixedString512Bytes)"Spells in Archipelago are not unlocked through this menu.";
+            var user = entityManager.GetComponentData<User>(userEntity);
+            ServerChatUtils.SendSystemMessageToClient(entityManager, user, ref message);
+            return false;
         }
     }
 }
