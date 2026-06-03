@@ -1,5 +1,6 @@
 ﻿using APVRising;
 using APVRising.Archipelago;
+using APVRising.Data;
 using APVRising.Hooks;
 using Il2CppSystem.Runtime.Remoting;
 using ProjectM;
@@ -576,7 +577,7 @@ namespace APVRising.Utils
                 entities.Dispose();
             }
         }
-        public static void LockTechForPlayer(Entity userEntity, PrefabGUID techPrefab)
+        public static bool LockTechForPlayer(Entity userEntity, PrefabGUID techPrefab)
         {
             EntityManager em;
             PrefabCollectionSystem prefabCollectionSystem;
@@ -595,11 +596,27 @@ namespace APVRising.Utils
             if (ArchipelagoData.ReceivedChecks.Contains(techPrefab._Value))
             {
                 Plugin.BepinLogger.LogInfo($"Player already has {techPrefab._Value}");
-                return;
+                return false;
             }
+            if (Plugin.IsServer && DataDicts.EntityNameToAPLocation.TryGetValue(DebugTool.GetPrefabName(techPrefab), out var locationName)) {
+                if (!Plugin.APClient.IsConfiguredLocation(locationName))
+                {
+                    Plugin.BepinLogger.LogInfo($"Player does not have {techPrefab._Value} but it is not a configured location, skipping lock");
+                    ArchipelagoData.AddReceivedCheck(techPrefab._Value);
+                    ArchipelagoData.AddLocationCheck(techPrefab._Value);
+                    if (Plugin.IsServer)
+                    {
+                        ChatMessage.NotifyClientCheck(techPrefab._Value);
+                        ChatMessage.NotifyClientLocation(techPrefab._Value);
+                    }
+                    return false;
+                }
+            }
+            
+
             //Plugin.BepinLogger.LogInfo($"Lock research for player {userEntity.Index} and tech {techPrefab._Value}");
             var query = em.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
-            if (query.IsEmpty) return;
+            if (query.IsEmpty) return true;
 
             var entities = query.ToEntityArray(Allocator.Temp);
             foreach (var entity in entities)
@@ -610,7 +627,7 @@ namespace APVRising.Utils
                 if (!prefabCollectionSystem._PrefabLookupMap.TryGetValue(techPrefab, out Entity researchEntity))
                 {
                     // Plugin.BepinLogger.LogWarning($"[AP] Could not find entity for PrefabGUID {techPrefab._Value}");
-                    return;
+                    return true;
                 }
 
                 if (em.HasBuffer<TechUnlockRecipeBuffer>(researchEntity))
@@ -674,6 +691,7 @@ namespace APVRising.Utils
 
             }
             entities.Dispose();
+            return true;
         }
 
         public static void LockSpellAbilityForPlayer(Entity userEntity, PrefabGUID spellPrefab)

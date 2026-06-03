@@ -199,6 +199,11 @@ public class ArchipelagoClient
         }
     }
 
+    public bool IsConfiguredLocation(string locationName)
+    {
+        return session.Locations.AllLocations.Contains(session.Locations.GetLocationIdFromName(Game, locationName));
+    }
+
     private void CheckGoalLocation(string locationName)
     {
         Plugin.BepinLogger.LogInfo($"Checking if {locationName} is goal location {ServerData.SlotDataOpts()}");
@@ -256,12 +261,37 @@ public class ArchipelagoClient
     // Resync removes all progression unlocks for locations that are checked but not received from the player. This undoes the progression changes that occur during startup.
     public void Resync()
     {
+
         var query = Helper.GetEntityManager().CreateEntityQuery(ComponentType.ReadOnly<User>(), ComponentType.ReadOnly<ProgressionMapper>());
         var userEntities = query.ToEntityArray(Allocator.Temp);
+        var progressionQuery = Helper.GetEntityManager().CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
+        var progressionEntities = progressionQuery.ToEntityArray(Allocator.Temp);
+
+        // If progression element contains something that does not exist in the locations it will be granted here
+        foreach (var entity in progressionEntities)
+        {
+            var progBuffer = Helper.GetEntityManager().GetBuffer<UnlockedProgressionElement>(entity);
+            for (int i = 0; i < progBuffer.Length; i++)
+            {
+                if (DataDicts.EntityNameToAPLocation.TryGetValue(DebugTool.GetPrefabName(progBuffer[i].UnlockedPrefab), out var unlockedLocationName))
+                {
+                    if (!Plugin.APClient.IsConfiguredLocation(unlockedLocationName))
+                    {
+                        Plugin.BepinLogger.LogInfo($"Player does not have {progBuffer[i].UnlockedPrefab._Value} but it is not a configured location, adding to unlocks");
+                        ArchipelagoData.AddLocationCheck(progBuffer[i].UnlockedPrefab._Value);
+                        ChatMessage.NotifyClientLocation(progBuffer[i].UnlockedPrefab._Value);
+                        ArchipelagoData.AddReceivedCheck(progBuffer[i].UnlockedPrefab._Value);
+                        ChatMessage.NotifyClientCheck(progBuffer[i].UnlockedPrefab._Value);
+                    }
+                }
+            }
+        }
+
         var checkedLocations = session.Locations.AllLocationsChecked;
         var receivedItemLocationIds = session.Items.AllItemsReceived
             .Select(item => item.ItemId)
             .ToHashSet();
+        var validLocationNames = session.Locations.AllLocations;
         foreach (var checks in checkedLocations)
         {
             Plugin.BepinLogger.LogInfo($"checked {checks}");
@@ -273,6 +303,7 @@ public class ArchipelagoClient
                 {
                     Plugin.BepinLogger.LogInfo($"checked {prefab.GuidHash}");
                     ArchipelagoData.AddLocationCheck(prefab.GuidHash);
+                    ChatMessage.NotifyClientLocation(prefab.GuidHash);
                 }
             }
         }
@@ -287,11 +318,12 @@ public class ArchipelagoClient
                     Plugin.BepinLogger.LogInfo($"recieved {prefab.GuidHash}");
 
                     ArchipelagoData.AddReceivedCheck(prefab.GuidHash);
+                    ChatMessage.NotifyClientCheck(prefab.GuidHash);
                     }
                 }
         }
         var locationsToLock = checkedLocations
-            .Where(locationId => !receivedItemLocationIds.Contains(locationId))
+            .Where(locationId => !receivedItemLocationIds.Contains(locationId) && validLocationNames.Contains(locationId))
             .ToList();
 
         Plugin.BepinLogger.LogInfo($"[AP] Sync: {checkedLocations.Count} checked, {receivedItemLocationIds.Count} received, {locationsToLock.Count} to lock");
@@ -312,8 +344,11 @@ public class ArchipelagoClient
                             ChatMessage.NotifyClientLockSpell(prefab.GuidHash);
                         } else
                         {
-                            ProgressionHandler.LockTechForPlayer(userEntity, prefab);
-                            ChatMessage.NotifyClientLock(prefab.GuidHash);
+                            var needsToLock = ProgressionHandler.LockTechForPlayer(userEntity, prefab);
+                            if (needsToLock)
+                            {
+                                ChatMessage.NotifyClientLock(prefab.GuidHash);
+                            }
                         }
                         
                     }

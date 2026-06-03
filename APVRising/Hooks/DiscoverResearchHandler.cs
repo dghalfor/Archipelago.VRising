@@ -52,8 +52,15 @@ internal class DiscoverResearchHandler
         Entity progressionEntity)
     {
         {
-            ProgressionHandler.LockTechForPlayer(fromCharacter.User, _lastRolledResearchGuid);
-            ChatMessage.NotifyClientLock(_lastRolledResearchGuid.GuidHash);
+            var needsToLock = ProgressionHandler.LockTechForPlayer(fromCharacter.User, _lastRolledResearchGuid);
+            if (needsToLock)
+            {
+                ChatMessage.NotifyClientLock(_lastRolledResearchGuid.GuidHash);
+            } else
+            {
+                ChatMessage.NotifyClientLocation(_lastRolledResearchGuid.GuidHash);
+                ChatMessage.NotifyClientCheck(_lastRolledResearchGuid.GuidHash);
+            }
             return;
         }
     }

@@ -361,16 +361,20 @@ public static class TechToRecipeMapping
 
             if (techShouldBeUnlocked)
             {
-                // Tech should be unlocked, ensure it's in the buffer
-                bool techExists = false;
                 for (int i = 0; i < techBuffer.Length; i++)
                 {
                     if (techBuffer[i].ResearchGuid == techPrefab)
                     {
                         var tech = techBuffer[i];
-                        tech.IsResearchByStation = true;
-                        techBuffer[i] = tech;
-                        break;
+                        if (techBuffer[i].IsResearchByStation == false)
+                        {
+                            tech.IsResearchByStation = true;
+                            techBuffer[i] = tech;
+                            Plugin.BepinLogger.LogInfo($"Tech {techPrefab} is in buffer but IsResearchByStation is false, setting it to true");
+                        } else
+                        {
+                            Plugin.BepinLogger.LogInfo($"Tech {techPrefab} should be unlocked and is in buffer, ensuring IsResearchByStation is true");
+                        }
                     }
                 }
 
@@ -383,8 +387,16 @@ public static class TechToRecipeMapping
                     if (techBuffer[j].ResearchGuid == techPrefab)
                     {
                         var tech = techBuffer[j];
-                        tech.IsResearchByStation = false;
-                        techBuffer[j] = tech;
+                        if (techBuffer[j].IsResearchByStation == true)
+                        {
+                            tech.IsResearchByStation = false;
+                            techBuffer[j] = tech;
+                            Plugin.BepinLogger.LogInfo($"Tech {techPrefab} should be locked but is in buffer with IsResearchByStation true, setting it to false");
+                        }
+                        else
+                        {
+                            Plugin.BepinLogger.LogInfo($"Tech {techPrefab} should be locked but is in buffer, ensuring IsResearchByStation is false");
+                        }
                     }
                 }
             }
