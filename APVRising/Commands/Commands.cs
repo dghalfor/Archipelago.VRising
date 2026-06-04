@@ -1,5 +1,6 @@
 using APVRising.Archipelago;
 using APVRising.Hooks;
+using APVRising.Services;
 using APVRising.Utils;
 using ProjectM;
 using ProjectM.Network;
@@ -22,9 +23,27 @@ public static class ArchipelagoCommands
         ArchipelagoClient.ServerData.Uri = uri;
         ArchipelagoClient.ServerData.Password = password;
         ArchipelagoClient.ServerData.SlotName = slotName;
+        DataService.SetArchipelagoData(new System.Collections.Concurrent.ConcurrentDictionary<string, string>()
+        {
+            ["IP"] = uri,
+            ["Password"] = password,
+            ["SlotName"] = slotName,
+            ["ServerIndex"] = "0"
+        });
         Plugin.APClient.Connect();
     }
-
+    [Command("disconnect", shortHand: "d", description: "Disconnect from Archipelago", adminOnly: false)]
+    public static void APDisconnect(ICommandContext ctx)
+    {
+        DataService.SetArchipelagoData(new System.Collections.Concurrent.ConcurrentDictionary<string, string>()
+        {
+            ["IP"] = "",
+            ["Password"] = "",
+            ["SlotName"] = "",
+            ["ServerIndex"] = "0"
+        });
+        Plugin.APClient.Disconnect();
+    }
     //[Command("deathlink", shortHand: "dl", description: "Toggle Death Link", adminOnly: false)]
     public static void APDeathLinkToggle(ICommandContext ctx, bool? value = null)
     {

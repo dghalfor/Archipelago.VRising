@@ -42,7 +42,7 @@ public static class PlayerCache
             Cache.SteamPlayerCache.TryAdd(userData.PlatformId, playerData);
 
         }
-
+        Plugin.BepinLogger.LogInfo("TEST TEST TEST");
         Plugin.BepinLogger.LogInfo("Player Cache Created.");
     }
 

@@ -31,7 +31,7 @@ public class Plugin : BasePlugin
     private const string APDisplayInfo = $"Archipelago v{ArchipelagoClient.APVersion}";
     public static ManualLogSource BepinLogger;
     public static ArchipelagoClient APClient;
-    Harmony _harmony;
+    public static Harmony Harmony;
     private static World _serverWorld;
     private static World _clientWorld;
 
@@ -45,10 +45,10 @@ public class Plugin : BasePlugin
         ArchipelagoConsole.Awake();
         
         // Harmony patching
-        _harmony = new Harmony(PluginGUID);
-        _harmony.PatchAll(System.Reflection.Assembly.GetExecutingAssembly());
+        Harmony = new Harmony(PluginGUID);
+        Harmony.PatchAll(System.Reflection.Assembly.GetExecutingAssembly());
 
-        var patched = _harmony.GetPatchedMethods().ToList();
+        var patched = Harmony.GetPatchedMethods().ToList();
         BepinLogger.LogInfo($"[Harmony] Total patched methods: {patched.Count}");
 
         //UpdateUnlockedBuffersHook.Initialize();
@@ -72,7 +72,7 @@ public class Plugin : BasePlugin
         _serverWorld = null;
         _clientWorld = null;
         CommandRegistry.UnregisterAssembly();
-        _harmony?.UnpatchSelf();
+        Plugin.Harmony?.UnpatchSelf();
         return true;
     }
 

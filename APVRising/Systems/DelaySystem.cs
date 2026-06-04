@@ -2,8 +2,10 @@
 using APVRising;
 using APVRising.Hooks;
 using APVRising.Utils;
+using ProjectM;
 using Stunlock.Core;
 using Stunlock.Core.Animation;
+using Unity.Collections;
 using Unity.Entities;
 
 
@@ -64,6 +66,18 @@ public static class DelaySystem
             delaySeconds: 1.5f,
             maxRetries: 3
         );
+    }
+
+    public static void DisconnectReminderDeferred()
+    {
+        var fixedString = new FixedString512Bytes("If this is not the correct server, please disconnect by opening the chat window and typing .disconnect, then .connect [Playername] [IP:port] [Password] to the correct server");
+
+        DeferredActionSystem.Schedule(
+            action: () => ServerChatUtils.SendSystemMessageToAllClients(Plugin.Server.EntityManager, ref fixedString),
+            delaySeconds: 5.0f,
+            maxRetries: 3
+        );
+        
     }
     public static void RestoreDeferred(EntityManager em, Entity progEntity)
     {

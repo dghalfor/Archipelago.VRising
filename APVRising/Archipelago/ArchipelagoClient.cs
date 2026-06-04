@@ -149,7 +149,7 @@ public class ArchipelagoClient
     /// <summary>
     /// something went wrong, or we need to properly disconnect from the server. cleanup and re null our session
     /// </summary>
-    private void Disconnect()
+    public void Disconnect()
     {
         Plugin.BepinLogger.LogDebug("disconnecting from server...");
         FixedString512Bytes fixedString = new($"Disconnecting from server");
