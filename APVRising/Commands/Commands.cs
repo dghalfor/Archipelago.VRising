@@ -101,7 +101,7 @@ public static class ArchipelagoCommands
             ProgressionHandler.LockTechForPlayer(userEntity, new Stunlock.Core.PrefabGUID(guid));
         }
         userEntities.Dispose();
-        ChatMessage.NotifyClientLock(guid);
+        //ChatMessage.NotifyClientLock(guid);
         ctx.Reply($"Locking tech with GUID: {guid}");
     }
 

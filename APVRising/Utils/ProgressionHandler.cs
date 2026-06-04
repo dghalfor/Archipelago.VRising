@@ -577,7 +577,7 @@ namespace APVRising.Utils
                 entities.Dispose();
             }
         }
-        public static bool LockTechForPlayer(Entity userEntity, PrefabGUID techPrefab)
+        public static void LockTechForPlayer(Entity userEntity, PrefabGUID techPrefab)
         {
             EntityManager em;
             PrefabCollectionSystem prefabCollectionSystem;
@@ -596,7 +596,7 @@ namespace APVRising.Utils
             if (ArchipelagoData.ReceivedChecks.Contains(techPrefab._Value))
             {
                 Plugin.BepinLogger.LogInfo($"Player already has {techPrefab._Value}");
-                return false;
+                return;
             }
             if (Plugin.IsServer && DataDicts.EntityNameToAPLocation.TryGetValue(DebugTool.GetPrefabName(techPrefab), out var locationName)) {
                 if (!Plugin.APClient.IsConfiguredLocation(locationName))
@@ -609,14 +609,17 @@ namespace APVRising.Utils
                         ChatMessage.NotifyClientCheck(techPrefab._Value);
                         ChatMessage.NotifyClientLocation(techPrefab._Value);
                     }
-                    return false;
+                    return;
                 }
             }
-            
+            if (Plugin.IsServer)
+            {
+                ChatMessage.NotifyClientLock(techPrefab.GuidHash);
+            }
 
             //Plugin.BepinLogger.LogInfo($"Lock research for player {userEntity.Index} and tech {techPrefab._Value}");
             var query = em.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
-            if (query.IsEmpty) return true;
+            if (query.IsEmpty) return;
 
             var entities = query.ToEntityArray(Allocator.Temp);
             foreach (var entity in entities)
@@ -627,7 +630,7 @@ namespace APVRising.Utils
                 if (!prefabCollectionSystem._PrefabLookupMap.TryGetValue(techPrefab, out Entity researchEntity))
                 {
                     // Plugin.BepinLogger.LogWarning($"[AP] Could not find entity for PrefabGUID {techPrefab._Value}");
-                    return true;
+                    return;
                 }
 
                 if (em.HasBuffer<TechUnlockRecipeBuffer>(researchEntity))
@@ -691,7 +694,6 @@ namespace APVRising.Utils
 
             }
             entities.Dispose();
-            return true;
         }
 
         public static void LockSpellAbilityForPlayer(Entity userEntity, PrefabGUID spellPrefab)

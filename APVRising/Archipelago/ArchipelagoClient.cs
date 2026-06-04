@@ -344,11 +344,7 @@ public class ArchipelagoClient
                             ChatMessage.NotifyClientLockSpell(prefab.GuidHash);
                         } else
                         {
-                            var needsToLock = ProgressionHandler.LockTechForPlayer(userEntity, prefab);
-                            if (needsToLock)
-                            {
-                                ChatMessage.NotifyClientLock(prefab.GuidHash);
-                            }
+                            ProgressionHandler.LockTechForPlayer(userEntity, prefab);
                         }
                         
                     }

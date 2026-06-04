@@ -50,11 +50,6 @@ public static class DelaySystem
             delaySeconds: 1.5f,
             maxRetries: 3
         );
-        DeferredActionSystem.Schedule(
-            action: () => ChatMessage.NotifyClientLock(prefabGUID.GuidHash),
-            delaySeconds: 1.5f,
-            maxRetries: 3
-        );
     }
     public static void UnlockAchievementDeferred(Entity userEntity, PrefabGUID prefabGUID)
     {
