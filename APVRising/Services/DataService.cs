@@ -71,8 +71,9 @@ internal static class DataService
         ];
     });
     public static List<string> DirectoryPaths => _directoryPaths.Value;
+    public record ArchipelagoConnectionData(string IP, string Password, string SlotName, string ServerIndex);
 
-    public static void SetArchipelagoData(ConcurrentDictionary<string, string> data)
+    public static void SetArchipelagoData(ConcurrentDictionary<string, ArchipelagoConnectionData> data)
     {
         _ArchipelagoData = data;
         SaveArchipelagoData();
@@ -80,7 +81,7 @@ internal static class DataService
    
     public static class PlayerDictionaries
     {
-        public static ConcurrentDictionary<string, string> _ArchipelagoData = [];
+        public static ConcurrentDictionary<string, ArchipelagoConnectionData> _ArchipelagoData = [];
     }
     public static class PlayerPersistence
     {

@@ -6,11 +6,14 @@ using ProjectM;
 using ProjectM.Network;
 using Stunlock.Core;
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine.TextCore.Text;
 using VampireCommandFramework;
 using VRisingArchipelago;
+using static APVRising.Services.DataService;
 
 namespace APVRising.Commands;
 
@@ -23,24 +26,18 @@ public static class ArchipelagoCommands
         ArchipelagoClient.ServerData.Uri = uri;
         ArchipelagoClient.ServerData.Password = password;
         ArchipelagoClient.ServerData.SlotName = slotName;
-        DataService.SetArchipelagoData(new System.Collections.Concurrent.ConcurrentDictionary<string, string>()
+        SetArchipelagoData(new ConcurrentDictionary<string, ArchipelagoConnectionData>()
         {
-            ["IP"] = uri,
-            ["Password"] = password,
-            ["SlotName"] = slotName,
-            ["ServerIndex"] = "0"
+            [Plugin.ServerSaveName] = new ArchipelagoConnectionData(uri, password, slotName, "0")
         });
         Plugin.APClient.Connect();
     }
     [Command("disconnect", shortHand: "d", description: "Disconnect from Archipelago", adminOnly: false)]
     public static void APDisconnect(ICommandContext ctx)
     {
-        DataService.SetArchipelagoData(new System.Collections.Concurrent.ConcurrentDictionary<string, string>()
+        SetArchipelagoData(new ConcurrentDictionary<string, ArchipelagoConnectionData>()
         {
-            ["IP"] = "",
-            ["Password"] = "",
-            ["SlotName"] = "",
-            ["ServerIndex"] = "0"
+            [Plugin.ServerSaveName] = new ArchipelagoConnectionData("", "", "", "0")
         });
         Plugin.APClient.Disconnect();
     }

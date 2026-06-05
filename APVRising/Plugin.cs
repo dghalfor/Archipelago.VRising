@@ -34,6 +34,7 @@ public class Plugin : BasePlugin
     public static Harmony Harmony;
     private static World _serverWorld;
     private static World _clientWorld;
+    public static string ServerSaveName = "";
 
     public static bool IsServer => Application.productName == "VRisingServer";
 

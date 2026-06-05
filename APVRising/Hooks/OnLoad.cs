@@ -22,9 +22,10 @@ namespace APVRising.Hooks
             try
             {
                 DataService.PlayerPersistence.LoadArchipelagoData();
-                ArchipelagoClient.ServerData.Uri = DataService.PlayerDictionaries._ArchipelagoData["IP"];
-                ArchipelagoClient.ServerData.Password = DataService.PlayerDictionaries._ArchipelagoData["Password"];
-                ArchipelagoClient.ServerData.SlotName = DataService.PlayerDictionaries._ArchipelagoData["SlotName"];
+                DataService.PlayerDictionaries._ArchipelagoData.TryGetValue(Plugin.ServerSaveName, out var connectionData);
+                ArchipelagoClient.ServerData.Uri = connectionData.IP;
+                ArchipelagoClient.ServerData.Password = connectionData.Password;
+                ArchipelagoClient.ServerData.SlotName = connectionData.SlotName;
                 Plugin.APClient.Connect();
                 DelaySystem.DisconnectReminderDeferred();
             }

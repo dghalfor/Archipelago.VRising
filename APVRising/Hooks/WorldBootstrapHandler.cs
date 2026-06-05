@@ -62,5 +62,6 @@ namespace APVRising.Hooks
 
             Plugin.BepinLogger.LogInfo("[AP] ArchipelagoItemSystem registered in Server world");
         }
+
     }
 }
