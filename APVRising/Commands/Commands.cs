@@ -62,6 +62,7 @@ public static class ArchipelagoCommands
             ProgressionSnapshot.Capture(Plugin.EntityManager, entity);
         }
         ChatMessage.NotifyClient(true);
+        DelaySystem.StillInResearchReminderDeferred();
         ctx.Reply($"Starting research...");
     }
     [Command("stopresearch")]

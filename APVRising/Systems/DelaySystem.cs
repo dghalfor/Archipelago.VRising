@@ -70,7 +70,7 @@ public static class DelaySystem
 
     public static void DisconnectReminderDeferred()
     {
-        var fixedString = new FixedString512Bytes("If this is not the correct server, please disconnect by opening the chat window and typing .disconnect, then .connect [Playername] [IP:port] [Password] to the correct server");
+        var fixedString = new FixedString512Bytes("<color=red>If this is not the correct server, please disconnect by opening the chat window and typing .disconnect, then .connect [Playername] [IP:port] [Password] to the correct server</color>");
 
         DeferredActionSystem.Schedule(
             action: () => ServerChatUtils.SendSystemMessageToAllClients(Plugin.Server.EntityManager, ref fixedString),
@@ -78,6 +78,24 @@ public static class DelaySystem
             maxRetries: 3
         );
         
+    }
+    public static void StillInResearchReminderDeferred()
+    {
+        DeferredActionSystem.Schedule(
+            action: () => StopResearchReminder(),
+            delaySeconds: 30.0f,
+            maxRetries: 3
+        );
+    }
+
+    public static void StopResearchReminder()
+    {
+        if (!ProgressionHandler.IsResearching)
+        {
+            return;
+        }
+        var fixedString = new FixedString512Bytes("<color=red>You are still in research mode, if you are done researching please type '.stopResearch' into chat</color>");
+        ServerChatUtils.SendSystemMessageToAllClients(Plugin.Server.EntityManager, ref fixedString);
     }
     public static void RestoreDeferred(EntityManager em, Entity progEntity)
     {

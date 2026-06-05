@@ -32,6 +32,12 @@ internal class DiscoverResearchHandler
         Entity targetResearchStation,
         Entity progressionEntity)
     {
+        if (!ProgressionHandler.IsResearching)
+        {
+            var message = (FixedString512Bytes)"<color=red>You are not in research mode enter '.startResearch' into chat or else you may waste resources</color>";
+            var userentity = Helper.GetEntityManager().GetComponentData<ProjectM.Network.User>(fromCharacter.User);
+            ServerChatUtils.SendSystemMessageToClient(Helper.GetEntityManager(), userentity, ref message);
+        }
         Plugin.BepinLogger.LogInfo($"[AP] UnlockProgression: {DebugTool.GetPrefabName(randomResearch.ResearchGuid)}");
         Plugin.APClient.SendLocationCheck(DebugTool.GetPrefabName(randomResearch.ResearchGuid));
 

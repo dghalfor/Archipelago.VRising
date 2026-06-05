@@ -31,6 +31,12 @@ public static class UnlockResearch
         Entity progressionEntity,
         bool logOnDuplicate = true)
     {
+        if(!ProgressionHandler.IsResearching)
+            {
+            var message = (FixedString512Bytes)"<color=red>You are not in research mode enter '.startResearch' into chat or else you may waste resources</color>";
+            var userentity = entityManager.GetComponentData<ProjectM.Network.User>(user);
+            ServerChatUtils.SendSystemMessageToClient(entityManager, userentity, ref message);
+        }
         Plugin.BepinLogger.LogInfo($"[AP] UnlockProgression: {DebugTool.GetPrefabName(researchGuid)}");
         Plugin.APClient.SendLocationCheck(DebugTool.GetPrefabName(researchGuid));
         return true;
