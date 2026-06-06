@@ -2,13 +2,15 @@
 
 ## Gameplay
 
-* Every time you start your game you must use the .connect command before doing anything else.
+* The first time you start a game you should use .connect to connect to your world
 * When you are attempting to do research or unlock spells, you must first run the .startResearch command so your research/spells match what locaitons you've sent.
   * Failure to do this could result in duplicated location checks. 
 * Once you are finished researching, use the .stopResearch command. This will set you back to the progression you've been granted.
 
 ## YAML Settings
-Please use the provided yaml at https://github.com/dghalfor/V-Rising-APWorld/releases/tag/0.0.2 for the time being
+Yaml options are now valid
+Make sure to set your goal and the act's included options. So if you have goal of quincey, unselect act 2-4. Goal Ocatvian unselect 3-4. 
+death_link is a go
 
 ## Connecting to an Archipelago Server
 
@@ -39,12 +41,7 @@ Please use the provided yaml at https://github.com/dghalfor/V-Rising-APWorld/rel
 * There is a big lag spike shortly after launching the server. (only tested in host+play)
 * DLC variants of shapeshifts bypass the archipelago logic and will remain attached to the player
 * Some Vbloods will give "cannot send location check" for deprecated techs.
-* You can drag spells you've unlocked while in research mode to your hotbar and they will not be removed. 
-* Until you use .connect you will be able to use techs that should be locked.
-* There may be crashes on connect.
-* There is a bug when you unlock new blueprints, if you open your build menu and are suddenly missing massive amounts of blueprints you should have unlocked, close the game and reopen it, it should be fixed on restart.
-  * Fix is in to snapshot buffers. This should work in many cases.
-* Gravedigger ring appears to unlock early.
+* Gravedigger ring will likely unlock whenever you get an upgraded ring.
 
 ## To-do
 * Elements removed from research at runtime are re-added after saving and closing the game.
