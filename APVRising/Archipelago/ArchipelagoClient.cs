@@ -121,7 +121,7 @@ public class ArchipelagoClient
             ServerData.SetupSession(success.SlotData, session.RoomState.Seed);
             Authenticated = true;
 
-            DeathLinkHandler = new(session.CreateDeathLinkService(), ServerData.SlotName);
+            DeathLinkHandler = new(session.CreateDeathLinkService(), ServerData.SlotName, ServerData.IsDeathLinkEnabled());
             session.Locations.CompleteLocationChecksAsync(ServerData.CheckedLocations1.ToArray());
             outText = $"Successfully connected to {ServerData.Uri} as {ServerData.SlotName}!";
 

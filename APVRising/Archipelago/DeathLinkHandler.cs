@@ -1,9 +1,12 @@
 ﻿using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using BepInEx;
 using ProjectM;
-using Unity.Collections;
+using ProjectM.Network;
+using ProjectM.Scripting;
 using System;
 using System.Collections.Generic;
+using Unity.Collections;
+using Unity.Entities;
 
 namespace APVRising.Archipelago;
 
@@ -67,6 +70,7 @@ public class DeathLinkHandler
     /// can be called when in a valid state to kill the player, dequeueing and immediately killing the player with a
     /// message if we have a death link in the queue
     /// </summary>
+
     public void KillPlayer()
     {
         try
@@ -76,11 +80,19 @@ public class DeathLinkHandler
             var deathLink = deathLinks.Dequeue();
             var cause = deathLink.Cause.IsNullOrWhiteSpace() ? GetDeathLinkCause(deathLink) : deathLink.Cause;
 
-            //TODO kill the players
+            var query = Plugin.Server.EntityManager.CreateEntityQuery(ComponentType.ReadOnly<User>());
+            if (query.IsEmpty) return;
 
-            //Plugin.Server.EntityManager.GetComponentData<PlayerCharacter>()
+            var entities = query.ToEntityArray(Allocator.Temp);
+            Plugin.BepinLogger.LogInfo($"[DeathLink] Found {entities.Length} user entities");
+            foreach (var entity in entities)
+            {
+                var user = Plugin.Server.EntityManager.GetComponentData<User>(entity);
+                var character = user.LocalCharacter._Entity;
+                Plugin.BepinLogger.LogInfo($"[DeathLink] Character entity: {character}, HasHealth: {Plugin.Server.EntityManager.HasComponent<Health>(character)}");
 
-
+                StatChangeUtility.KillEntity(Plugin.Server.EntityManager, character, character, 0, StatChangeReason.Default, true);
+            }
 
             FixedString512Bytes fixedString = new(cause);
             ServerChatUtils.SendSystemMessageToAllClients(Plugin.Server.EntityManager, ref fixedString);

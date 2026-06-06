@@ -41,7 +41,7 @@ public static class ArchipelagoCommands
         });
         Plugin.APClient.Disconnect();
     }
-    //[Command("deathlink", shortHand: "dl", description: "Toggle Death Link", adminOnly: false)]
+    [Command("deathlink", shortHand: "dl", description: "Toggle Death Link", adminOnly: false)]
     public static void APDeathLinkToggle(ICommandContext ctx, bool? value = null)
     {
         if (value != null)

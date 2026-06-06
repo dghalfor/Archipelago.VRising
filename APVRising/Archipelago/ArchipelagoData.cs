@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace APVRising.Archipelago;
@@ -87,5 +88,9 @@ public class ArchipelagoData
     {
         return slotData.TryGetValue("goal", out var goal) ? goal.ToString() : string.Empty;
     }
-
+    public bool IsDeathLinkEnabled()
+    {
+        if (!slotData.TryGetValue("death_link", out var value)) return false;
+        return Convert.ToBoolean(value);
+    }
 }

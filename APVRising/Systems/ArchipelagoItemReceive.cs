@@ -50,6 +50,8 @@ namespace APVRising.Systems
                 Plugin.APClient.Resync();
             }
 
+            Plugin.APClient.DeathLinkHandler?.KillPlayer();
+
             while (ArchipelagoClient.PendingMessages.TryDequeue(out var message))
             {
                 FixedString512Bytes fixedMessage = new(message);

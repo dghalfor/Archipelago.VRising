@@ -38,6 +38,7 @@ namespace APVRising.Hooks
                     DeferredActionSystem.Initialise(Plugin.BepinLogger);
                     DeferredActionSystem.DefaultDelay = 1.0f;
                     DeferredActionSystem.MaxActionsPerFrame = 5;
+
                 }
             }
             catch (Exception e)
