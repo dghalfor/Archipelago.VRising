@@ -433,7 +433,7 @@ namespace APVRising.Utils
                 {
                     var progressionShapeshiftBuffer = em.GetBuffer<ProgressionBookShapeshiftElement>(researchEntity);
                     var unlockedShapeshiftBuffer = em.GetBuffer<UnlockedShapeshiftElement>(entity);
-                    //  Plugin.BepinLogger.LogInfo($"Found {progressionShapeshiftBuffer.Length} blueprints to unlock for tech {techPrefab._Value}");
+                    Plugin.BepinLogger.LogInfo($"Found {progressionShapeshiftBuffer.Length} blueprints to unlock for tech {techPrefab._Value}");
                     for (int i = 0; i < progressionShapeshiftBuffer.Length; i++)
                     {
                         var element = progressionShapeshiftBuffer[i];
@@ -443,7 +443,7 @@ namespace APVRising.Utils
                         {
                             if (unlockedShapeshiftBuffer[j].UnlockedShapeshift == element.Shapeshift)
                             {
-                                //  Plugin.BepinLogger.LogInfo($"Blueprint {element.Shapeshift} already unlocked for player {userEntity.Index}, skipping");
+                                Plugin.BepinLogger.LogInfo($"Blueprint {element.Shapeshift} already unlocked for player {userEntity.Index}, skipping");
                                 alreadyUnlocked = true;
                                 break;
                             }
@@ -451,7 +451,7 @@ namespace APVRising.Utils
 
                         if (alreadyUnlocked)
                             continue;
-                        // Plugin.BepinLogger.LogInfo($"Adding element to unlocked buffer: {element.Shapeshift}");
+                        Plugin.BepinLogger.LogInfo($"Adding element to unlocked buffer: {element.Shapeshift}");
                         unlockedShapeshiftBuffer.Add(new UnlockedShapeshiftElement { UnlockedShapeshift = element.Shapeshift, UserHasRequiredContentFlags = true });
                     }
                 }
@@ -685,7 +685,11 @@ namespace APVRising.Utils
                         {
                             if (unlockedShapeshiftBuffer[j].UnlockedShapeshift == element.Shapeshift)
                             {
-                                // Plugin.BepinLogger.LogInfo($"Shapeshift {element.Shapeshift} should be locked but is in buffer, for player {userEntity.Index}");
+                                Plugin.BepinLogger.LogInfo($"Shapeshift {element.Shapeshift} should be locked but is in buffer, for player {userEntity.Index}");
+                                unlockedShapeshiftBuffer.RemoveAt(j);
+                            } else if (DebugTool.GetPrefabName(unlockedShapeshiftBuffer[j].UnlockedShapeshift).Contains("Skin"))
+                            {
+                                Plugin.BepinLogger.LogInfo($"Shapeshift {element.Shapeshift} should be locked but is in buffer, for player {userEntity.Index}");
                                 unlockedShapeshiftBuffer.RemoveAt(j);
                             }
                         }

@@ -137,7 +137,16 @@ public static class DebugTool
 
     public static string GetPrefabName(PrefabGUID hashCode)
     {
-        var s = Plugin.Server.GetExistingSystemManaged<PrefabCollectionSystem>();
+        PrefabCollectionSystem s;
+        if (Plugin.IsServer)
+        {
+            s = Plugin.PrefabCollectionSystem;
+        }
+        else
+        {
+            s = Plugin.ClientCollectionSystem;
+        }
+        //var s = Plugin.Server.GetExistingSystemManaged<PrefabCollectionSystem>();
         string name = "Nonexistent";
         if (hashCode.GuidHash == 0)
         {
