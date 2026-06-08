@@ -96,6 +96,31 @@ public class BuffSystemSpawnServerPatch
                     foreach (var userEntity in userEntities)
                     {
                         DelaySystem.LockResearchDeferred(userEntity, new Stunlock.Core.PrefabGUID(tech.Guid.GuidHash));
+                        // force complete the journal achievement
+                        var user = Plugin.Server.EntityManager.GetComponentData<ProjectM.Network.User>(userEntity);
+                        var claimSystem = Plugin.Server.GetExistingSystemManaged<ClaimAchievementSystem>();
+
+                        var achievementOwnerQuery = Plugin.Server.EntityManager.CreateEntityQuery(
+                            ComponentType.ReadOnly<AchievementClaimedElement>()
+                        );
+
+                        Plugin.BepinLogger.LogInfo($"[AP] Achievement owner entities: {achievementOwnerQuery.CalculateEntityCount()}");
+
+                        if (!achievementOwnerQuery.IsEmpty)
+                        {
+                            var achievementOwners = achievementOwnerQuery.ToEntityArray(Allocator.Temp);
+                            foreach (var owner in achievementOwners)
+                            {
+                                Plugin.BepinLogger.LogInfo($"[AP] Trying achievement owner: {owner}");
+                                var ecb = new EntityCommandBuffer(Allocator.Temp);
+                                claimSystem.CompleteAchievement(ecb, new PrefabGUID(-302458684), userEntity, user.LocalCharacter._Entity, owner);
+                                ecb.Playback(Plugin.Server.EntityManager);
+                                ecb.Dispose();
+                            }
+                            achievementOwners.Dispose();
+                        }
+
+                        achievementOwnerQuery.Dispose();
                     }
                 }
                 DelaySystem.StopResearchDeferred();
