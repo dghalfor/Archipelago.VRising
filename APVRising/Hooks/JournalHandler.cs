@@ -44,6 +44,8 @@ namespace APVRising.Hooks
 
                 ProgressionSnapshot.Capture(Helper.GetEntityManager(), progEntity);
             }
+            Plugin.APClient.SendLocationCheck(DebugTool.GetPrefabName(achievementPrefabGuid));
+
             return true;
         }
         [HarmonyPatch(typeof(ClaimAchievementSystem), nameof(ClaimAchievementSystem.CompleteAchievement))]

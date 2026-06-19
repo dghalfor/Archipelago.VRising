@@ -72,16 +72,22 @@ internal static class DataService
     });
     public static List<string> DirectoryPaths => _directoryPaths.Value;
     public record ArchipelagoConnectionData(string IP, string Password, string SlotName, string ServerIndex);
-
+    public record PlayerItemReceivedData(List<long> Items);
     public static void SetArchipelagoData(ConcurrentDictionary<string, ArchipelagoConnectionData> data)
     {
         _ArchipelagoData = data;
         SaveArchipelagoData();
     }
-   
+    public static void SetPlayerItemReceivedData(ConcurrentDictionary<string, PlayerItemReceivedData> data)
+    {
+        _PlayerItemReceivedData = data;
+        SavePlayerItemReceivedData();
+    }
+
     public static class PlayerDictionaries
     {
         public static ConcurrentDictionary<string, ArchipelagoConnectionData> _ArchipelagoData = [];
+        public static ConcurrentDictionary<string, PlayerItemReceivedData> _PlayerItemReceivedData = [];
     }
     public static class PlayerPersistence
     {
@@ -94,10 +100,12 @@ internal static class DataService
         static readonly Dictionary<string, string> _filePaths = new()
         {
             {"Archipelago", JsonFilePaths.ArchipelagoJson},
+            {"PlayerItemReceived", JsonFilePaths.PlayerItemReceivedJson}
         };
         public static class JsonFilePaths
         {
             public static readonly string ArchipelagoJson = Path.Combine(DirectoryPaths[0], "archipelagoData.json");
+            public static readonly string PlayerItemReceivedJson = Path.Combine(DirectoryPaths[0], "playerItemReceivedData.json");
         }
         static void LoadData<T>(ref ConcurrentDictionary<string, T> dataStructure, string key)
         {
@@ -156,9 +164,11 @@ internal static class DataService
 
         // load methods
         public static void LoadArchipelagoData() => LoadData(ref _ArchipelagoData, "Archipelago");
+        public static void LoadPlayerItemReceivedData() => LoadData(ref _PlayerItemReceivedData, "PlayerItemReceived");
 
         // save methods
         public static void SaveArchipelagoData() => SaveData(_ArchipelagoData, "Archipelago");
+        public static void SavePlayerItemReceivedData() => SaveData(_PlayerItemReceivedData, "PlayerItemReceived"); 
        
     }
 }

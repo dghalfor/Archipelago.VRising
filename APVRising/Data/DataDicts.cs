@@ -311,16 +311,14 @@ namespace APVRising.Data
             { "Tech_Collection_VBlood_T05_UndeadLeader_Reaper", "Kriig the Undead General (Reaper)"},
 
             // --- COLLECTIONS: ACT 3 VBLOOD (T06) ---
-            //{ "Tech_Collection_VBlood_T06_Castleman", "Simon Belmont the Vampire Hunter (Castleman)"}, // Dark silver?
             { "Tech_Collection_VBlood_T06_Castleman_SanguineWhip", "Simon Belmont the Vampire Hunter (Sanguine Whip)"}, // [?]
             { "Tech_Collection_VBlood_T06_CursedWanderer", "Ben the Old Wanderer (Pristine Leather, Shroud of the Forest)"}, 
-            //{ "Tech_Collection_VBlood_T06_HeadlessHorseman", "Ben the Old Wanderer (Headless Horseman)"}, // Nothing
             { "Tech_Collection_VBlood_T06_HighLord", "General Cassius the Betrayer (Stygian Summoning Circle, Elixir of the Bat)"},
             { "Tech_Collection_VBlood_T06_Iva", "Ziva the Engineer (Fabricator, Radium Alloy, Sludge-Filled Canister, Yellow Castle Teleporter)"},
             { "Tech_Collection_VBlood_T06_Jade", "Jade the Vampire Hunter (Primal Blood Essence, Elixir of the Crow, Advanced Blood Press)"},
             { "Tech_Collection_VBlood_T06_Jade_Pistols", "Jade the Vampire Hunter (Pistols)"},
             { "Tech_Collection_VBlood_T06_MilitiaCommander", "Octavian the Militia Captain (Ancestral Forge)"},
-            { "Tech_Collection_VBlood_T06_MilitiaCommander_WideGate", "Octavian the Militia Commander (Wide Castle Entrance)"},
+            { "Tech_Collection_VBlood_T06_MilitiaCommander_WideGate", "Octavian the Militia Captain (Wide Castle Entrance)"},
             { "Tech_Storage_Pack_Equipment_T02", "Octavian the Militia Captain (Equipment Storage)"},
             { "Tech_Collection_VBlood_T06_Purifier", "Angram the Purifier (Mutated Rat, Major Explosive Box)"},
             { "Tech_Collection_VBlood_T06_Purifier_Gruel", "Angram the Purifier (Irradiant Gruel)"},
@@ -349,7 +347,6 @@ namespace APVRising.Data
             { "Tech_Collection_VBlood_T07_Livith", "Jakira the Shadow Huntress (Elixir of the Twisted)"},
             { "Tech_Collection_VBlood_T07_Livith_Slashers", "Jakira the Shadow Huntress (Slashers)"},
             { "Tech_Collection_VBlood_T07_Lucie", "Lucile the Venom Alchemist (Blood Homogenizer, Stand with Boiling Flask and Burner)"}, 
-            //{ "Tech_Collection_VBlood_T07_Lucie_Elixirs", "Lucie the Iteration 3 (Elixirs)"},
             { "Tech_Collection_VBlood_T07_Overseer", "Sir Magnus the Overseer (Phantom's Veil)"},
             { "Tech_Storage_Pack_T02", "Sir Magnus the Overseer (Assortment of Wide Storage Shelves)"},
             { "Tech_Collection_VBlood_T07_Professor", "Henry Blackbrew the Doctor (Athenaeum, Schematic, Redistribution Engine, Luminescent Mushroom Terrarium)"},
@@ -368,7 +365,6 @@ namespace APVRising.Data
             { "Tech_Collection_VBlood_T08_BloodKnight", "General Valencia the Depraved (Shadow Weave)"},
             { "Tech_Collection_VBlood_JewelsT04", "General Valencia the Depraved (Primal Jewels)"},
             { "Tech_Collection_CoatOfArms", "General Valencia the Depraved (Coat of Arms)"},
-            //{ "Tech_Collection_VBlood_T08_Dracula", "Dracula (Dracula)"},
             { "Tech_Collection_VBlood_T08_Manticore", "Talzur the Winged Horror (Pedestal of the Winged Horror)"},
             { "Tech_Collection_Dracula_Armor_Gloves", "Talzur the Winged Horror (Dracula's Gloves)"},
             { "Tech_Collection_VBlood_T08_Monster", "Adam the Firstborn (Pedestal of the Monster)"},
@@ -534,6 +530,36 @@ namespace APVRising.Data
             { "Tech_Weapon_Sword_T08", "Athenaeum - Learn Sanguine Sword"}, 
             { "Tech_Weapon_TwinBlades_T08", "Athenaeum - Learn Sanguine Twinblade"},
             { "Tech_Weapon_Whip_T08", ""},// (I think this is just from the T06 whip tech, but confirm if there's a unique unlock for the T08 whip)
+            { "Journal_CollectingTheRemains",        "Collecting the Remains" },
+            { "Journal_WieldTheSword",           "Wielding the Sword" },
+            { "Journal_ControllingMagic",        "Mastering Magic" },
+            { "Journal_RepellingMagic",    "Defensive Measures" },
+            { "Journal_ArmorOfBones_All",        "Hides of the Wild" },
+            { "Journal_IntoTheWoods",           "Into the Woods" },
+            { "Journal_Gathering",        "Gathering" },
+            { "Journal_Settling",    "Lord of Shadows" },
+            { "Journal_Fortify",        "Fortify" },
+            { "Journal_Shelter",           "Shelter" },
+            { "Journal_GettingReadyForTheHunt",        "Getting Ready for the Hunt" },
+            { "Journal_BloodHunt",    "Blood Hunt" },
+            { "Journal_ThirstForPower",        "Thirst for Power" },
+            { "Journal_ResearchDesk",           "The First Book in the Library" },
+            { "Journal_UpgradeCastleHeart_Tier02",        "Expanding my Domain" },
+            { "Journal_CompleteARoom",    "Building a Castle" },
+            { "Journal_Waypoint",        "Waygate" },
+            { "Journal_LordOfTheManor",           "Lord of the Manor" },
+            { "Journal_Servants",        "Servants" },
+            { "Journal_ArmyOfDarkness",    "Army of Darkness" },
+            { "Journal_ThroneOfCommand",        "Throne of Command" },
+            { "Journal_CompleteARoomTreasury",           "Treasure Chamber" },
+            { "Journal_BroadenHorizons",        "Broaden Horizons" },
+            { "Journal_BloodOnTap",    "Blood on Tap" },
+            { "Journal_UpgradeCastleHeart_Tier03",        "Reign Supreme" },
+            { "Journal_EyeOfMortium",           "An Eye into Mortium" },
+            { "Journal_UpgradeCastleHeart_Tier04",        "A Castle reaching the Sky" },
+            { "Journal_DarkCompanion",    "Nightfall Steed" },
+            { "Journal_UpgradeCastleHeart_Tier05",        "Vampire Empire" },
+            { "Journal_SoulStones",           "Soul Stones" },
         };
 
         public static readonly Dictionary<string, string> APLocationToEntityName = EntityNameToAPLocation.ToDictionary(kvp => kvp.Value, kvp => kvp.Key);
@@ -734,7 +760,7 @@ namespace APVRising.Data
 
             // --- COLLECTIONS: ACT 1 VBLOOD ---
             { "Alpha the White Wolf (Wolf Form)",               "Tech_Collection_VBlood_T02_AlphaWolf"},
-            { "Keely the Frost Archer (Tannery, Leather, Cloak))",               "Tech_Collection_VBlood_T02_KeelyFrostArrow"},
+            { "Keely the Frost Archer (Tannery, Leather, Cloak)",               "Tech_Collection_VBlood_T02_KeelyFrostArrow"},
             { "Keely the Frost Archer (Empty Waterskin)",       "Tech_Collection_VBlood_T02_KeelyFrostArrow_Canteen"},
             { "Lidia the Chaos Archer (Leatherworking Station, Devourer, Leather Bag)","Tech_Collection_VBlood_T02_LidiaChaosArrow"},
             { "Lidia the Chaos Archer (Longbow)",               "Tech_Collection_VBlood_T02_LidiaChaosArrow_Longbow"},
@@ -811,13 +837,12 @@ namespace APVRising.Data
             //{ "Simon Belmont the Vampire Hunter (Castleman)", "Tech_Collection_VBlood_T06_Castleman"}, // Dark silver?
             { "Simon Belmont the Vampire Hunter (Sanguine Whip)",   "Tech_Collection_VBlood_T06_Castleman_SanguineWhip"}, // [?]
             { "Ben the Old Wanderer (Pristine Leather, Shroud of the Forest)",             "Tech_Collection_VBlood_T06_CursedWanderer"},
-            //{ "Ben the Old Wanderer (Headless Horseman)", "Tech_Collection_VBlood_T06_HeadlessHorseman"}, // Nothing
             { "General Cassius the Betrayer (Stygian Summoning Circle, Elixir of the Bat)", "Tech_Collection_VBlood_T06_HighLord"},
             { "Ziva the Engineer (Fabricator, Radium Alloy, Sludge-Filled Canister, Yellow Castle Teleporter)",                     "Tech_Collection_VBlood_T06_Iva"},
             { "Jade the Vampire Hunter (Primal Blood Essence, Elixir of the Crow, Advanced Blood Press)",     "Tech_Collection_VBlood_T06_Jade"},
             { "Jade the Vampire Hunter (Pistols)",                  "Tech_Collection_VBlood_T06_Jade_Pistols"},
             { "Octavian the Militia Captain (Ancestral Forge)",     "Tech_Collection_VBlood_T06_MilitiaCommander"},
-            { "Octavian the Militia Commander (Wide Gate)",         "Tech_Collection_VBlood_T06_MilitiaCommander_WideGate"},
+            { "Octavian the Militia Captain (Wide Gate)",         "Tech_Collection_VBlood_T06_MilitiaCommander_WideGate"},
             { "Octavian the Militia Captain (Equipment Storage)",   "Tech_Storage_Pack_Equipment_T02"},
             { "Angram the Purifier (Mutated Rat, Major Explosive Box)",                  "Tech_Collection_VBlood_T06_Purifier"},
             { "Angram the Purifier (Irradiant Gruel)",              "Tech_Collection_VBlood_T06_Purifier_Gruel"},
@@ -846,7 +871,6 @@ namespace APVRising.Data
             { "Jakira the Shadow Huntress (Elixir of the Twisted)", "Tech_Collection_VBlood_T07_Livith"},
             { "Jakira the Shadow Huntress (Slashers)",              "Tech_Collection_VBlood_T07_Livith_Slashers"},
             { "Lucile the Venom Alchemist (Blood Homogenizer, Stand with Boiling Flask and Burner)",     "Tech_Collection_VBlood_T07_Lucie"},
-            //{ "Lucie the Iteration 3 (Elixirs)", "Tech_Collection_VBlood_T07_Lucie_Elixirs"},
             { "Sir Magnus the Overseer (Phantom's Veil)",           "Tech_Collection_VBlood_T07_Overseer"},
             { "Sir Magnus the Overseer (Assortment of Wide Storage Shelves)", "Tech_Storage_Pack_T02"},
             { "Henry Blackbrew the Doctor (Athenaeum, Schematic, Redistribution Engine, Luminescent Mushroom Terrarium)",             "Tech_Collection_VBlood_T07_Professor"},
@@ -865,7 +889,6 @@ namespace APVRising.Data
             { "General Valencia the Depraved (Shadow Weave)",       "Tech_Collection_VBlood_T08_BloodKnight"},
             { "General Valencia the Depraved (Primal Jewels)",      "Tech_Collection_VBlood_JewelsT04"},
             { "General Valencia the Depraved (Coat of Arms)",       "Tech_Collection_CoatOfArms"},
-            //{ "Dracula (Dracula)", "Tech_Collection_VBlood_T08_Dracula"},
             { "Talzur the Winged Horror (Pedestal of the Winged Horror)", "Tech_Collection_VBlood_T08_Manticore"},
             { "Talzur the Winged Horror (Dracula's Gloves)",        "Tech_Collection_Dracula_Armor_Gloves"},
             { "Adam the Firstborn (Pedestal of the Monster)",       "Tech_Collection_VBlood_T08_Monster"},
@@ -881,7 +904,6 @@ namespace APVRising.Data
             { "Simple Carpets",                     "Tech_Collection_Carpet_T01"},
             { "Dux Carpet Collection",              "Tech_Collection_Carpet_T02"},
             { "Distinguished Carpet Collection",    "Tech_Collection_Carpet_T03"},
-            //{ "Maja the Dark Savant (Study, Scroll)", "Tech_Collection_Castle_Paintings"},
             { "Assortment of Windows",              "Tech_Collection_Castle_Windows_T01"},
 
             // --- T04 ARMOR (Merciless / Hollowfang tier) ---
@@ -956,11 +978,8 @@ namespace APVRising.Data
 
             // --- FLOOR TILES ---
             { "Alchemy Lab Flooring",   "Tech_Floor_AlchemyLab"},
-            //{ "Goreswine the Ravager (Tomb)", "Tech_Floor_Crypt"}, // [?]
             { "Forge Flooring",         "Tech_Floor_Forge"},
-            //{ "Errol the Stonebreaker (Material and Gem Storage)", "Tech_Floor_Jewelcrafting"}, // [?]
             { "Library Flooring",       "Tech_Floor_Library"},
-            //{ "Vincent the Frostbringer (Prison Framework)", "Tech_Floor_Prison"},// [?]
             { "Tailor's Flooring",      "Tech_Floor_Tailor"},
 
             // --- LIQUID STATION ---
@@ -1491,6 +1510,7 @@ namespace APVRising.Data
                 { "Tech_Collection_VBlood_T02_KeelyFrostArrow",        "Keely the Frost Archer (Frost Tier 1)" },
                 { "Tech_Collection_VBlood_T02_RufusForeman",           "Rufus the Foreman (Blood Tier 1)" },
                 { "Tech_Collection_VBlood_T02_LidiaChaosArrow",        "Lidia the Chaos Archer (Chaos Tier 1)" },
+                {"Tech_Collection_VBlood_T03_Goreswine",               "Goreswine the Ravager (Unholy Tier 1)" },
                 { "Tech_Collection_VBlood_T04_CliveTheFirestarter",    "Clive the Firestarter (Chaos Tier 2)" },
                 { "Tech_Collection_VBlood_T03_Fisherman",              "Finn the Fisherman (Frost Tier 1)" },
                 { "Tech_Collection_VBlood_T04_Poloma",                 "Polora the Feywalker (Illusion Tier 1)" },
@@ -1548,6 +1568,83 @@ namespace APVRising.Data
                 { "Tech_Collection_VBlood_T07_CursedSmith", "Cyril Goal" },
                 { "Tech_Collection_VBlood_T08_Dracula", "Dracula Goal" },
             };
+
+        public static readonly Dictionary<string, List<string>> BonusVBloodLocations = new()
+        {
+            // Bonus locations to pad each boss to 3 locations when LevelizeBosses is enabled.
+            // Key: tech collection key. Value: list of synthetic location name strings (Bonus 1, 2, ...).
+
+            // --- ACT 1 ---
+            { "Tech_Collection_VBlood_T02_AlphaWolf", new List<string> { "Alpha the White Wolf (Bonus 1)", "Alpha the White Wolf (Bonus 2)" } },
+            { "Tech_Collection_VBlood_T02_KeelyFrostArrow", new List<string> { "Keely the Frost Archer (Bonus 1)" } },
+            { "Tech_Collection_VBlood_T02_LidiaChaosArrow", new List<string> { "Lidia the Chaos Archer (Bonus 1)" } },
+            { "Tech_Storage_Pack_T01_A", new List<string> { "Errol the Stonebreaker (Bonus 1)" } },
+            { "Tech_Collection_VBlood_T03_Fisherman", new List<string> { "Finn the Fisherman (Bonus 1)", "Finn the Fisherman (Bonus 2)" } },
+            { "Tech_Collection_VBlood_T03_PutridRat", new List<string> { "Nibbles the Putrid Rat (Bonus 1)", "Nibbles the Putrid Rat (Bonus 2)" } },
+
+            // --- ACT 2 ---
+            { "Tech_Collection_VBlood_T04_CliveTheFirestarter", new List<string> { "Clive the Firestarter (Bonus 1)", "Clive the Firestarter (Bonus 2)" } },
+            { "Tech_Collection_VBlood_T04_FrostGuard", new List<string> { "Vincent the Frostbringer (Bonus 1)" } },
+            { "Tech_Collection_VBlood_T04_Tailor", new List<string> { "Beatrice the Tailor (Bonus 1)" } },
+            { "Tech_Collection_VBlood_T04_VampireHunter", new List<string> { "Tristan the Vampire Hunter (Bonus 1)" } },
+            { "Tech_Collection_VBlood_T04_Wendigo", new List<string> { "Frostmaw the Mountain Terror (Bonus 1)" } },
+
+            // --- ACT 2-3 ---
+            { "Tech_Collection_VBlood_T05_BishopOfShadow", new List<string> { "Leandra the Shadow Priestess (Bonus 1)", "Leandra the Shadow Priestess (Bonus 2)" } },
+            { "Tech_Collection_VBlood_T05_Fabian", new List<string> { "Sir Erwin the Gallant Cavalier (Bonus 1)" } },
+            { "Tech_Collection_VBlood_T05_FerociousBear", new List<string> { "Kodia the Ferocious Bear (Bonus 1)" } },
+            { "Tech_Collection_VBlood_T05_GlassBlower", new List<string> { "Grethel the Glassblower (Bonus 1)" } },
+            { "Tech_Collection_VBlood_T05_HolyNun", new List<string> { "Christina the Sun Priestess (Bonus 1)" } },
+            { "Tech_Collection_VBlood_T05_IceRanger", new List<string> { "General Elena the Hollow (Bonus 1)" } },
+            { "Tech_Collection_VBlood_T05_Infiltrator", new List<string> { "Bane the Shadowblade (Bonus 1)" } },
+            { "Tech_Collection_VBlood_T05_Meredith", new List<string> { "Meredith the Bright Archer (Bonus 1)", "Meredith the Bright Archer (Bonus 2)" } },
+
+            // --- ACT 3 ---
+            { "Tech_Collection_VBlood_T06_Castleman_SanguineWhip", new List<string> { "Simon Belmont the Vampire Hunter (Bonus 1)", "Simon Belmont the Vampire Hunter (Bonus 2)" } },
+            { "Tech_Collection_VBlood_T06_CursedWanderer", new List<string> { "Ben the Old Wanderer (Bonus 1)", "Ben the Old Wanderer (Bonus 2)" } },
+            { "Tech_Collection_VBlood_T06_HighLord", new List<string> { "General Cassius the Betrayer (Bonus 1)", "General Cassius the Betrayer (Bonus 2)" } },
+            { "Tech_Collection_VBlood_T06_Iva", new List<string> { "Ziva the Engineer (Bonus 1)", "Ziva the Engineer (Bonus 2)" } },
+            { "Tech_Collection_VBlood_T06_Jade", new List<string> { "Jade the Vampire Hunter (Bonus 1)" } },
+            { "Tech_Collection_VBlood_T06_Raziel", new List<string> { "Raziel the Shepherd (Bonus 1)" } },
+            { "Tech_Collection_VBlood_T06_SpiderQueen", new List<string> { "Ungora the Spider Queen (Bonus 1)", "Ungora the Spider Queen (Bonus 2)" } },
+            { "Tech_Collection_VBlood_T06_ToadKing", new List<string> { "Albert the Duke of Balaton (Bonus 1)" } },
+            { "Tech_Collection_VBlood_T06_Voltage", new List<string> { "Domina the Blade Dancer (Bonus 1)" } },
+            { "Tech_Collection_VBlood_T06_Werewolf", new List<string> { "Willfred the Werewolf Chief (Bonus 1)" } },
+            { "Tech_Collection_VBlood_T06_Yeti", new List<string> { "Terrorclaw the Ogre (Bonus 1)", "Terrorclaw the Ogre (Bonus 2)" } },
+
+            // --- ACT 3-4 ---
+            { "Tech_Collection_VBlood_T07_CardinalPriest", new List<string> { "Azariel the Sunbringer (Bonus 1)" } },
+            { "Tech_Collection_VBlood_T07_Carver", new List<string> { "Stavros the Carver (Bonus 1)" } },
+            { "Tech_Collection_VBlood_T07_CursedSmith", new List<string> { "Cyril the Cursed Smith (Bonus 1)", "Cyril the Cursed Smith (Bonus 2)" } },
+            { "Tech_Collection_VBlood_T07_HarpyGems", new List<string> { "Morian the Stormwing Matriarch (Bonus 1)", "Morian the Stormwing Matriarch (Bonus 2)" } },
+            { "Tech_Collection_VBlood_T07_Livith", new List<string> { "Jakira the Shadow Huntress (Bonus 1)" } },
+            { "Tech_Collection_VBlood_T07_Lucie", new List<string> { "Lucile the Venom Alchemist (Bonus 1)", "Lucile the Venom Alchemist (Bonus 2)" } },
+            { "Tech_Collection_VBlood_T07_Overseer", new List<string> { "Sir Magnus the Overseer (Bonus 1)" } },
+            { "Tech_Collection_VBlood_T07_Professor", new List<string> { "Henry Blackbrew the Doctor (Bonus 1)", "Henry Blackbrew the Doctor (Bonus 2)" } },
+            { "Tech_Collection_VBlood_T07_RailgunSergeant", new List<string> { "Voltatia the Power Master (Bonus 1)", "Voltatia the Power Master (Bonus 2)" } },
+            { "Tech_Collection_VBlood_T07_Valyr", new List<string> { "Dantos the Forgebinder (Bonus 1)", "Dantos the Forgebinder (Bonus 2)" } },
+            { "Tech_Collection_VBlood_T07_Witch", new List<string> { "Matka the Curse Weaver (Bonus 1)", "Matka the Curse Weaver (Bonus 2)" } },
+            { "Tech_Collection_VBlood_T07_ZealousCultist", new List<string> { "Foulrot the Soultaker (Bonus 1)", "Foulrot the Soultaker (Bonus 2)" } },
+
+            // --- ACT 4 ---
+            { "Tech_Collection_VBlood_T08_BatVampire", new List<string> { "Lord Styx the Night Champion (Bonus 1)", "Lord Styx the Night Champion (Bonus 2)" } },
+            { "Tech_Collection_VBlood_T08_Behemoth", new List<string> { "Gorecrusher the Behemoth (Bonus 1)", "Gorecrusher the Behemoth (Bonus 2)" } },
+            { "Tech_Collection_VBlood_T08_Manticore", new List<string> { "Talzur the Winged Horror (Bonus 1)" } },
+            { "Tech_Collection_VBlood_T08_Monster", new List<string> { "Adam the Firstborn (Bonus 1)" } },
+            { "Tech_Collection_VBlood_T08_Morgana", new List<string> { "Megara the Serpent Queen (Bonus 1)" } },
+            { "Tech_Collection_VBlood_T08_Paladin", new List<string> { "Solarus the Immaculate (Bonus 1)" } },
+            { "Tech_Collection_VBlood_T08_Dracula", new List<string> { "Dracula the Immortal King (Bonus 1)", "Dracula the Immortal King (Bonus 2)" } },
+        };
+
+        public static readonly Dictionary<string, PrefabGUID> ItemsToPrefab = new Dictionary<string, PrefabGUID>
+            {
+                { "Wood" , new PrefabGUID(-1593377811) },
+                { "Stone" , new PrefabGUID(-1531666018) },
+                { "Planks" , new PrefabGUID(-1017402979) },
+                { "Stone Bricks" , new PrefabGUID(1788016417) },
+                { "Stygian Shards" , new PrefabGUID(2103989354) },
+            };
     }
+
 
 }

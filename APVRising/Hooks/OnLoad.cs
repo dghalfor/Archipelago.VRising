@@ -28,6 +28,7 @@ namespace APVRising.Hooks
                 ArchipelagoClient.ServerData.SlotName = connectionData.SlotName;
                 Plugin.APClient.Connect();
                 DelaySystem.DisconnectReminderDeferred();
+                DataService.PlayerPersistence.LoadPlayerItemReceivedData();
             }
             catch
             {

@@ -1,6 +1,7 @@
 ﻿using APVRising.Archipelago;
 using APVRising.Data;
 using APVRising.Hooks;
+using APVRising.Services;
 using APVRising.Utils;
 using Il2CppInterop.Runtime;
 using KindredCommands.Models;
@@ -8,6 +9,7 @@ using ProjectM;
 using ProjectM.Network;
 using Stunlock.Core;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +18,7 @@ using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 using VampireCommandFramework;
+using static APVRising.Services.DataService;
 
 namespace APVRising.Systems
 {
@@ -66,7 +69,7 @@ namespace APVRising.Systems
                 var userEntities = _userQuery.ToEntityArray(Allocator.Temp);
                 Plugin.BepinLogger.LogInfo($"[AP] Unlocking tech for {userEntities.Length} users");
                 var itemName = Plugin.APClient.GetItemNameFromId(item.ItemId);
-
+                Plugin.BepinLogger.LogInfo($"[AP] Item name: {itemName}");
                 // your unlock logic here per user entity
                 foreach (var userEntity in userEntities)
                 {
@@ -86,13 +89,36 @@ namespace APVRising.Systems
                             }
                         }    
                     }
-                }
 
+                    if (itemName.StartsWith("Item"))
+                    {
+                        var user = Plugin.EntityManager.GetComponentData<User>(userEntity);
+                        string count = itemName.Split(" ")[2];
+                        string name = itemName.Replace("Item -", "").Replace($" {count} ", "");
+                        if (int.TryParse(count, out int quantity))
+                        {
+                            if (DataDicts.ItemsToPrefab.TryGetValue(name, out var prefab))
+                            {
+                                string key = Plugin.ServerSaveName + "-" + user.CharacterName;
+                                long itemId = item.LocationId;
 
-                if (itemName.StartsWith("Item"))
-                {
-                    //TODO Need item targets before this works
-                    //Utils.Helper.TryGiveItem(userEntity, itemName, 1, out var _);
+                                if (PlayerDictionaries._PlayerItemReceivedData.TryGetValue(key, out var existing) && existing.Items.Contains(itemId))
+                                {
+                                    continue; // already received, skip
+                                }
+                                if (Helper.TryGiveItem(user.LocalCharacter._Entity, prefab, quantity, out var _))
+                                {
+                                    PlayerDictionaries._PlayerItemReceivedData.AddOrUpdate(
+                                        key,
+                                        _ => new PlayerItemReceivedData([itemId]),
+                                        (_, existing) => new PlayerItemReceivedData([.. existing.Items, itemId])
+                                    );
+
+                                    PlayerPersistence.SavePlayerItemReceivedData();
+                                }
+                            }
+                        }
+                    }
                 }
                 userEntities.Dispose();
             }

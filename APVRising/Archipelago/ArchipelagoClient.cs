@@ -183,11 +183,21 @@ public class ArchipelagoClient
             {
             DataDicts.BonusVictoryLocations,
             DataDicts.BonusSpellPointLocations,
-        };
+            };
 
             foreach (var dict in bonusLocationDicts)
                 if (dict.TryGetValue(locationName, out var bonusLocation))
                     locationIds.Add(session.Locations.GetLocationIdFromName(Game, bonusLocation));
+
+            var bonusLocationListDicts = new[]
+            {
+            DataDicts.BonusVBloodLocations
+            };
+
+            foreach (var dict in bonusLocationListDicts)
+                if (dict.TryGetValue(locationName, out var bonusLocation))
+                    foreach (var bonusLoc in bonusLocation)
+                        locationIds.Add(session.Locations.GetLocationIdFromName(Game, bonusLoc));
 
             if (locationIds.Count > 0)
                 session.Locations.CompleteLocationChecksAsync(locationIds.ToArray());
