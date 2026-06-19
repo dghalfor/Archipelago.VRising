@@ -1643,6 +1643,22 @@ namespace APVRising.Data
                 { "Planks" , new PrefabGUID(-1017402979) },
                 { "Stone Bricks" , new PrefabGUID(1788016417) },
                 { "Stygian Shards" , new PrefabGUID(2103989354) },
+                { "Greater Stygian Shards" , new PrefabGUID(576389135) },
+                { "Copper Coins" , new PrefabGUID(28625845) },
+                { "Silver Coins" , new PrefabGUID(-949672483) },
+                { "Goldsun Coins" , new PrefabGUID(-571562864) },
+                { "Bleeding Heart Seeds" , new PrefabGUID(-1463158090) },
+                { "Blood Rose Seeds" , new PrefabGUID(531984050) },
+                { "Corrupted Flower Seeds" , new PrefabGUID(-410008482) },
+                { "Cotton Seeds" , new PrefabGUID(-1289010178) },
+                { "Fire Blossom Seeds" , new PrefabGUID(675013523) },
+                { "Ghost Shroom Seeds" , new PrefabGUID(1762839393) },
+                { "Hell's Clarion Seeds" , new PrefabGUID(-1987586694) },
+                { "Mourning Lily Seeds" , new PrefabGUID(-1386314668) },
+                { "Plague Briar Seeds" , new PrefabGUID(-1495639636) },
+                { "Sacred Grape Seeds" , new PrefabGUID(-1681104075) },
+                { "Snow Flower Seeds" , new PrefabGUID(1985892973) },
+                { "Sunflower Seeds" , new PrefabGUID(-473351958) },
             };
     }
 
