@@ -29,6 +29,7 @@ namespace APVRising.Hooks
                 Plugin.APClient.Connect();
                 DelaySystem.DisconnectReminderDeferred();
                 DataService.PlayerPersistence.LoadPlayerItemReceivedData();
+                DataService.PlayerPersistence.LoadPlayerShapeshiftData();
             }
             catch
             {

@@ -14,7 +14,9 @@ using System.Threading.Tasks;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine.TextCore.Text;
+using static APVRising.Services.DataService;
 using static ProjectM.ProgressionUtility;
+using static VCF.Core.Basics.RoleCommands;
 
 namespace APVRising.Utils
 {
@@ -99,7 +101,7 @@ namespace APVRising.Utils
                 em = Plugin.ClientEntityManager;
             }
             // Query for User entities which have ProgressionMapper
-            var userQuery = em.CreateEntityQuery(ComponentType.ReadOnly<User>(), ComponentType.ReadOnly<ProgressionMapper>());
+            var userQuery = em.CreateEntityQuery(ComponentType.ReadOnly<ProjectM.Network.User>(), ComponentType.ReadOnly<ProgressionMapper>());
             if (userQuery.IsEmpty) return;
 
             var users = userQuery.ToEntityArray(Allocator.Temp);
@@ -304,7 +306,7 @@ namespace APVRising.Utils
                     var bitMask = em.GetComponentData<UpToDateUserBitMask>(station);
 
                     // Clear bits for all connected users
-                    var userQuery = em.CreateEntityQuery(ComponentType.ReadOnly<User>());
+                    var userQuery = em.CreateEntityQuery(ComponentType.ReadOnly<ProjectM.Network.User>());
                     var users = userQuery.ToEntityArray(Allocator.Temp);
 
                     for (int i = 0; i < users.Length; i++)
@@ -428,32 +430,107 @@ namespace APVRising.Utils
                         unlockedBPBuffer.Add(new UnlockedBlueprintElement { UnlockedBlueprint = element.Guid, UserHasRequiredContentFlags = true });
                     }
                 }
-
                 if (em.HasBuffer<ProgressionBookShapeshiftElement>(researchEntity))
                 {
                     var progressionShapeshiftBuffer = em.GetBuffer<ProgressionBookShapeshiftElement>(researchEntity);
                     var unlockedShapeshiftBuffer = em.GetBuffer<UnlockedShapeshiftElement>(entity);
-                    Plugin.BepinLogger.LogInfo($"Found {progressionShapeshiftBuffer.Length} blueprints to unlock for tech {techPrefab._Value}");
-                    for (int i = 0; i < progressionShapeshiftBuffer.Length; i++)
-                    {
-                        var element = progressionShapeshiftBuffer[i];
+                    var user = em.GetComponentData<ProjectM.Network.User>(userEntity);
 
-                        bool alreadyUnlocked = false;
-                        for (int j = 0; j < unlockedShapeshiftBuffer.Length; j++)
+                    string playerKey = Plugin.ServerSaveName + "-" + user.CharacterName;
+                    string techKey = techPrefab._Value.ToString();
+
+                    // check if we have saved state to restore
+                    bool hasSavedState = false;
+                    List<ShapeshiftEntryData> savedEntries = null;
+
+                    if (PlayerDictionaries._PlayerShapeshifts.TryGetValue(playerKey, out var shapeshiftData) &&
+                        shapeshiftData.shapeshiftGuidOwned.TryGetValue(techKey, out savedEntries))
+                    {
+                        hasSavedState = true;
+                    }
+                    if (hasSavedState)
+                    {
+                        // restore exactly what was saved, preserving UserHasRequiredContentFlags
+                        foreach (var entry in savedEntries)
                         {
-                            if (unlockedShapeshiftBuffer[j].UnlockedShapeshift == element.Shapeshift)
+                            var guid = new PrefabGUID(entry.Guid);
+                            bool alreadyUnlocked = false;
+                            for (int j = 0; j < unlockedShapeshiftBuffer.Length; j++)
                             {
-                                Plugin.BepinLogger.LogInfo($"Blueprint {element.Shapeshift} already unlocked for player {userEntity.Index}, skipping");
-                                alreadyUnlocked = true;
-                                break;
+                                if (unlockedShapeshiftBuffer[j].UnlockedShapeshift == guid)
+                                {
+                                    alreadyUnlocked = true;
+                                    break;
+                                }
+                            }
+                            if (!alreadyUnlocked)
+                            {
+                                Plugin.BepinLogger.LogInfo($"Restoring shapeshift {guid} with HasRequiredContent={entry.UserHasRequiredContentFlags}");
+                                unlockedShapeshiftBuffer.Add(new UnlockedShapeshiftElement
+                                {
+                                    UnlockedShapeshift = guid,
+                                    UserHasRequiredContentFlags = entry.UserHasRequiredContentFlags
+                                });
                             }
                         }
-
-                        if (alreadyUnlocked)
-                            continue;
-                        Plugin.BepinLogger.LogInfo($"Adding element to unlocked buffer: {element.Shapeshift}");
-                        unlockedShapeshiftBuffer.Add(new UnlockedShapeshiftElement { UnlockedShapeshift = element.Shapeshift, UserHasRequiredContentFlags = true });
                     }
+                    else
+                    {
+                        for (int i = 0; i < progressionShapeshiftBuffer.Length; i++)
+                        {
+                            var element = progressionShapeshiftBuffer[i];
+
+                            // add the base group as true
+                            bool alreadyUnlocked = false;
+                            for (int j = 0; j < unlockedShapeshiftBuffer.Length; j++)
+                            {
+                                if (unlockedShapeshiftBuffer[j].UnlockedShapeshift == element.Shapeshift)
+                                {
+                                    alreadyUnlocked = true;
+                                    break;
+                                }
+                            }
+                            if (!alreadyUnlocked)
+                            {
+                                Plugin.BepinLogger.LogInfo($"[Shapeshift] First unlock: adding base group {element.Shapeshift} as true");
+                                unlockedShapeshiftBuffer.Add(new UnlockedShapeshiftElement
+                                {
+                                    UnlockedShapeshift = element.Shapeshift,
+                                    UserHasRequiredContentFlags = true
+                                });
+                            }
+
+                            // add skin variants as false
+                            if (prefabCollectionSystem._PrefabLookupMap.TryGetValue(element.Shapeshift, out Entity groupEntity) &&
+                                em.HasBuffer<ProgressionDependencyElement>(groupEntity))
+                            {
+                                var dependencyBuffer = em.GetBuffer<ProgressionDependencyElement>(groupEntity);
+                                for (int d = 0; d < dependencyBuffer.Length; d++)
+                                {
+                                    var skinGuid = dependencyBuffer[d].PrefabGuid;
+                                    bool skinAlreadyUnlocked = false;
+                                    for (int j = 0; j < unlockedShapeshiftBuffer.Length; j++)
+                                    {
+                                        if (unlockedShapeshiftBuffer[j].UnlockedShapeshift == skinGuid)
+                                        {
+                                            skinAlreadyUnlocked = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!skinAlreadyUnlocked)
+                                    {
+                                        Plugin.BepinLogger.LogInfo($"[Shapeshift] First unlock: adding skin {skinGuid} as false");
+                                        unlockedShapeshiftBuffer.Add(new UnlockedShapeshiftElement
+                                        {
+                                            UnlockedShapeshift = skinGuid,
+                                            UserHasRequiredContentFlags = false
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                
                 }
 
             }
@@ -539,7 +616,6 @@ namespace APVRising.Utils
                     }
                 }
 
-                //Unlock blueprints
                 if (em.HasBuffer<ProgressionBookBlueprintElement>(researchEntity))
                 {
                     var blueprintBuffer = em.GetBuffer<ProgressionBookBlueprintElement>(researchEntity);
@@ -676,27 +752,69 @@ namespace APVRising.Utils
                 {
                     var progressionUnlockBuffer = em.GetBuffer<ProgressionBookShapeshiftElement>(researchEntity);
                     var unlockedShapeshiftBuffer = em.GetBuffer<UnlockedShapeshiftElement>(entity);
-                    // Plugin.BepinLogger.LogInfo($"Found {progressionUnlockBuffer.Length} blueprints to lock for tech {techPrefab._Value}");
+                    var entriesToSave = new List<ShapeshiftEntryData>();
+
+                    Plugin.BepinLogger.LogInfo($"[Shapeshift] Locking tech {techPrefab._Value}, progressionUnlockBuffer.Length={progressionUnlockBuffer.Length}, unlockedShapeshiftBuffer.Length={unlockedShapeshiftBuffer.Length}");
+
                     for (int i = 0; i < progressionUnlockBuffer.Length; i++)
                     {
-                        var element = progressionUnlockBuffer[i];
+                        var groupGuid = progressionUnlockBuffer[i].Shapeshift;
+                        Plugin.BepinLogger.LogInfo($"[Shapeshift] Processing group {groupGuid._Value}");
 
                         for (int j = unlockedShapeshiftBuffer.Length - 1; j >= 0; j--)
                         {
-                            if (unlockedShapeshiftBuffer[j].UnlockedShapeshift == element.Shapeshift)
+                            if (unlockedShapeshiftBuffer[j].UnlockedShapeshift == groupGuid)
                             {
-                                Plugin.BepinLogger.LogInfo($"Shapeshift {element.Shapeshift} should be locked but is in buffer, for player {userEntity.Index}");
-                                unlockedShapeshiftBuffer.RemoveAt(j);
-                            } else if (DebugTool.GetPrefabName(unlockedShapeshiftBuffer[j].UnlockedShapeshift).Contains("Skin"))
-                            {
-                                Plugin.BepinLogger.LogInfo($"Shapeshift {element.Shapeshift} should be locked but is in buffer, for player {userEntity.Index}");
+                                Plugin.BepinLogger.LogInfo($"[Shapeshift] Found group {groupGuid._Value} in buffer, HasRequiredContent={unlockedShapeshiftBuffer[j].UserHasRequiredContentFlags}");
+                                entriesToSave.Add(new ShapeshiftEntryData(groupGuid._Value, unlockedShapeshiftBuffer[j].UserHasRequiredContentFlags));
                                 unlockedShapeshiftBuffer.RemoveAt(j);
                             }
                         }
-                    }
-                }
 
+                        if (prefabCollectionSystem._PrefabLookupMap.TryGetValue(groupGuid, out Entity groupEntity) &&
+                            em.HasBuffer<ProgressionDependencyElement>(groupEntity))
+                        {
+                            var dependencyBuffer = em.GetBuffer<ProgressionDependencyElement>(groupEntity);
+                            Plugin.BepinLogger.LogInfo($"[Shapeshift] Found {dependencyBuffer.Length} skin variants for group {groupGuid._Value}");
+
+                            for (int d = 0; d < dependencyBuffer.Length; d++)
+                            {
+                                var skinGuid = dependencyBuffer[d].PrefabGuid;
+                                Plugin.BepinLogger.LogInfo($"[Shapeshift] Processing skin {skinGuid._Value}");
+
+                                for (int j = unlockedShapeshiftBuffer.Length - 1; j >= 0; j--)
+                                {
+                                    if (unlockedShapeshiftBuffer[j].UnlockedShapeshift == skinGuid)
+                                    {
+                                        Plugin.BepinLogger.LogInfo($"[Shapeshift] Found skin {skinGuid._Value} in buffer, HasRequiredContent={unlockedShapeshiftBuffer[j].UserHasRequiredContentFlags}");
+                                        entriesToSave.Add(new ShapeshiftEntryData(skinGuid._Value, unlockedShapeshiftBuffer[j].UserHasRequiredContentFlags));
+                                        unlockedShapeshiftBuffer.RemoveAt(j);
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Plugin.BepinLogger.LogWarning($"[Shapeshift] Could not find group entity or ProgressionDependencyElement buffer for {groupGuid._Value}");
+                        }
+                    }
+
+                    Plugin.BepinLogger.LogInfo($"[Shapeshift] Saving {entriesToSave.Count} entries for tech {techPrefab._Value}");
+
+                    var user = em.GetComponentData<ProjectM.Network.User>(userEntity);
+                    string playerKey = Plugin.ServerSaveName + "-" + user.CharacterName;
+                    string techKey = techPrefab._Value.ToString();
+
+                    PlayerDictionaries._PlayerShapeshifts.AddOrUpdate(
+                        playerKey,
+                        _ => new PlayerShapeshiftData(new Dictionary<string, List<ShapeshiftEntryData>> { [techKey] = entriesToSave }),
+                        (_, existing) => { existing.shapeshiftGuidOwned[techKey] = entriesToSave; return existing; }
+                    );
+                    PlayerPersistence.SavePlayerShapeshiftData();
+                }
             }
+
+            
             entities.Dispose();
         }
 
