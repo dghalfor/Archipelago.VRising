@@ -672,6 +672,7 @@ namespace APVRising.Utils
             if (ArchipelagoData.ReceivedChecks.Contains(techPrefab._Value))
             {
                 Plugin.BepinLogger.LogInfo($"Player already has {techPrefab._Value}");
+                ChatMessage.NotifyClientLocation(techPrefab._Value);
                 return;
             }
             if (Plugin.IsServer && DataDicts.EntityNameToAPLocation.TryGetValue(DebugTool.GetPrefabName(techPrefab), out var locationName)) {
