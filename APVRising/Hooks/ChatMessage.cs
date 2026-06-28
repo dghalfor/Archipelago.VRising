@@ -4,6 +4,7 @@ using HarmonyLib;
 using ProjectM;
 using ProjectM.Network;
 using ProjectM.UI;
+using Stunlock.Core;
 using System;
 using Unity.Collections;
 using Unity.Entities;
@@ -420,6 +421,22 @@ public static class ChatMessage
                         // Destroy so it doesn't appear in chat UI
                         em.DestroyEntity(eventEntity);
                     }
+                }
+                if (message.StartsWith("##AP_RESEARCH#"))
+                {
+                    string guidStr = message.Replace("##AP_RESEARCH#", "").Replace("##", "");
+                    if (int.TryParse(guidStr, out int guid))
+                    {
+                        Plugin.BepinLogger.LogInfo($"Client AP research: GUID={guid}");
+                        var researchGuid = new PrefabGUID(guid);
+                        var userQuery = em.CreateEntityQuery(ComponentType.ReadOnly<User>(), ComponentType.ReadOnly<ProgressionMapper>());
+                        var userEntities = userQuery.ToEntityArray(Allocator.Temp);
+                        foreach (var userEntity in userEntities)
+                        {
+                            ResearchDeskHandler.DisplayUnlockInResearchStation(userEntity, researchGuid, em);
+                        }
+                    }
+                    em.DestroyEntity(eventEntity);
                 }
             }
             catch (Exception e)

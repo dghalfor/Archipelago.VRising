@@ -19,8 +19,6 @@ namespace APVRising.Hooks;
 [HarmonyPatch]
 internal class DiscoverResearchHandler
 {
-
-    // Discover fix
     [HarmonyPatch(typeof(DiscoverResearchSystem), nameof(DiscoverResearchSystem.UnlockProgression))]
     [HarmonyPrefix]
     public static bool Prefix(
@@ -35,31 +33,13 @@ internal class DiscoverResearchHandler
         if (!ProgressionHandler.IsResearching)
         {
             var message = (FixedString512Bytes)"<color=red>You are not in research mode enter '.startResearch' into chat or else you may waste resources</color>";
-            var userentity = Helper.GetEntityManager().GetComponentData<ProjectM.Network.User>(fromCharacter.User);
-            ServerChatUtils.SendSystemMessageToClient(Helper.GetEntityManager(), userentity, ref message);
+            var userEntity = Helper.GetEntityManager().GetComponentData<ProjectM.Network.User>(fromCharacter.User);
+            ServerChatUtils.SendSystemMessageToClient(Helper.GetEntityManager(), userEntity, ref message);
         }
-        Plugin.BepinLogger.LogInfo($"[AP] UnlockProgression: {DebugTool.GetPrefabName(randomResearch.ResearchGuid)}");
+
+        Plugin.BepinLogger.LogInfo($"DiscoverResearch: {DebugTool.GetPrefabName(randomResearch.ResearchGuid)}");
         Plugin.APClient.SendLocationCheck(DebugTool.GetPrefabName(randomResearch.ResearchGuid));
-
-        _lastRolledResearchGuid = randomResearch.ResearchGuid;
-        return true;
-    }
-    public static PrefabGUID _lastRolledResearchGuid = default;
-
-    // TODO This may not be necessary now since we're not messing with the progression entity
-    [HarmonyPatch(typeof(DiscoverResearchSystem), nameof(DiscoverResearchSystem.UnlockProgression))]
-    [HarmonyPostfix]
-    public static void PostFix(
-        ResearchBuffer randomResearch,
-        FromCharacter fromCharacter,
-        EntityCommandBuffer commandBuffer,
-        PrefabLookupMap prefabLookupMap,
-        Entity targetResearchStation,
-        Entity progressionEntity)
-    {
-        {
-            ProgressionHandler.LockTechForPlayer(fromCharacter.User, _lastRolledResearchGuid);
-            return;
-        }
+        ResearchDeskHandler.DisplayUnlockInResearchStation(fromCharacter.User, randomResearch.ResearchGuid, Helper.GetEntityManager(), skipIngredientRemoval: true);
+        return false;
     }
 }

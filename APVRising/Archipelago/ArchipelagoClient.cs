@@ -11,6 +11,7 @@ using Archipelago.MultiClient.Net.Packets;
 using HarmonyLib;
 using ProjectM;
 using ProjectM.Network;
+using Stunlock.Core;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -75,7 +76,6 @@ public class ArchipelagoClient
         session.Items.ItemReceived += OnItemReceived;
         session.Socket.ErrorReceived += OnSessionErrorReceived;
         session.Socket.SocketClosed += OnSessionSocketClosed;
-        //session.Locations.CompleteLocationChecksAsync += 
     }
 
     /// <summary>
@@ -178,7 +178,7 @@ public class ArchipelagoClient
             if (DataDicts.EntityNameToAPLocation.TryGetValue(locationName, out var primaryLocation))
                 locationIds.Add(session.Locations.GetLocationIdFromName(Game, primaryLocation));
             CheckGoalLocation(primaryLocation);
-
+            Plugin.BepinLogger.LogInfo($"Checking if {locationName} resolved to {primaryLocation} is goal location {ServerData.SlotDataOpts()}");
             var bonusLocationDicts = new[]
             {
             DataDicts.BonusVictoryLocations,

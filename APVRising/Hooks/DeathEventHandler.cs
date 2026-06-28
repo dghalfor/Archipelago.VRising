@@ -53,7 +53,6 @@ public class DeathEventHandler
                 }
             }
 
-            // TODO: Kill everyone on death as AP setting? Send death link for each player or for everyone at once?
             // Player death
             if (DeathLinkHandler.deathLinkEnabled && __instance.EntityManager.TryGetComponentData<RespawnCharacter>(ev.Died, out var respawnData))
             {

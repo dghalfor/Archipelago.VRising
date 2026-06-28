@@ -37,7 +37,10 @@ public class BuffSystemSpawnServerPatch
             {
                 case (int)Effects.AB_FeedBoss_03_Complete_Trigger:
                 case (int)Effects.AB_FeedBoss_04_Complete_AreaTriggerBuff:
+                case (int)Effects.AB_FeedBoss_FeedOnDracula_03_Complete_Trigger:
+                case (int)Effects.AB_FeedBoss_FeedOnDracula_04_Complete_AreaTriggerBuff:
                     var em = __instance.EntityManager;
+                    Plugin.BepinLogger.LogInfo($"[AP] Boss Buff Detected: {DebugTool.GetPrefabName(prefabGuid)}");
                     if (em.HasBuffer<CreateGameplayEventsOnSpawn>(entity))
                     {
                         ProgressionHandler.IsResearching = true;

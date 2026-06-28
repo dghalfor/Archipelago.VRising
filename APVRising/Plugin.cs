@@ -83,10 +83,7 @@ public class Plugin : BasePlugin
     public static PrefabCollectionSystem PrefabCollectionSystem => Server.GetExistingSystemManaged<PrefabCollectionSystem>();
     public static PrefabCollectionSystem ClientCollectionSystem => Client.GetExistingSystemManaged<PrefabCollectionSystem>();
     public static GameDataSystem GameDataSystem => Server.GetExistingSystemManaged<GameDataSystem>();
-    public static ManagedDataRegistry ManagedDataRegistry => GameDataSystem.ManagedDataRegistry;
-    public static DebugEventsSystem DebugEventsSystem => Server.GetExistingSystemManaged<DebugEventsSystem>();
-    public static UnitSpawnerUpdateSystem UnitSpawnerUpdateSystem => Server.GetExistingSystemManaged<UnitSpawnerUpdateSystem>();
-    public static ServerScriptMapper ServerScriptMapper => Server.GetExistingSystemManaged<ServerScriptMapper>();
+    public static ServerGameManager serverGameManager => Server.GetExistingSystemManaged<ServerScriptMapper>()._ServerGameManager;
 
     /// <summary>
     /// Return the Unity ECS World instance used on the server build of VRising.

@@ -39,23 +39,20 @@ namespace APVRising.Utils
                 Plugin.BepinLogger.LogInfo($"Switching to researched progression");
                 TechToRecipeMapping.SyncUnlockedTechs(progressionBuffer, ArchipelagoData.GetCheckedLocations());
                 TechToRecipeMapping.SyncUnlockedSpells(spellBuffer, ArchipelagoData.GetCheckedLocations());
-                //ClearUnlockBuffers();
                 Plugin.BepinLogger.LogInfo(Plugin.IsServer.ToString());
 
                 if (Plugin.IsServer)
                 {
-                    CheckResearchStations(ArchipelagoData.GetCheckedLocations());
+                    CheckResearchStations(Plugin.EntityManager, ArchipelagoData.GetCheckedLocations());
                     ClearSnapshots(ArchipelagoData.GetCheckedLocations());
                     ForceSnapshotResend();
                 }
                 else
                 {
-                    CheckClientResearchStations(ArchipelagoData.GetCheckedLocations());
+                    CheckResearchStations(Plugin.ClientEntityManager, ArchipelagoData.GetCheckedLocations());
                     ClearClientSnapshots(ArchipelagoData.GetCheckedLocations());
                     ForceClientSnapshotResend();
                 }
-                //CheckClientResearchStations(ResearchedProgression);
-                //update progressionElement to previouslyResearched elements
             }
             else
             {
@@ -66,21 +63,16 @@ namespace APVRising.Utils
                 Plugin.BepinLogger.LogInfo(Plugin.IsServer.ToString());
                 if (Plugin.IsServer)
                 {
-                    CheckResearchStations(ArchipelagoData.GetReceivedChecks());
+                    CheckResearchStations(Plugin.EntityManager, ArchipelagoData.GetReceivedChecks());
                     ClearSnapshots(ArchipelagoData.GetReceivedChecks());
                     ForceSnapshotResend();
                 }
                 else
                 {
-                    CheckClientResearchStations(ArchipelagoData.GetReceivedChecks());
+                    CheckResearchStations(Plugin.ClientEntityManager, ArchipelagoData.GetReceivedChecks());
                     ClearClientSnapshots(ArchipelagoData.GetReceivedChecks());
                     ForceClientSnapshotResend();
                 }
-                //CheckClientResearchStations(APProgression);
-                //ClearUnlockBuffers();
-                // ClearSnapshots(unlockedTechHashes);
-
-                //update progressionElement to Archipelago unlocked elements
             }
         }
         public static void SwitchRecipe(DynamicBuffer<UnlockedRecipeElement> recipeBuffer)
@@ -123,64 +115,38 @@ namespace APVRising.Utils
             }
         }
 
-        public void ClearUnlockBuffers()
+        public static void CheckResearchStations(EntityManager em, List<int> unlockedTechHashes)
         {
-            var query = Plugin.ClientEntityManager.CreateEntityQuery(ComponentType.ReadWrite<HaveUnlocksInStation>());
-            if (query.IsEmpty)
+            var query = em.CreateEntityQuery(ComponentType.ReadOnly<ResearchBuffer>());
+            var stations = query.ToEntityArray(Allocator.Temp);
+            foreach (var stationEntity in stations)
             {
-                //Plugin.BepinLogger.LogInfo($"No entities with HaveUnlocksInStation found, skipping ClearUnlockBuffers");
-                return;
+                var buffer = em.GetBuffer<ResearchBuffer>(stationEntity);
+                TechToRecipeMapping.SyncResearchStation(buffer, unlockedTechHashes);
             }
-            // Get and update the handle
-            //Plugin.BepinLogger.LogInfo($"Clearing HaveUnlocksInStation buffers");
-            var testUnlocks = Plugin.ClientEntityManager.GetComponentTypeHandle<HaveUnlocksInStation>(false);
-
-            // Iterate chunks and zero out
-            var chunks = query.ToArchetypeChunkArray(Allocator.Temp);
-            foreach (var chunk in chunks)
-            {
-                //Plugin.BepinLogger.LogInfo($"Clearing");
-
-                var components = chunk.GetNativeArray(ref testUnlocks);
-                for (int i = 0; i < components.Length; i++)
-                {
-                    var comp = components[i];
-                    comp.CanUnlock = false;
-                    components[i] = comp;
-                }
-            }
-            chunks.Dispose();
+            stations.Dispose();
         }
-
-        public static void CheckResearchStations(List<int> unlockedTechHashes)
+        public static void UnlockTechInResearchStation(EntityManager em, PrefabGUID researchGuid)
         {
-            var query = Plugin.EntityManager.CreateEntityQuery(ComponentType.ReadOnly<ResearchBuffer>());
-            //Plugin.BepinLogger.LogInfo($"CheckResearchStations");
-
-            // Iterate chunks and zero out
+            var query = em.CreateEntityQuery(ComponentType.ReadOnly<ResearchBuffer>());
             var stations = query.ToEntityArray(Allocator.Temp);
             foreach (var stationEntity in stations)
             {
                 var buffer = Plugin.EntityManager.GetBuffer<ResearchBuffer>(stationEntity);
-                TechToRecipeMapping.SyncResearchStation(buffer, unlockedTechHashes);
+                for (int i = 0; i < buffer.Length; i++)
+                {
+                    if (buffer[i].ResearchGuid == researchGuid)
+                    {
+                        var entry = buffer[i];
+                        entry.IsResearchByStation = true;
+                        buffer[i] = entry;
+                        break;
+                    }
+                }
             }
             stations.Dispose();
         }
-        public static void CheckClientResearchStations(List<int> unlockedTechHashes)
-        {
-            var query = Plugin.ClientEntityManager.CreateEntityQuery(ComponentType.ReadOnly<ResearchBuffer>());
-            //Plugin.BepinLogger.LogInfo($"CheckClientResearchStations");
 
-            // Iterate chunks and zero out
-            var stations = query.ToEntityArray(Allocator.Temp);
-            //Plugin.BepinLogger.LogInfo($"Found {stations.Length} stations with Snapshot_ResearchBuffer to clear");
-            foreach (var stationEntity in stations)
-            {
-                var buffer = Plugin.ClientEntityManager.GetBuffer<ResearchBuffer>(stationEntity);
-                TechToRecipeMapping.SyncResearchStation(buffer, unlockedTechHashes);
-            }
-            stations.Dispose();
-        }
         public static void CheckRefinementStations(PrefabGUID unlockedRecipe)
         {
             EntityManager em;
