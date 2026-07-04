@@ -13,6 +13,8 @@ public class ArchipelagoData
     public List<long> CheckedLocations1;
     public static List<int> ReceivedChecks = new List<int>();
     public static List<int> CheckedLocations = new List<int>();
+    public static HashSet<int> ConfiguredLocations = new HashSet<int>();
+
     /// <summary>
     /// seed for this archipelago data. Can be used when loading a file to verify the session the player is trying to
     /// load is valid to the room it's connecting to.

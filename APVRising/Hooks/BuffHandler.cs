@@ -127,7 +127,7 @@ public class BuffSystemSpawnServerPatch
                     }
                 }
                 DelaySystem.StopResearchDeferred();
-                DelaySystem.ResyncDeferred();
+                //DelaySystem.ResyncDeferred();
             }
         }
     }

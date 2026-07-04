@@ -72,12 +72,14 @@ public static class ArchipelagoCommands
         var entities = progQuery.ToEntityArray(Allocator.Temp);
         foreach (var entity in entities)
         {
-            ProgressionSnapshot.Restore(Plugin.EntityManager, entity);
+            DelaySystem.RestoreDeferred(Plugin.EntityManager, entity);
         }
         ProgressionHandler.IsResearching = false;
-        ProgressionHandler.UpdateProgression();
+        //ProgressionHandler.UpdateProgression();
         ChatMessage.NotifyClient(false);
-        Plugin.APClient.Resync();
+        //Plugin.APClient.Resync();
+        //ChatMessage.NotifyClientRestore();
+
         ctx.Reply($"Stopping research...");
     }
 

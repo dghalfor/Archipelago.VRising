@@ -28,6 +28,40 @@ public static class DelaySystem
         );
     }
 
+    public static void ClientBaselineCapture()
+    {
+        Plugin.BepinLogger.LogInfo("ClientBaselineCapture");
+        DeferredActionSystem.Schedule(
+            action: () => ChatMessage.NotifyClientCaptureBaseline(),
+            delaySeconds: 3,
+            maxRetries: 3
+        );
+    }
+
+    public static void NotifyClientConfiguredLocations()
+    {
+        Plugin.BepinLogger.LogInfo("ClientConfiguredLocations");
+        DeferredActionSystem.Schedule(
+            action: () => ChatMessage.NotifyClientConfiguredLocations(),
+            delaySeconds: 4,
+            maxRetries: 3
+        );
+    }
+
+    public static void StopResearchDeferredSlow()
+    {
+        Plugin.BepinLogger.LogInfo("StopResearchDeferred");
+        DeferredActionSystem.Schedule(
+            action: () => ProgressionHandler.setResearch(false),
+            delaySeconds: 15f,
+            maxRetries: 3
+        );
+        DeferredActionSystem.Schedule(
+            action: () => ChatMessage.NotifyClientResearch(false),
+            delaySeconds: 15f,
+            maxRetries: 3
+        );
+    }
     public static void ResyncDeferred()
     {
         Plugin.BepinLogger.LogInfo("ResyncDeferred");
@@ -97,6 +131,21 @@ public static class DelaySystem
         var fixedString = new FixedString512Bytes("<color=red>You are still in research mode, if you are done researching please type '.stopResearch' into chat</color>");
         ServerChatUtils.SendSystemMessageToAllClients(Plugin.Server.EntityManager, ref fixedString);
     }
+
+    public static void ReconcileWithAP(Entity progEntity)
+    {
+        Plugin.BepinLogger.LogInfo("Reconcile with AP");
+        DeferredActionSystem.Schedule(
+            action: () => ProgressionSnapshot.ReconcileWithAP(Plugin.EntityManager, progEntity),
+            delaySeconds: 5.0f,
+            maxRetries: 3
+        );
+        DeferredActionSystem.Schedule(
+            action: () => ChatMessage.NotifyClientReconcile(),
+            delaySeconds: 5.0f,
+            maxRetries: 3
+        );
+    }
     public static void RestoreDeferred(EntityManager em, Entity progEntity)
     {
         Plugin.BepinLogger.LogInfo("RestoreDeferred");
@@ -108,6 +157,20 @@ public static class DelaySystem
         DeferredActionSystem.Schedule(
             action: () => ChatMessage.NotifyClientRestore(),
             delaySeconds: 1.0f,
+            maxRetries: 3
+        );
+    }
+    public static void SlowRestoreDeferred(Entity progEntity)
+    {
+        Plugin.BepinLogger.LogInfo("RestoreDeferred");
+        DeferredActionSystem.Schedule(
+            action: () => ProgressionSnapshot.Restore(Plugin.EntityManager, progEntity),
+            delaySeconds: 7.0f,
+            maxRetries: 3
+        );
+        DeferredActionSystem.Schedule(
+            action: () => ChatMessage.NotifyClientRestore(),
+            delaySeconds: 7.0f,
             maxRetries: 3
         );
     }

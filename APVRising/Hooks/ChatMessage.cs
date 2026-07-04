@@ -1,4 +1,5 @@
 using APVRising.Archipelago;
+using APVRising.Data;
 using APVRising.Utils;
 using HarmonyLib;
 using ProjectM;
@@ -94,7 +95,7 @@ public static class ChatMessage
         {
             var user = em.GetComponentData<User>(userEntity);
             // Send a special prefixed message the client can intercept
-            var message = (FixedString512Bytes)$"##LOCKPROG#{guid}##";
+            var message = (FixedString512Bytes)$"##LOCKSUBPROG#{guid}##";
             ServerChatUtils.SendSystemMessageToClient(em, user, ref message);
         }
 
@@ -106,7 +107,7 @@ public static class ChatMessage
         var em = Plugin.EntityManager;
         var userQuery = em.CreateEntityQuery(ComponentType.ReadOnly<User>());
         var users = userQuery.ToEntityArray(Allocator.Temp);
-        Plugin.BepinLogger.LogInfo($"Notifying clients of AP list change: GUID={guid}, Users={users.Length}");
+        Plugin.BepinLogger.LogInfo($"Notifying clients of Lock spell: GUID={guid}, Users={users.Length}");
         foreach (var userEntity in users)
         {
             var user = em.GetComponentData<User>(userEntity);
@@ -123,7 +124,7 @@ public static class ChatMessage
         var em = Plugin.EntityManager;
         var userQuery = em.CreateEntityQuery(ComponentType.ReadOnly<User>());
         var users = userQuery.ToEntityArray(Allocator.Temp);
-        Plugin.BepinLogger.LogInfo($"Notifying clients of AP list change: GUID={guid}, Users={users.Length}");
+        Plugin.BepinLogger.LogInfo($"Notifying clients of Unlock spell: GUID={guid}, Users={users.Length}");
         foreach (var userEntity in users)
         {
             var user = em.GetComponentData<User>(userEntity);
@@ -221,6 +222,100 @@ public static class ChatMessage
         users.Dispose();
     }
 
+    public static void NotifyClientClearSnapshots()
+    {
+        // Find the chat message system
+        var em = Plugin.EntityManager;
+        var userQuery = em.CreateEntityQuery(ComponentType.ReadOnly<User>());
+        var users = userQuery.ToEntityArray(Allocator.Temp);
+        Plugin.BepinLogger.LogInfo($"Notifying clients of snapshot clear");
+        foreach (var userEntity in users)
+        {
+            var user = em.GetComponentData<User>(userEntity);
+            // Send a special prefixed message the client can intercept
+            var message = (FixedString512Bytes)$"##CLEARSNAPSHOTS##";
+            ServerChatUtils.SendSystemMessageToClient(em, user, ref message);
+        }
+
+        users.Dispose();
+    }
+    public static void NotifyClientLockProg(int guid)
+    {
+        // Find the chat message system
+        var em = Plugin.EntityManager;
+        var userQuery = em.CreateEntityQuery(ComponentType.ReadOnly<User>());
+        var users = userQuery.ToEntityArray(Allocator.Temp);
+        Plugin.BepinLogger.LogInfo($"Notifying clients of lock prog change: GUID={guid}, Users={users.Length}");
+        foreach (var userEntity in users)
+        {
+            var user = em.GetComponentData<User>(userEntity);
+            // Send a special prefixed message the client can intercept
+            var message = (FixedString512Bytes)$"##LOCKPROG#{guid}##";
+            ServerChatUtils.SendSystemMessageToClient(em, user, ref message);
+        }
+        users.Dispose();
+    }
+    public static void NotifyClientCaptureBaseline()
+    {
+        var em = Plugin.EntityManager;
+        var userQuery = em.CreateEntityQuery(ComponentType.ReadOnly<User>());
+        var users = userQuery.ToEntityArray(Allocator.Temp);
+        Plugin.BepinLogger.LogInfo($"Notifying clients of baseline capture");
+        foreach (var userEntity in users)
+        {
+            var user = em.GetComponentData<User>(userEntity);
+            var message = (FixedString512Bytes)$"##CAPTUREBASELINE##";
+            ServerChatUtils.SendSystemMessageToClient(em, user, ref message);
+        }
+        users.Dispose();
+    }
+
+    public static void NotifyClientReconcile()
+    {
+        var em = Plugin.EntityManager;
+        var userQuery = em.CreateEntityQuery(ComponentType.ReadOnly<User>());
+        var users = userQuery.ToEntityArray(Allocator.Temp);
+        Plugin.BepinLogger.LogInfo($"Notifying clients of AP reconcile");
+        foreach (var userEntity in users)
+        {
+            var user = em.GetComponentData<User>(userEntity);
+            var message = (FixedString512Bytes)$"##RECONCILE##";
+            ServerChatUtils.SendSystemMessageToClient(em, user, ref message);
+        }
+        users.Dispose();
+    }
+
+    public static void NotifyClientConfiguredLocations()
+    {
+        var em = Plugin.EntityManager;
+        var userQuery = em.CreateEntityQuery(ComponentType.ReadOnly<User>());
+        var users = userQuery.ToEntityArray(Allocator.Temp);
+
+        foreach (var userEntity in users)
+        {
+            var user = em.GetComponentData<User>(userEntity);
+            foreach (var kvp in DataDicts.TechToPrefab)
+            {
+             Plugin.BepinLogger.LogInfo($"Checking {kvp.Key} for configured location");
+                if (!DataDicts.EntityNameToAPLocation.TryGetValue(kvp.Key, out var locationName))
+                {
+                    Plugin.BepinLogger.LogInfo($"No AP location found for {kvp.Key}");
+                    continue;
+                }
+                Plugin.BepinLogger.LogInfo($"Checking location name: '{locationName}' against AP server");
+                if (!Plugin.APClient.IsConfiguredLocation(locationName))
+                {
+                    Plugin.BepinLogger.LogInfo($"{kvp.Value} -> '{locationName}' is not a configured location");
+                    continue;
+                }
+                Plugin.BepinLogger.LogInfo(DebugTool.GetPrefabName(kvp.Value) + " is a configured location, sending to client");
+                var message = (FixedString512Bytes)$"##CONFIGUREDLOCATION#{kvp.Value._Value}##";
+                ServerChatUtils.SendSystemMessageToClient(em, user, ref message);
+            }
+        }
+        users.Dispose();
+    }
+
     [HarmonyPatch(typeof(ClientChatSystem), "OnUpdate")]
     [HarmonyPrefix]
     public static void ClientChatOnUpdatePostfix(ClientChatSystem __instance)
@@ -278,9 +373,9 @@ public static class ChatMessage
                     // Destroy so it doesn't appear in chat UI
                     em.DestroyEntity(eventEntity);
                 }
-                if (message.StartsWith("##LOCKPROG#"))
+                if (message.StartsWith("##LOCKSUBPROG#"))
                 {
-                    string guidStr = message.Replace("##LOCKPROG#", "").Replace("##", "");
+                    string guidStr = message.Replace("##LOCKSUBPROG#", "").Replace("##", "");
                     if (int.TryParse(guidStr, out int guid))
                     {
                         Plugin.BepinLogger.LogInfo($"Client lock: GUID={guid}");
@@ -420,6 +515,48 @@ public static class ChatMessage
                         // Destroy so it doesn't appear in chat UI
                         em.DestroyEntity(eventEntity);
                     }
+                }
+                if (message.StartsWith("##LOCKPROG#"))
+                {
+                    Plugin.BepinLogger.LogInfo($"LOCKPROG");
+                    string guidStr = message.Replace("##LOCKPROG#", "").Replace("##", "");
+                    if (int.TryParse(guidStr, out int guid))
+                    {
+                        Plugin.BepinLogger.LogInfo($"LOCKPROG: GUID={guid}");
+                        ProgressionHandler.LockProg(Plugin.ClientEntityManager, new Stunlock.Core.PrefabGUID(guid));
+                       
+                        // Destroy so it doesn't appear in chat UI
+                        em.DestroyEntity(eventEntity);
+                    }
+                }
+                if (message.StartsWith("##CAPTUREBASELINE#"))
+                {
+                    Plugin.BepinLogger.LogInfo($"Client Baseline Capture");
+                    var progQuery = Helper.GetEntityManager().CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
+                    var entities = progQuery.ToEntityArray(Allocator.Temp);
+                    foreach (var entity in entities)
+                        ProgressionSnapshot.CaptureBaseline(Plugin.ClientEntityManager, entity);
+                    entities.Dispose();
+                    em.DestroyEntity(eventEntity);
+                }
+
+                if (message.StartsWith("##RECONCILE#"))
+                {
+                    Plugin.BepinLogger.LogInfo($"Client Reconcile");
+                    var progQuery = Helper.GetEntityManager().CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
+                    var entities = progQuery.ToEntityArray(Allocator.Temp);
+                    foreach (var entity in entities)
+                        ProgressionSnapshot.ReconcileWithAP(Plugin.ClientEntityManager, entity);
+                    entities.Dispose();
+                    em.DestroyEntity(eventEntity);
+                }
+                if (message.StartsWith("##CONFIGUREDLOCATION#"))
+                {
+                    string guidStr = message.Replace("##CONFIGUREDLOCATION#", "").Replace("##", "");
+                    if (int.TryParse(guidStr, out int guid))
+                        Plugin.BepinLogger.LogInfo($"Configured Location: GUID={guid}");
+                    ArchipelagoData.ConfiguredLocations.Add(guid);
+                    em.DestroyEntity(eventEntity);
                 }
             }
             catch (Exception e)

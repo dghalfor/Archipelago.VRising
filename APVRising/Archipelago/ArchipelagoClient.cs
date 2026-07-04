@@ -1,5 +1,6 @@
 ﻿using APVRising.Data;
 using APVRising.Hooks;
+using APVRising.Services;
 using APVRising.Systems;
 using APVRising.Utils;
 using Archipelago.MultiClient.Net;
@@ -11,6 +12,8 @@ using Archipelago.MultiClient.Net.Packets;
 using HarmonyLib;
 using ProjectM;
 using ProjectM.Network;
+using Stunlock.Core;
+using Stunlock.Core.Animation;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -23,6 +26,7 @@ using System.Threading;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
+using VRisingArchipelago;
 
 namespace APVRising.Archipelago;
 
@@ -144,6 +148,9 @@ public class ArchipelagoClient
         ArchipelagoConsole.LogMessage(outText);
         ArchipelagoItemSystem.PendingResync = true;
         attemptingConnection = false;
+        DataService.PlayerPersistence.LoadPlayerItemReceivedData();
+        DataService.PlayerPersistence.LoadPlayerShapeshiftData();
+        DelaySystem.NotifyClientConfiguredLocations();
     }
 
     /// <summary>
@@ -211,7 +218,14 @@ public class ArchipelagoClient
 
     public bool IsConfiguredLocation(string locationName)
     {
-        return session.Locations.AllLocations.Contains(session.Locations.GetLocationIdFromName(Game, locationName));
+        if (session == null || !session.Socket.Connected)
+        {
+            Plugin.BepinLogger.LogWarning($"Attempted to check if {locationName} is a configured location, but session is null or not connected.");
+            return false;
+        }
+        var id = session.Locations.GetLocationIdFromName(Game, locationName);
+        var result = session.Locations.AllLocations.Contains(id);
+        return result;
     }
 
     private void CheckGoalLocation(string locationName)
@@ -271,97 +285,162 @@ public class ArchipelagoClient
     // Resync removes all progression unlocks for locations that are checked but not received from the player. This undoes the progression changes that occur during startup.
     public void Resync()
     {
+        var em = Helper.GetEntityManager();
 
-        var query = Helper.GetEntityManager().CreateEntityQuery(ComponentType.ReadOnly<User>(), ComponentType.ReadOnly<ProgressionMapper>());
-        var userEntities = query.ToEntityArray(Allocator.Temp);
-        var progressionQuery = Helper.GetEntityManager().CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
+        // --- Pre-pass: acknowledge unlocks that exist in the player's buffer but are
+        //     not configured for this AP session (option-gated or vanilla unlocks).
+        //     Marking them locally prevents the revoke pass from stripping them. ---
+        var progressionQuery = em.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
         var progressionEntities = progressionQuery.ToEntityArray(Allocator.Temp);
 
-        // If progression element contains something that does not exist in the locations it will be granted here
         foreach (var entity in progressionEntities)
         {
-            var progBuffer = Helper.GetEntityManager().GetBuffer<UnlockedProgressionElement>(entity);
+            var progBuffer = em.GetBuffer<UnlockedProgressionElement>(entity);
             for (int i = 0; i < progBuffer.Length; i++)
             {
-                if (DataDicts.EntityNameToAPLocation.TryGetValue(DebugTool.GetPrefabName(progBuffer[i].UnlockedPrefab), out var unlockedLocationName))
+                var prefabName = DebugTool.GetPrefabName(progBuffer[i].UnlockedPrefab);
+                if (DataDicts.EntityNameToAPLocation.TryGetValue(prefabName, out var locationName) &&
+                    !IsConfiguredLocation(locationName))
                 {
-                    if (!Plugin.APClient.IsConfiguredLocation(unlockedLocationName))
-                    {
-                        Plugin.BepinLogger.LogInfo($"Player does not have {progBuffer[i].UnlockedPrefab._Value} but it is not a configured location, adding to unlocks");
-                        ArchipelagoData.AddLocationCheck(progBuffer[i].UnlockedPrefab._Value);
-                        ChatMessage.NotifyClientLocation(progBuffer[i].UnlockedPrefab._Value);
-                        ArchipelagoData.AddReceivedCheck(progBuffer[i].UnlockedPrefab._Value);
-                        ChatMessage.NotifyClientCheck(progBuffer[i].UnlockedPrefab._Value);
-                    }
+                    Plugin.BepinLogger.LogInfo($"[AP Resync] Not a configured location, acknowledging locally: {prefabName}");
+                    ArchipelagoData.AddLocationCheck(progBuffer[i].UnlockedPrefab._Value);
+                    ArchipelagoData.AddReceivedCheck(progBuffer[i].UnlockedPrefab._Value);
+                    ChatMessage.NotifyClientLocation(progBuffer[i].UnlockedPrefab._Value);
+                    ChatMessage.NotifyClientCheck(progBuffer[i].UnlockedPrefab._Value);
                 }
             }
         }
+        progressionEntities.Dispose();
 
-        var checkedLocations = session.Locations.AllLocationsChecked;
-        var receivedItemLocationIds = session.Items.AllItemsReceived
-            .Select(item => item.ItemId)
-            .ToHashSet();
-        var validLocationNames = session.Locations.AllLocations;
-        foreach (var checks in checkedLocations)
+        // --- Build "should have" set from AP received items ---
+        var shouldHavePrefabs = new HashSet<PrefabGUID>();
+        foreach (var networkItem in session.Items.AllItemsReceived)
         {
-            Plugin.BepinLogger.LogInfo($"checked {checks}");
-
-            if (DataDicts.EntityNameToAPLocation.TryGetValue(session.Locations.GetLocationNameFromId(checks), out var locEntityName))
+            var itemName = session.Items.GetItemName(networkItem.ItemId);
+            if (DataDicts.ItemToEntityName.TryGetValue(itemName, out var entityName) &&
+                DataDicts.TechToPrefab.TryGetValue(entityName, out var prefab))
             {
-
-                if (DataDicts.TechToPrefab.TryGetValue(locEntityName, out var prefab))
-                {
-                    Plugin.BepinLogger.LogInfo($"checked {prefab.GuidHash}");
-                    ArchipelagoData.AddLocationCheck(prefab.GuidHash);
-                    ChatMessage.NotifyClientLocation(prefab.GuidHash);
-                }
+                shouldHavePrefabs.Add(prefab);
             }
         }
 
-        foreach (var received in receivedItemLocationIds) 
-        {
-                if (DataDicts.ItemToEntityName.TryGetValue(session.Items.GetItemName(received), out var checkEntityName))
-                {
-                    if (DataDicts.TechToPrefab.TryGetValue(checkEntityName, out var prefab))
-                    {
-                    Plugin.BepinLogger.LogInfo($"Check Entity Name {checkEntityName}");
-                    Plugin.BepinLogger.LogInfo($"recieved {prefab.GuidHash}");
-
-                    ArchipelagoData.AddReceivedCheck(prefab.GuidHash);
-                    ChatMessage.NotifyClientCheck(prefab.GuidHash);
-                    }
-                }
-        }
-        var locationsToLock = checkedLocations
-            .Where(locationId => !receivedItemLocationIds.Contains(locationId) && validLocationNames.Contains(locationId))
-            .ToList();
-
-        Plugin.BepinLogger.LogInfo($"[AP] Sync: {checkedLocations.Count} checked, {receivedItemLocationIds.Count} received, {locationsToLock.Count} to lock");
-
-        foreach (var locationId in locationsToLock)
+        // --- Mirror checked locations into ArchipelagoData ---
+        foreach (var locationId in session.Locations.AllLocationsChecked)
         {
             var locationName = session.Locations.GetLocationNameFromId(locationId);
-            Plugin.BepinLogger.LogInfo($"[AP] Locking: {locationId} ({locationName})");
-            foreach (var userEntity in userEntities) { 
-                if (DataDicts.APLocationToEntityName.TryGetValue(locationName, out var entityName))
-                {
-                    if (DataDicts.TechToPrefab.TryGetValue(entityName, out var prefab))
-                    {
-                        //spells
-                        if (entityName.StartsWith("AB"))
-                        {
-                            ProgressionHandler.LockSpellAbilityForPlayer(userEntity, prefab);
-                            ChatMessage.NotifyClientLockSpell(prefab.GuidHash);
-                        } else
-                        {
-                            ProgressionHandler.LockTechForPlayer(userEntity, prefab);
-                        }
-                        
-                    }
-                } 
+            if (DataDicts.APLocationToEntityName.TryGetValue(locationName, out var entityName) &&
+                DataDicts.TechToPrefab.TryGetValue(entityName, out var prefab))
+            {
+                ArchipelagoData.AddLocationCheck(prefab.GuidHash);
+                ChatMessage.NotifyClientLocation(prefab.GuidHash);
             }
         }
+
+        // --- Per-user: grant missing, revoke extras ---
+        var userQuery = em.CreateEntityQuery(
+            ComponentType.ReadOnly<User>(),
+            ComponentType.ReadOnly<ProgressionMapper>());
+        var userEntities = userQuery.ToEntityArray(Allocator.Temp);
+
+        foreach (var userEntity in userEntities)
+        {
+            // Snapshot what they currently have in UnlockedProgressionElement
+            var progQuery = em.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
+            var progEntities = progQuery.ToEntityArray(Allocator.Temp);
+
+            var doesHavePrefabs = new HashSet<PrefabGUID>();
+            foreach (var progEntity in progEntities)
+            {
+                var progBuffer = em.GetBuffer<UnlockedProgressionElement>(progEntity);
+                for (int i = 0; i < progBuffer.Length; i++)
+                    doesHavePrefabs.Add(progBuffer[i].UnlockedPrefab);
+            }
+
+            // Grant: received by AP but missing from buffer
+            foreach (var prefab in shouldHavePrefabs)
+            {
+                if (!doesHavePrefabs.Contains(prefab))
+                {
+                    Plugin.BepinLogger.LogInfo($"[AP Resync] Granting missing: {prefab.GuidHash}");
+                    ArchipelagoData.AddReceivedCheck(prefab.GuidHash);
+                    ChatMessage.NotifyClientCheck(prefab.GuidHash);
+                }
+            }
+
+            // Collect prefabs to revoke: in buffer, AP-managed, configured, not in shouldHave
+            var toRevoke = new List<PrefabGUID>();
+            foreach (var prefab in doesHavePrefabs)
+            {
+                if (shouldHavePrefabs.Contains(prefab))
+                    continue;
+
+                var prefabName = DebugTool.GetPrefabName(prefab);
+                if (!DataDicts.EntityNameToAPLocation.TryGetValue(prefabName, out var locationName))
+                    continue; // not AP-managed, leave it alone
+
+                if (!IsConfiguredLocation(locationName))
+                    continue; // excluded by player's options, pre-pass already acknowledged it
+
+                toRevoke.Add(prefab);
+            }
+
+            // Revoke: two-phase per prefab
+            foreach (var prefab in toRevoke)
+            {
+                var prefabName = DebugTool.GetPrefabName(prefab);
+                Plugin.BepinLogger.LogInfo($"[AP Resync] Revoking: {prefab.GuidHash} ({prefabName})");
+
+                // Phase 1: strip recipes/blueprints/shapeshifts via existing methods.
+                // Note: LockTechForPlayer has an early-return guard on ReceivedChecks —
+                // ReceivedChecks was rebuilt from scratch above so this should be clean,
+                // but if you ever see revokes being silently skipped, that guard is why.
+                var entityName = DataDicts.EntityNameToAPLocation[prefabName];
+                if (entityName.StartsWith("AB"))
+                {
+                    ProgressionHandler.LockSpellAbilityForPlayer(userEntity, prefab);
+                    ChatMessage.NotifyClientLockSpell(prefab.GuidHash);
+                }
+                else
+                {
+                    ProgressionHandler.LockTechForPlayer(userEntity, prefab);
+                }
+
+                // Phase 2: remove from UnlockedProgressionElement so research mode
+                // cannot re-derive access from a stale entry in that buffer.
+                var revokeProgQuery = em.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
+                var revokeProgEntities = revokeProgQuery.ToEntityArray(Allocator.Temp);
+                foreach (var progEntity in revokeProgEntities)
+                {
+                    var progBuffer = em.GetBuffer<UnlockedProgressionElement>(progEntity);
+                    for (int i = progBuffer.Length - 1; i >= 0; i--)
+                    {
+                        if (progBuffer[i].UnlockedPrefab == prefab)
+                        {
+                            progBuffer.RemoveAt(i);
+                            ChatMessage.NotifyClientLockProg(prefab.GuidHash);
+                            break;
+                        }
+                    }
+                }
+                revokeProgEntities.Dispose();
+            }
+
+            Plugin.BepinLogger.LogInfo(
+                $"[AP Resync] User done. ShouldHave={shouldHavePrefabs.Count}, " +
+                $"DoesHave={doesHavePrefabs.Count}, " +
+                $"Revoked={toRevoke.Count}");
+            foreach (var progEntity in progEntities)
+            {
+                ProgressionSnapshot.Capture(em, progEntity);
+                ChatMessage.NotifyClientSnapshot();
+            }
+            progEntities.Dispose();
+
+        }
+
         userEntities.Dispose();
+
+        Plugin.BepinLogger.LogInfo($"[AP Resync] Complete. ShouldHave={shouldHavePrefabs.Count}");
     }
 
     private static Dictionary<string, string> entityNameToAPLocation;

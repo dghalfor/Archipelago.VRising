@@ -43,6 +43,7 @@ namespace APVRising.Hooks
                 Plugin.BepinLogger.LogInfo("Saving buffer");
 
                 ProgressionSnapshot.Capture(Helper.GetEntityManager(), progEntity);
+                ChatMessage.NotifyClientSnapshot();
             }
             Plugin.APClient.SendLocationCheck(DebugTool.GetPrefabName(achievementPrefabGuid));
 
@@ -82,8 +83,7 @@ namespace APVRising.Hooks
             try
             {
                     Plugin.BepinLogger.LogInfo($"[ClaimAchievementPatch] CompleteAchievement fired | Achievement: {achievementPrefabGuid} | User: {userEntity} | Character: {characterEntity} | ReApply: {reApplyMode}");
-
-                    DelaySystem.ResyncDeferred();
+                    //DelaySystem.ResyncDeferred();
                 }
                 catch (Exception ex)
                 {
