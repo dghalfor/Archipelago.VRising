@@ -4,12 +4,20 @@ using ProjectM;
 using Stunlock.Core;
 using System;
 using Unity.Collections;
+using Unity.Entities;
 
 namespace APVRising.Hooks;
 
 [HarmonyPatch]
 public class DeathEventHandler
 {
+    public static bool ConsumingDeathLinks = false;
+
+    public static void DoneConsumingDeathLinks ()
+    {
+        ConsumingDeathLinks = false;
+    }
+
     [HarmonyPatch(typeof(DeathEventListenerSystem), "OnUpdate")]
     public static void Postfix(DeathEventListenerSystem __instance)
     {
@@ -53,11 +61,12 @@ public class DeathEventHandler
                 }
             }
 
-            // TODO: Kill everyone on death as AP setting? Send death link for each player or for everyone at once?
-            // Player death
             if (DeathLinkHandler.deathLinkEnabled && __instance.EntityManager.TryGetComponentData<RespawnCharacter>(ev.Died, out var respawnData))
             {
-                Plugin.APClient.DeathLinkHandler.SendDeathLink();
+                if (!ConsumingDeathLinks)
+                {
+                    Plugin.APClient.DeathLinkHandler.SendDeathLink();
+                }
             }
         }
     }
