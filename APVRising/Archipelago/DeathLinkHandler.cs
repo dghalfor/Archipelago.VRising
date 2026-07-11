@@ -1,4 +1,5 @@
-﻿using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
+﻿using APVRising.Hooks;
+using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using BepInEx;
 using ProjectM;
 using ProjectM.Network;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Entities;
+using VRisingArchipelago;
 
 namespace APVRising.Archipelago;
 
@@ -85,6 +87,7 @@ public class DeathLinkHandler
 
             var entities = query.ToEntityArray(Allocator.Temp);
             Plugin.BepinLogger.LogInfo($"[DeathLink] Found {entities.Length} user entities");
+            DeathEventHandler.ConsumingDeathLinks = true;
             foreach (var entity in entities)
             {
                 var user = Plugin.Server.EntityManager.GetComponentData<User>(entity);
@@ -93,6 +96,8 @@ public class DeathLinkHandler
 
                 StatChangeUtility.KillEntity(Plugin.Server.EntityManager, character, character, 0, StatChangeReason.Default, true);
             }
+
+            DelaySystem.DoneConsumingDeathLinksDefferred();
 
             FixedString512Bytes fixedString = new(cause);
             ServerChatUtils.SendSystemMessageToAllClients(Plugin.Server.EntityManager, ref fixedString);

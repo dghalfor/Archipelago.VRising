@@ -121,7 +121,14 @@ public static class DelaySystem
             maxRetries: 3
         );
     }
-
+    public static void DoneConsumingDeathLinksDefferred()
+    {
+        DeferredActionSystem.Schedule(
+            action: () => DeathEventHandler.DoneConsumingDeathLinks(),
+            delaySeconds: 15.0f,
+            maxRetries: 3
+        );
+    }
     public static void StopResearchReminder()
     {
         if (!ProgressionHandler.IsResearching)
