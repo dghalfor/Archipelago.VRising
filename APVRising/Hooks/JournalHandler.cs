@@ -1,4 +1,5 @@
 ﻿using APVRising;
+using APVRising.Archipelago;
 using APVRising.Utils;
 using BepInEx.Logging;
 using HarmonyLib;
@@ -33,6 +34,12 @@ namespace APVRising.Hooks
                 bool reApplyMode,
                 bool logOnDuplicate)
         {
+            // Game resends achievments every time the game starts up. There is no point trying to resend this until the game connects.
+            // Will likely fix at a later date with some kind of re-send when the game connects
+            if (!Plugin.APClient.IsConnected()) {
+                return true;
+            }
+
             ProgressionHandler.IsResearching = true;
             ChatMessage.NotifyClientResearch(true);
             ChatMessage.NotifyClientSnapshot();
@@ -61,6 +68,10 @@ namespace APVRising.Hooks
                 bool reApplyMode,
                 bool logOnDuplicate)
             {
+            if (!Plugin.APClient.IsConnected())
+            {
+                return;
+            }
             var progQuery = Helper.GetEntityManager().CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
             var ProgEntities = progQuery.ToEntityArray(Allocator.Temp);
             foreach (var progEntity in ProgEntities)
@@ -91,5 +102,5 @@ namespace APVRising.Hooks
                 }
             }  
         }
-    }
+}
 

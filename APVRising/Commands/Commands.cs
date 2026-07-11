@@ -74,7 +74,7 @@ public static class ArchipelagoCommands
         {
             DelaySystem.RestoreDeferred(Plugin.EntityManager, entity);
         }
-        ProgressionHandler.IsResearching = false;
+        DelaySystem.StopResearchDeferred();
         //ProgressionHandler.UpdateProgression();
         ChatMessage.NotifyClient(false);
         //Plugin.APClient.Resync();
@@ -187,8 +187,14 @@ public static class ArchipelagoCommands
         Plugin.BepinLogger.LogInfo($"Slot Data: {ArchipelagoClient.ServerData.SlotDataOpts()}");
         ctx.Reply($"Synced Progression");
     }
-        
 
+    [Command("lockProg")]
+    public static void LockProgression(ICommandContext ctx, int guid)
+    {
+        ProgressionHandler.LockProg(Plugin.EntityManager, new Stunlock.Core.PrefabGUID(guid));
+        ChatMessage.NotifyClientLockProg(guid);
+        ctx.Reply($"Locked Progression");
+    }
 
     [Command("dedup", description: "Deduplicate progression buffers", adminOnly: true)]
     public static void APDedup(ICommandContext ctx)

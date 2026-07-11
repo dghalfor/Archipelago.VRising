@@ -44,6 +44,7 @@ namespace APVRising.Systems
             Enabled = true;
         }
         public static volatile bool PendingResync = false;
+        public static bool firstTime = true;
         public override void OnUpdate()
         {
 
@@ -59,6 +60,12 @@ namespace APVRising.Systems
             {
                 FixedString512Bytes fixedMessage = new(message);
                 ServerChatUtils.SendSystemMessageToAllClients(Plugin.Server.EntityManager, ref fixedMessage);
+                if (ArchipelagoClient.PendingMessages.Count == 0 && firstTime)
+                {
+                    Plugin.BepinLogger.LogInfo($"[AP] First time processing messages, requesting resync");
+                    PendingResync = true;
+                    firstTime = false;
+                }
             }
 
             while (Plugin.APClient != null && ProgressionHandler.IsResearching == false &&

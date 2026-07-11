@@ -146,7 +146,6 @@ public class ArchipelagoClient
         FixedString512Bytes outTextFixed = new(outText);
         PendingMessages.Enqueue(outText.ToString());
         ArchipelagoConsole.LogMessage(outText);
-        ArchipelagoItemSystem.PendingResync = true;
         attemptingConnection = false;
         DataService.PlayerPersistence.LoadPlayerItemReceivedData();
         DataService.PlayerPersistence.LoadPlayerShapeshiftData();
@@ -214,6 +213,11 @@ public class ArchipelagoClient
             FixedString512Bytes fixedString = new($"Could not send location check, please make sure you are connected by entering the command '.connect', or exception: {e.ToString()}");
             ServerChatUtils.SendSystemMessageToAllClients(Plugin.Server.EntityManager, ref fixedString);
         }
+    }
+
+    public bool IsConnected()
+    {
+        return session != null && session.Socket.Connected;
     }
 
     public bool IsConfiguredLocation(string locationName)
@@ -285,6 +289,9 @@ public class ArchipelagoClient
     // Resync removes all progression unlocks for locations that are checked but not received from the player. This undoes the progression changes that occur during startup.
     public void Resync()
     {
+        Plugin.BepinLogger.LogInfo(
+        $"[AP Resync] Starting. session.Items.AllItemsReceived.Count={session.Items.AllItemsReceived.Count}, " +
+        $"IsConnected={session.Socket.Connected}"); // adjust property name to whatever your client exposes
         var em = Helper.GetEntityManager();
 
         // --- Pre-pass: acknowledge unlocks that exist in the player's buffer but are
@@ -299,6 +306,12 @@ public class ArchipelagoClient
             for (int i = 0; i < progBuffer.Length; i++)
             {
                 var prefabName = DebugTool.GetPrefabName(progBuffer[i].UnlockedPrefab);
+                if (string.IsNullOrEmpty(prefabName))
+                {
+                    Plugin.BepinLogger.LogWarning($"[AP Resync] Pre-pass: could not resolve name for prefab {progBuffer[i].UnlockedPrefab}, skipping");
+                    continue;
+                }
+
                 if (DataDicts.EntityNameToAPLocation.TryGetValue(prefabName, out var locationName) &&
                     !IsConfiguredLocation(locationName))
                 {
@@ -317,6 +330,12 @@ public class ArchipelagoClient
         foreach (var networkItem in session.Items.AllItemsReceived)
         {
             var itemName = session.Items.GetItemName(networkItem.ItemId);
+            if (string.IsNullOrEmpty(itemName))
+            {
+                Plugin.BepinLogger.LogWarning($"[AP Resync] Could not resolve item name for ItemId={networkItem.ItemId}, skipping");
+                continue;
+            }
+
             if (DataDicts.ItemToEntityName.TryGetValue(itemName, out var entityName) &&
                 DataDicts.TechToPrefab.TryGetValue(entityName, out var prefab))
             {
@@ -328,6 +347,12 @@ public class ArchipelagoClient
         foreach (var locationId in session.Locations.AllLocationsChecked)
         {
             var locationName = session.Locations.GetLocationNameFromId(locationId);
+            if (string.IsNullOrEmpty(locationName))
+            {
+                Plugin.BepinLogger.LogWarning($"[AP Resync] Could not resolve location name for LocationId={locationId}, skipping");
+                continue;
+            }
+
             if (DataDicts.APLocationToEntityName.TryGetValue(locationName, out var entityName) &&
                 DataDicts.TechToPrefab.TryGetValue(entityName, out var prefab))
             {
@@ -375,6 +400,12 @@ public class ArchipelagoClient
                     continue;
 
                 var prefabName = DebugTool.GetPrefabName(prefab);
+                if (string.IsNullOrEmpty(prefabName))
+                {
+                    Plugin.BepinLogger.LogWarning($"[AP Resync] Revoke pass: could not resolve name for prefab {prefab}, skipping");
+                    continue;
+                }
+
                 if (!DataDicts.EntityNameToAPLocation.TryGetValue(prefabName, out var locationName))
                     continue; // not AP-managed, leave it alone
 
@@ -388,17 +419,28 @@ public class ArchipelagoClient
             foreach (var prefab in toRevoke)
             {
                 var prefabName = DebugTool.GetPrefabName(prefab);
+                if (string.IsNullOrEmpty(prefabName))
+                {
+                    Plugin.BepinLogger.LogWarning($"[AP Resync] Revoke: could not resolve name for prefab {prefab}, skipping revoke");
+                    continue;
+                }
+
                 Plugin.BepinLogger.LogInfo($"[AP Resync] Revoking: {prefab.GuidHash} ({prefabName})");
 
                 // Phase 1: strip recipes/blueprints/shapeshifts via existing methods.
                 // Note: LockTechForPlayer has an early-return guard on ReceivedChecks —
                 // ReceivedChecks was rebuilt from scratch above so this should be clean,
                 // but if you ever see revokes being silently skipped, that guard is why.
-                var entityName = DataDicts.EntityNameToAPLocation[prefabName];
+                if (!DataDicts.EntityNameToAPLocation.TryGetValue(prefabName, out var entityName))
+                {
+                    Plugin.BepinLogger.LogWarning($"[AP Resync] Revoke: '{prefabName}' no longer resolves in EntityNameToAPLocation, skipping revoke");
+                    continue;
+                }
+
                 if (entityName.StartsWith("AB"))
                 {
                     ProgressionHandler.LockSpellAbilityForPlayer(userEntity, prefab);
-                    ChatMessage.NotifyClientLockSpell(prefab.GuidHash);
+                    //ChatMessage.NotifyClientLockSpell(prefab.GuidHash);
                 }
                 else
                 {

@@ -53,12 +53,12 @@ public static class DelaySystem
         Plugin.BepinLogger.LogInfo("StopResearchDeferred");
         DeferredActionSystem.Schedule(
             action: () => ProgressionHandler.setResearch(false),
-            delaySeconds: 15f,
+            delaySeconds: 8f,
             maxRetries: 3
         );
         DeferredActionSystem.Schedule(
             action: () => ChatMessage.NotifyClientResearch(false),
-            delaySeconds: 15f,
+            delaySeconds: 8f,
             maxRetries: 3
         );
     }
@@ -151,12 +151,12 @@ public static class DelaySystem
         Plugin.BepinLogger.LogInfo("RestoreDeferred");
         DeferredActionSystem.Schedule(
             action: () => ProgressionSnapshot.Restore(Plugin.EntityManager, progEntity),
-            delaySeconds: 1.0f,
+            delaySeconds: 3.0f,
             maxRetries: 3
         );
         DeferredActionSystem.Schedule(
             action: () => ChatMessage.NotifyClientRestore(),
-            delaySeconds: 1.0f,
+            delaySeconds: 3.0f,
             maxRetries: 3
         );
     }

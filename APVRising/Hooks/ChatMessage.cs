@@ -341,9 +341,6 @@ public static class ChatMessage
                     foreach (var entity in entities) { 
                         if (isResearching) {
                             ProgressionSnapshot.Capture(em, entity);
-                        } else
-                        {
-                            ProgressionSnapshot.Restore(em, entity);
                         }
                     }
                     ProgressionHandler.IsResearching = isResearching;

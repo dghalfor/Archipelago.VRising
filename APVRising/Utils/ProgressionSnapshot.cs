@@ -88,6 +88,13 @@ public static class ProgressionSnapshot
             {
                 var techPrefab = progBuf[i].UnlockedPrefab;
                 var prefabName = DebugTool.GetPrefabName(techPrefab);
+
+                if (string.IsNullOrEmpty(prefabName))
+                {
+                    Plugin.BepinLogger.LogWarning($"[Snapshot] ReconcileWithAP: could not resolve name for prefab {techPrefab}, skipping in vanilla-merge pass");
+                    continue;
+                }
+
                 if (DataDicts.EntityNameToAPLocation.ContainsKey(prefabName))
                     continue; // AP-managed, handled above
                 CollectTechEntries(em, prefabCollectionSystem, techPrefab, allowedRecipes, allowedBlueprints, allowedShapeshifts);
@@ -141,6 +148,13 @@ public static class ProgressionSnapshot
             {
                 var techPrefab = progBuf[i].UnlockedPrefab;
                 var prefabName = DebugTool.GetPrefabName(techPrefab);
+
+                if (string.IsNullOrEmpty(prefabName))
+                {
+                    Plugin.BepinLogger.LogWarning($"[Snapshot] Capture: could not resolve name for prefab {techPrefab}, skipping in vanilla-merge pass");
+                    continue;
+                }
+
                 if (DataDicts.EntityNameToAPLocation.ContainsKey(prefabName))
                     continue; // AP-managed, handled separately
 

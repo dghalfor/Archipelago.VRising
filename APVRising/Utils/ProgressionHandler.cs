@@ -666,7 +666,9 @@ namespace APVRising.Utils
                 ChatMessage.NotifyClientLocation(techPrefab._Value);
                 return;
             }
-            if (Plugin.IsServer && DataDicts.EntityNameToAPLocation.TryGetValue(DebugTool.GetPrefabName(techPrefab), out var locationName)) {
+
+            if (Plugin.IsServer && DataDicts.EntityNameToAPLocation.TryGetValue(DebugTool.GetPrefabName(techPrefab), out var locationName))
+            {
                 if (!Plugin.APClient.IsConfiguredLocation(locationName))
                 {
                     Plugin.BepinLogger.LogInfo($"Player does not have {techPrefab._Value} but it is not a configured location, skipping lock");
@@ -679,7 +681,7 @@ namespace APVRising.Utils
                     }
                     return;
                 }
-            }
+            }  
             if (Plugin.IsServer)
             {
                 ChatMessage.NotifyClientLock(techPrefab.GuidHash);

@@ -137,6 +137,127 @@ public static class TechToRecipeMapping
     {
         return TechToRecipes.TryGetValue(techGuid.GuidHash, out recipeHashes);
     }
+    private static HashSet<PrefabGUID> _stationGrantedTechs;
+    public static HashSet<PrefabGUID> StationGrantedTechs => _stationGrantedTechs ??= BuildStationGrantedTechs();
+
+    private static HashSet<int> _stationGrantedTechHashes;
+    public static HashSet<int> StationGrantedTechHashes =>
+        _stationGrantedTechHashes ??= new HashSet<int>(StationGrantedTechs.Select(g => g.GuidHash));
+
+    // Known spelling variants per station, lowercased for comparison.
+    // Add to these lists if new variants turn up in the data.
+    private static readonly string[] ResearchDeskVariants = { "research desk" };
+    private static readonly string[] StudyVariants = { "study" };
+    private static readonly string[] AthenaeumVariants = { "athenaeum", "atheneum", "aetheneum", "athenaneum" };
+
+    private static bool IsStationGranted(string location)
+    {
+        string normalized = location.ToLowerInvariant();
+
+        foreach (var variant in ResearchDeskVariants)
+        {
+            if (normalized.StartsWith(variant))
+            {
+                return true;
+            }
+        }
+
+        foreach (var variant in StudyVariants)
+        {
+            if (normalized.StartsWith(variant))
+            {
+                return true;
+            }
+        }
+
+        foreach (var variant in AthenaeumVariants)
+        {
+            if (normalized.StartsWith(variant))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    private static HashSet<PrefabGUID> BuildStationGrantedTechs()
+    {
+        var result = new HashSet<PrefabGUID>();
+        Plugin.BepinLogger.LogInfo("BuildStationGrantedTechs: building station-granted techs from DataDicts.EntityNameToAPLocation");
+
+        if (DataDicts.EntityNameToAPLocation == null)
+        {
+            Plugin.BepinLogger.LogError("BuildStationGrantedTechs: DataDicts.EntityNameToAPLocation is null — DataDicts may not be initialized yet. StationGrantedTechs will be empty; it will retry on next access.");
+            return result;
+        }
+
+        if (DataDicts.EntityNameToAPLocation.Count == 0)
+        {
+            Plugin.BepinLogger.LogWarning("BuildStationGrantedTechs: DataDicts.EntityNameToAPLocation is empty — DataDicts may not be fully populated yet. StationGrantedTechs will be empty; it will retry on next access.");
+            return result;
+        }
+
+        if (DataDicts.TechToPrefab == null || DataDicts.TechToPrefab.Count == 0)
+        {
+            Plugin.BepinLogger.LogWarning("BuildStationGrantedTechs: DataDicts.TechToPrefab is null or empty — DataDicts may not be fully populated yet. StationGrantedTechs will be empty; it will retry on next access.");
+            return result;
+        }
+
+        foreach (var kvp in DataDicts.EntityNameToAPLocation)
+        {
+            string techName = kvp.Key;
+            string location = kvp.Value;
+
+            if (string.IsNullOrEmpty(techName))
+            {
+                Plugin.BepinLogger.LogWarning("BuildStationGrantedTechs: found null/empty tech name key");
+                continue;
+            }
+
+            if (string.IsNullOrEmpty(location))
+            {
+                continue; // no location assigned yet, e.g. placeholder entries
+            }
+
+            bool isStationGranted;
+            try
+            {
+                isStationGranted = IsStationGranted(location);
+            }
+            catch (Exception ex)
+            {
+                Plugin.BepinLogger.LogError($"BuildStationGrantedTechs: exception checking location for '{techName}' (location='{location}'): {ex}");
+                continue;
+            }
+
+            if (!isStationGranted)
+            {
+                continue;
+            }
+
+            if (DataDicts.TechToPrefab.TryGetValue(techName, out var prefabGuid))
+            {
+                result.Add(prefabGuid);
+            }
+            else
+            {
+                Plugin.BepinLogger.LogWarning($"Tech '{techName}' is marked as station-granted but has no entry in TechToPrefab");
+            }
+        }
+
+        if (result.Count == 0)
+        {
+            Plugin.BepinLogger.LogWarning("BuildStationGrantedTechs: completed with zero station-granted techs found — check EntityNameToAPLocation contents and station-name variants.");
+        }
+        else
+        {
+            Plugin.BepinLogger.LogInfo($"BuildStationGrantedTechs: built {result.Count} station-granted techs.");
+        }
+
+        return result;
+    }
 
     /// <summary>
     /// Checks if a recipe hash is associated with any tech in the mapping.
@@ -223,7 +344,7 @@ public static class TechToRecipeMapping
             }
         }
     }
-    
+
 
     public static void SyncUnlockedTechs(DynamicBuffer<UnlockedProgressionElement> techBuffer, List<int> unlockedTech)
     {
@@ -231,27 +352,18 @@ public static class TechToRecipeMapping
         {
             return;
         }
-        
-        foreach (var techPrefab in DataDicts.PrefabToTech.Keys)
-        {
-            if (DataDicts.PrefabToTech.TryGetValue(techPrefab, out var techName)) {
-                if (!techName.StartsWith("Tech"))
-                {
-                    continue;
-                }
-            }
 
+        foreach (var techPrefab in StationGrantedTechs)
+        {
             bool techShouldBeUnlocked = unlockedTech.Contains(techPrefab.GuidHash);
 
             if (techShouldBeUnlocked)
             {
-                // Tech should be unlocked, ensure it's in the buffer
                 bool techExists = false;
                 for (int i = 0; i < techBuffer.Length; i++)
                 {
                     if (techBuffer[i].UnlockedPrefab == techPrefab)
                     {
-                        Plugin.BepinLogger.LogInfo($"Tech {techPrefab} already exists in buffer, skipping add");
                         techExists = true;
                         break;
                     }
@@ -265,7 +377,6 @@ public static class TechToRecipeMapping
             }
             else
             {
-                // Tech should be locked, remove it if it exists
                 for (int i = techBuffer.Length - 1; i >= 0; i--)
                 {
                     if (techBuffer[i].UnlockedPrefab == techPrefab)
@@ -285,7 +396,7 @@ public static class TechToRecipeMapping
             return;
         }
 
-        foreach (var techPrefab in DataDicts.PrefabToTech.Keys)
+        foreach (var techPrefab in StationGrantedTechs)
         {
             bool techShouldBeUnlocked = unlockedTech.Contains(techPrefab.GuidHash);
 
@@ -301,17 +412,16 @@ public static class TechToRecipeMapping
                             tech.IsResearchByStation = true;
                             techBuffer[i] = tech;
                             Plugin.BepinLogger.LogInfo($"Tech {techPrefab} is in buffer but IsResearchByStation is false, setting it to true");
-                        } else
+                        }
+                        else
                         {
                             Plugin.BepinLogger.LogInfo($"Tech {techPrefab} should be unlocked and is in buffer, ensuring IsResearchByStation is true");
                         }
                     }
                 }
-
             }
             else
             {
-                // Tech should be locked, remove it if it exists
                 for (int j = techBuffer.Length - 1; j >= 0; j--)
                 {
                     if (techBuffer[j].ResearchGuid == techPrefab)
@@ -407,8 +517,6 @@ public static class TechToRecipeMapping
     }
     public static void SyncResearchSnapshot(DynamicBuffer<Snapshot_ResearchBuffer> techBuffer, List<int> unlockedTech)
     {
-
-
         if (unlockedTech == null) return;
 
         if (!Snapshot_ResearchBuffer.TryGetSerializedSnapshot(techBuffer, readOnly: false, out Snapshot_ResearchBuffer.BufferSnapshotPtr snapshotPtr))
@@ -423,7 +531,7 @@ public static class TechToRecipeMapping
             {
                 ref Snapshot_ResearchBuffer_Data data = ref snapshotPtr.Elements[i];
 
-                if (!DataDicts.PrefabToTech.ContainsKey(data.ResearchGuid)) continue;
+                if (!StationGrantedTechs.Contains(data.ResearchGuid)) continue;
 
                 bool shouldBeUnlocked = unlockedTech.Contains(data.ResearchGuid.GuidHash);
 
@@ -435,7 +543,6 @@ public static class TechToRecipeMapping
                 }
             }
         }
-      
     }
 }
     
