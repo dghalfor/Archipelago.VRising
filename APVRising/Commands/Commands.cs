@@ -30,7 +30,12 @@ public static class ArchipelagoCommands
         {
             [Plugin.ServerSaveName] = new ArchipelagoConnectionData(uri, password, slotName, "0")
         });
-        Plugin.APClient.Connect();
+        ArchipelagoConnectionHelper.PerformFullArchipelagoConnect();
+    }
+    [Command("reconnect", shortHand: "rc", description: "Reconnect to Archipelago", adminOnly: false)]
+    public static void APReconnect(ICommandContext ctx)
+    {
+        ArchipelagoConnectionHelper.PerformFullArchipelagoConnect();
     }
     [Command("disconnect", shortHand: "d", description: "Disconnect from Archipelago", adminOnly: false)]
     public static void APDisconnect(ICommandContext ctx)

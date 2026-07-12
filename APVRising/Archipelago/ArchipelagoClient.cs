@@ -50,6 +50,7 @@ public class ArchipelagoClient
     public void Connect()
     { 
         if (Authenticated || attemptingConnection) return;
+        attemptingConnection = true; 
 
         try
         {

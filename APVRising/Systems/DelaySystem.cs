@@ -1,5 +1,6 @@
-﻿
+﻿using System;
 using APVRising;
+using APVRising.Archipelago;
 using APVRising.Hooks;
 using APVRising.Utils;
 using ProjectM;
@@ -180,5 +181,35 @@ public static class DelaySystem
             delaySeconds: 7.0f,
             maxRetries: 3
         );
+    }
+    public static void WaitForAuthenticationThenDeferred(Action onAuthenticated, Action onTimeout = null)
+    {
+        Plugin.BepinLogger.LogInfo("WaitForAuthenticationThenDeferred: polling for AP auth");
+        DeferredActionSystem.Schedule(
+            action: () =>
+            {
+                if (!ArchipelagoClient.Authenticated)
+                {
+                    // Throwing triggers the built-in retry/backoff in DeferredActionSystem.
+                    throw new InvalidOperationException("AP not yet authenticated, retrying...");
+                }
+                onAuthenticated();
+            },
+            delaySeconds: 1.5f,
+            maxRetries: 12 // ~1.5s initial + backoff (1,2,...,12s) ≈ up to ~80s worst case
+        );
+
+        if (onTimeout != null)
+        {
+            DeferredActionSystem.Schedule(
+                action: () =>
+                {
+                    if (!ArchipelagoClient.Authenticated)
+                        onTimeout();
+                },
+                delaySeconds: 85f,
+                maxRetries: 0
+            );
+        }
     }
 }
