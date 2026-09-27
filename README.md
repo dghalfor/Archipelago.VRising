@@ -24,7 +24,8 @@ death_link is a go
 * Launch your world again, it may give you a connection error the first time you do this, just reattempt to start the world.
 * If you cannot get it to launch check Steam\steamapps\common\VRising\BepInEx and BepInEx_Server for the errorlogs and see if anything was logged in them.
 
-## Does this work in multiplayer and how?
+## Does this work in a multiplayer server and how?
+* **0.3.0 has issues with multiplayer, testing is in progress**
 * Multiplayer is currently in testing, but has been proven to be at least mostly functional with minimal issues, but play at your own risk.
 * Ultimately, yes this works for multiplayer, all players on the server will need to have the mods installed.
 * The multiplayer server will be able to connect to ONE slot on a multiworld. All player will share progression towards this slot
