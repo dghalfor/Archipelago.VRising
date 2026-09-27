@@ -1,4 +1,5 @@
-﻿using APVRising.Services;
+﻿using APVRising.Archipelago;
+using APVRising.Services;
 using ProjectM;
 using System;
 using System.Collections.Generic;
@@ -17,11 +18,20 @@ namespace APVRising.Utils
         {
             Plugin.BepinLogger.LogInfo("PerformFullArchipelagoConnect: starting connect + capture + reconcile sequence");
 
+            // Already connected: nothing to do. Do NOT enter research mode here, since nothing
+            // below would ever clear it again.
+            if (ArchipelagoClient.Authenticated)
+            {
+                return;
+            }
+
             ProgressionHandler.IsResearching = true;
+
+            Plugin.APClient.Connect();
+            DelaySystem.DisconnectReminderDeferred();
 
             // Fire first so the background handshake has maximum time to complete
             // while the rest of this synchronous work runs.
-            Plugin.APClient.Connect();
 
             var progQuery = Helper.GetEntityManager().CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
             var progEntities = progQuery.ToEntityArray(Allocator.Temp);
@@ -33,7 +43,6 @@ namespace APVRising.Utils
                 DelaySystem.ClientBaselineCapture();
             }
 
-            DelaySystem.DisconnectReminderDeferred();
             DataService.PlayerPersistence.LoadPlayerItemReceivedData();
             DataService.PlayerPersistence.LoadPlayerShapeshiftData();
 
@@ -57,6 +66,5 @@ namespace APVRising.Utils
             DelaySystem.StopResearchDeferredSlow();
         }
     }
-   
-}
 
+}

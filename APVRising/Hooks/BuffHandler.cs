@@ -22,6 +22,40 @@ public class BuffSystemSpawnServerPatch
 {
     private static Entity _bossEntitiesToDestroy = Entity.Null;
 
+    // A single V Blood kill fires multiple boss-completion buffs (observed: both
+    // AB_FeedBoss_03_Complete_Trigger and AB_FeedBoss_04_Complete_AreaTriggerBuff for the
+    // same kill, on different frames), each of which reaches Postfix independently and would
+    // otherwise re-run the tech-lock + achievement-claim sequence for the same boss. Track the
+    // resolved boss entity (not _bossEntitiesToDestroy, which is just whichever buff triggered
+    // it) so the second firing for the same kill is a no-op instead of duplicating work.
+    private static readonly System.Collections.Generic.Dictionary<Entity, float> _recentlyProcessedBosses = new();
+    private const float BossDedupWindowSeconds = 30f;
+
+    private static bool TryClaimBossProcessing(Entity bossEntity)
+    {
+        float now = UnityEngine.Time.unscaledTime;
+
+        // Opportunistic prune so this doesn't grow unbounded over a long server session.
+        if (_recentlyProcessedBosses.Count > 64)
+        {
+            var stale = new System.Collections.Generic.List<Entity>();
+            foreach (var kvp in _recentlyProcessedBosses)
+                if (now - kvp.Value > BossDedupWindowSeconds)
+                    stale.Add(kvp.Key);
+            foreach (var key in stale)
+                _recentlyProcessedBosses.Remove(key);
+        }
+
+        if (_recentlyProcessedBosses.TryGetValue(bossEntity, out var lastProcessed) &&
+            now - lastProcessed < BossDedupWindowSeconds)
+        {
+            return false; // already handled this exact kill recently
+        }
+
+        _recentlyProcessedBosses[bossEntity] = now;
+        return true;
+    }
+
     [HarmonyPatch(typeof(BuffSystem_Spawn_Server), nameof(BuffSystem_Spawn_Server.OnUpdate))]
     [HarmonyPrefix]
     public static void Prefix(BuffSystem_Spawn_Server __instance)
@@ -74,6 +108,22 @@ public class BuffSystemSpawnServerPatch
         if (em.TryGetComponentData<SpellTarget>(_bossEntitiesToDestroy, out var spellTarget))
         {
             var bossEntity = spellTarget.Target._Entity;
+
+            if (!TryClaimBossProcessing(bossEntity))
+            {
+                // Prefix (unguarded, runs for every firing) already set IsResearching = true for
+                // THIS firing too, so it still owes a StopResearchDeferred to balance that back out
+                // -- skipping it here (as an early return used to do) leaves IsResearching stuck
+                // true whenever this duplicate's flip lands after the original firing's own stop,
+                // which then blocks ArchipelagoItemSystem.OnUpdate's item queue (it only drains
+                // PendingItems while IsResearching == false) until some unrelated later event
+                // happens to clear it. Everything else about the duplicate (the tech-lock loop,
+                // achievement claim, RestoreDeferred) is still skipped -- only the research-mode
+                // debt needs paying.
+                Plugin.BepinLogger.LogInfo($"[AP] Duplicate boss-kill buff trigger for {bossEntity} within {BossDedupWindowSeconds}s, skipping duplicate work but still closing out research mode.");
+                DelaySystem.StopResearchDeferred();
+                return;
+            }
 
             // Handle VBloodUnlockTechBuffer buffer contents
             if (em.HasBuffer<VBloodUnlockTechBuffer>(bossEntity))

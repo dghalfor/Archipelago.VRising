@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 
 namespace APVRising.Archipelago;
+
 public class ArchipelagoData
 {
     public string Uri;
@@ -14,6 +15,10 @@ public class ArchipelagoData
     public static List<int> ReceivedChecks = new List<int>();
     public static List<int> CheckedLocations = new List<int>();
     public static HashSet<int> ConfiguredLocations = new HashSet<int>();
+
+    public static bool doneConfiguring = false;
+    public static bool doneReconciling = false;
+    public static bool doneResyncing = false;
 
     /// <summary>
     /// seed for this archipelago data. Can be used when loading a file to verify the session the player is trying to
@@ -84,15 +89,15 @@ public class ArchipelagoData
     /// <returns></returns>
     public override string ToString()
     {
-        return JsonConvert.SerializeObject($"{Uri} {SlotName} {Password} {Index} {seed} {slotData}");
+        return JsonConvert.SerializeObject($"{Uri} {SlotName} {Index} {seed}"); // password intentionally omitted
     }
-    public string SlotDataOpts ()
+    public string SlotDataOpts()
     {
-        return slotData.TryGetValue("goal", out var goal) ? goal.ToString() : string.Empty;
+        return slotData != null && slotData.TryGetValue("goal", out var goal) ? goal.ToString() : string.Empty;
     }
     public bool IsDeathLinkEnabled()
     {
-        if (!slotData.TryGetValue("death_link", out var value)) return false;
+        if (slotData == null || !slotData.TryGetValue("death_link", out var value)) return false;
         return Convert.ToBoolean(value);
     }
 }

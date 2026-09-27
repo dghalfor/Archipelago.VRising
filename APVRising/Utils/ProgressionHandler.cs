@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine.TextCore.Text;
+using VRisingArchipelago;
 using static APVRising.Services.DataService;
 using static ProjectM.ProgressionUtility;
 using static VCF.Core.Basics.RoleCommands;
@@ -329,6 +330,7 @@ namespace APVRising.Utils
                 prefabCollectionSystem = Plugin.ClientCollectionSystem;
             }
             ArchipelagoData.AddReceivedCheck(techPrefab._Value);
+            UnlockStateSync.RecordState('U', techPrefab);
 
             // Plugin.BepinLogger.LogInfo($"Unlocking research for player {userEntity.Index} and tech {techPrefab._Value}");
             var query = em.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
@@ -362,7 +364,7 @@ namespace APVRising.Utils
                 if (!prefabCollectionSystem._PrefabLookupMap.TryGetValue(techPrefab, out Entity researchEntity))
                 {
                     //  Plugin.BepinLogger.LogWarning($"[AP] Could not find entity for PrefabGUID {techPrefab._Value}");
-                    return;
+                    break;
                 }
 
                 //Unlock recipes
@@ -389,7 +391,7 @@ namespace APVRising.Utils
                         if (alreadyUnlocked)
                             continue;
                         // Plugin.BepinLogger.LogInfo($"Adding element to unlocked buffer: {element.Guid}");
-                        unlockedBuffer.Add(new UnlockedRecipeElement { UnlockedRecipe = element.Guid, UserHasRequiredContentFlags = true });
+                        unlockedBuffer.Add(new UnlockedRecipeElement { UnlockedRecipe = element.Guid, UserHasRequiredContentFlags = GetRecipeContentFlag(em, userEntity, element.Guid._Value) });
                     }
                 }
 
@@ -418,7 +420,7 @@ namespace APVRising.Utils
                         if (alreadyUnlocked)
                             continue;
                         Plugin.BepinLogger.LogInfo($"Adding element to unlocked buffer: {element.Guid}");
-                        unlockedBPBuffer.Add(new UnlockedBlueprintElement { UnlockedBlueprint = element.Guid, UserHasRequiredContentFlags = true });
+                        unlockedBPBuffer.Add(new UnlockedBlueprintElement { UnlockedBlueprint = element.Guid, UserHasRequiredContentFlags = GetBlueprintContentFlag(em, userEntity, element.Guid._Value) });
                     }
                 }
                 if (em.HasBuffer<ProgressionBookShapeshiftElement>(researchEntity))
@@ -521,7 +523,7 @@ namespace APVRising.Utils
                             }
                         }
                     }
-                
+
                 }
 
             }
@@ -543,6 +545,7 @@ namespace APVRising.Utils
                 prefabCollectionSystem = Plugin.ClientCollectionSystem;
             }
             ArchipelagoData.AddReceivedCheck(techPrefab._Value);
+            UnlockStateSync.RecordState('A', techPrefab);
 
             // Plugin.BepinLogger.LogInfo($"Unlocking research for player {userEntity.Index} and tech {techPrefab._Value}");
             var query = em.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
@@ -576,7 +579,7 @@ namespace APVRising.Utils
                 if (!prefabCollectionSystem._PrefabLookupMap.TryGetValue(techPrefab, out Entity researchEntity))
                 {
                     //  Plugin.BepinLogger.LogWarning($"[AP] Could not find entity for PrefabGUID {techPrefab._Value}");
-                    return;
+                    break;
                 }
 
                 //Unlock recipes
@@ -603,7 +606,7 @@ namespace APVRising.Utils
                         if (alreadyUnlocked)
                             continue;
                         // Plugin.BepinLogger.LogInfo($"Adding element to unlocked buffer: {element.Guid}");
-                        unlockedBuffer.Add(new UnlockedRecipeElement { UnlockedRecipe = element.Recipe, UserHasRequiredContentFlags = true });
+                        unlockedBuffer.Add(new UnlockedRecipeElement { UnlockedRecipe = element.Recipe, UserHasRequiredContentFlags = GetRecipeContentFlag(em, userEntity, element.Recipe._Value) });
                     }
                 }
 
@@ -630,7 +633,7 @@ namespace APVRising.Utils
                         if (alreadyUnlocked)
                             continue;
                         // Plugin.BepinLogger.LogInfo($"Adding element to unlocked buffer: {element.Guid}");
-                        unlockedBPBuffer.Add(new UnlockedBlueprintElement { UnlockedBlueprint = element.Blueprint, UserHasRequiredContentFlags = true });
+                        unlockedBPBuffer.Add(new UnlockedBlueprintElement { UnlockedBlueprint = element.Blueprint, UserHasRequiredContentFlags = GetBlueprintContentFlag(em, userEntity, element.Blueprint._Value) });
                     }
                 }
                 if (em.HasBuffer<ProgressionBookTechElement>(researchEntity))
@@ -641,9 +644,10 @@ namespace APVRising.Utils
                         UnlockTechForPlayer(userEntity, unlockedTechElementBuffer[i].Tech);
                     }
                 }
-                entities.Dispose();
             }
+            entities.Dispose();
         }
+
         public static void LockTechForPlayer(Entity userEntity, PrefabGUID techPrefab)
         {
             EntityManager em;
@@ -663,7 +667,7 @@ namespace APVRising.Utils
             if (ArchipelagoData.ReceivedChecks.Contains(techPrefab._Value))
             {
                 Plugin.BepinLogger.LogInfo($"Player already has {techPrefab._Value}");
-                ChatMessage.NotifyClientLocation(techPrefab._Value);
+                ChatMessage.NotifyClientLocation(userEntity, techPrefab._Value);
                 return;
             }
 
@@ -674,24 +678,34 @@ namespace APVRising.Utils
                     Plugin.BepinLogger.LogInfo($"Player does not have {techPrefab._Value} but it is not a configured location, skipping lock");
                     ArchipelagoData.AddReceivedCheck(techPrefab._Value);
                     ArchipelagoData.AddLocationCheck(techPrefab._Value);
+                    UnlockStateSync.RecordState('U', techPrefab);
                     if (Plugin.IsServer)
                     {
-                        ChatMessage.NotifyClientCheck(techPrefab._Value);
-                        ChatMessage.NotifyClientLocation(techPrefab._Value);
+                        ChatMessage.NotifyClientCheck(userEntity, techPrefab._Value);
+                        ChatMessage.NotifyClientLocation(userEntity, techPrefab._Value);
                     }
                     return;
                 }
-            }  
+            }
             if (Plugin.IsServer)
             {
-                ChatMessage.NotifyClientLock(techPrefab.GuidHash);
+                ChatMessage.NotifyClientLock(userEntity, techPrefab.GuidHash);
             }
+
+            UnlockStateSync.RecordState('L', techPrefab);
 
             Plugin.BepinLogger.LogInfo($"Lock research for player {userEntity.Index} and tech {techPrefab._Value}");
             var query = em.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
             if (query.IsEmpty) return;
             Plugin.BepinLogger.LogInfo($"Locking tech {techPrefab._Value} for player {userEntity.Index}");
             var entities = query.ToEntityArray(Allocator.Temp);
+
+            // Captured here, at the moment the game itself resolves whether the player owns the
+            // content each recipe/blueprint requires, and replayed by UnlockTechForPlayer so a
+            // restored unlock never grants content the player doesn't actually own.
+            var capturedRecipeFlags = new Dictionary<int, bool>();
+            var capturedBlueprintFlags = new Dictionary<int, bool>();
+
             foreach (var entity in entities)
             {
                 //UnlockedRecipeElement, UnlockedBlueprintElement, UnlockedVBlood, (maybe) UnlockedSpellBookAbility
@@ -700,7 +714,7 @@ namespace APVRising.Utils
                 if (!prefabCollectionSystem._PrefabLookupMap.TryGetValue(techPrefab, out Entity researchEntity))
                 {
                     Plugin.BepinLogger.LogWarning($"[AP] Could not find entity for PrefabGUID {techPrefab._Value}");
-                    return;
+                    break;
                 }
 
                 if (em.HasBuffer<TechUnlockRecipeBuffer>(researchEntity))
@@ -717,6 +731,7 @@ namespace APVRising.Utils
                             if (unlockedBuffer[i].UnlockedRecipe == element.Guid)
                             {
                                 //   Plugin.BepinLogger.LogInfo($"Tech {techPrefab} should be locked but is in buffer, removing it");
+                                capturedRecipeFlags[element.Guid._Value] = unlockedBuffer[i].UserHasRequiredContentFlags;
                                 unlockedBuffer.RemoveAt(i);
                                 CheckRefinementStations(element.Guid);
                             }
@@ -737,6 +752,7 @@ namespace APVRising.Utils
                             if (unlockedBPBuffer[j].UnlockedBlueprint == element.Guid)
                             {
                                 Plugin.BepinLogger.LogInfo($"Blueprint {element.Guid} should be locked but is in buffer, for player {userEntity.Index}");
+                                capturedBlueprintFlags[element.Guid._Value] = unlockedBPBuffer[j].UserHasRequiredContentFlags;
                                 unlockedBPBuffer.RemoveAt(j);
                             }
                         }
@@ -795,20 +811,27 @@ namespace APVRising.Utils
 
                     Plugin.BepinLogger.LogInfo($"[Shapeshift] Saving {entriesToSave.Count} entries for tech {techPrefab._Value}");
 
-                    var user = em.GetComponentData<ProjectM.Network.User>(userEntity);
-                    string playerKey = Plugin.ServerSaveName + "-" + user.CharacterName;
-                    string techKey = techPrefab._Value.ToString();
+                    // Persist on the server only, and never overwrite previously saved entries with an
+                    // empty list (a repeat lock finds the buffer already stripped).
+                    if (Plugin.IsServer && entriesToSave.Count > 0)
+                    {
+                        var user = em.GetComponentData<ProjectM.Network.User>(userEntity);
+                        string playerKey = Plugin.ServerSaveName + "-" + user.CharacterName;
+                        string techKey = techPrefab._Value.ToString();
 
-                    PlayerDictionaries._PlayerShapeshifts.AddOrUpdate(
-                        playerKey,
-                        _ => new PlayerShapeshiftData(new Dictionary<string, List<ShapeshiftEntryData>> { [techKey] = entriesToSave }),
-                        (_, existing) => { existing.shapeshiftGuidOwned[techKey] = entriesToSave; return existing; }
-                    );
-                    PlayerPersistence.SavePlayerShapeshiftData();
+                        PlayerDictionaries._PlayerShapeshifts.AddOrUpdate(
+                            playerKey,
+                            _ => new PlayerShapeshiftData(new Dictionary<string, List<ShapeshiftEntryData>> { [techKey] = entriesToSave }),
+                            (_, existing) => { existing.shapeshiftGuidOwned[techKey] = entriesToSave; return existing; }
+                        );
+                        PlayerPersistence.SavePlayerShapeshiftData();
+                    }
                 }
             }
 
-            
+            SaveRecipeContentFlags(em, userEntity, capturedRecipeFlags);
+            SaveBlueprintContentFlags(em, userEntity, capturedBlueprintFlags);
+
             entities.Dispose();
         }
 
@@ -835,6 +858,7 @@ namespace APVRising.Utils
             {
                 return;
             }
+            UnlockStateSync.RecordState('K', spellPrefab);
             var query = em.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
             if (query.IsEmpty) return;
             Plugin.BepinLogger.LogInfo($"lockable spell {spellPrefab.GuidHash}");
@@ -852,6 +876,7 @@ namespace APVRising.Utils
                     }
                 }
             }
+            entities.Dispose();
         }
 
         public static void UnlockSpellAbilityForPlayer(Entity userEntity, PrefabGUID spellPrefab)
@@ -877,6 +902,13 @@ namespace APVRising.Utils
                 return;
             }
 
+            if (!em.HasComponent<AbilitySpellSchool>(spellEntity))
+            {
+                Plugin.BepinLogger.LogWarning($"[AP] Spell {spellPrefab.GuidHash} has no AbilitySpellSchool, cannot unlock");
+                return;
+            }
+            var abilityComp = em.GetComponentData<AbilitySpellSchool>(spellEntity);
+
             var query = em.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
             if (query.IsEmpty) return;
 
@@ -885,30 +917,28 @@ namespace APVRising.Utils
             {
                 var unlockedSpellBuffer = em.GetBuffer<UnlockedSpellBookAbility>(entity);
 
-                for (int i = 0; i < unlockedSpellBuffer.Length; i++)
+                bool alreadyUnlocked = false;
+                for (int j = 0; j < unlockedSpellBuffer.Length; j++)
                 {
-                    var element = unlockedSpellBuffer[i];
-
-                    bool alreadyUnlocked = false;
-                    for (int j = 0; j < unlockedSpellBuffer.Length; j++)
+                    if (unlockedSpellBuffer[j].Ability == spellPrefab)
                     {
-                        if (unlockedSpellBuffer[j].Ability == spellPrefab)
-                        {
-                            alreadyUnlocked = true;
-                            break;
-                        }
+                        alreadyUnlocked = true;
+                        break;
                     }
-
-                    if (alreadyUnlocked)
-                        continue;
-                    Plugin.BepinLogger.LogInfo($"Adding element to unlocked buffer: {spellPrefab.GuidHash}");
-                    var abilityComp = em.GetComponentData<AbilitySpellSchool>(spellEntity);
-                    unlockedSpellBuffer.Add(new UnlockedSpellBookAbility { Ability = spellPrefab, Tier = abilityComp.Tier });
                 }
+
+                if (alreadyUnlocked)
+                    continue;
+
+                Plugin.BepinLogger.LogInfo($"Adding element to unlocked buffer: {spellPrefab.GuidHash}");
+                unlockedSpellBuffer.Add(new UnlockedSpellBookAbility { Ability = spellPrefab, Tier = abilityComp.Tier });
             }
+            entities.Dispose();
         }
+
         public static void LockProg(EntityManager em, PrefabGUID prefab)
         {
+            UnlockStateSync.RecordState('P', prefab);
             Plugin.BepinLogger.LogInfo($"Locking progression for prefab {prefab.GuidHash}");
             var revokeProgQuery = em.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
             var revokeProgEntities = revokeProgQuery.ToEntityArray(Allocator.Temp);
@@ -927,6 +957,57 @@ namespace APVRising.Utils
             }
             revokeProgEntities.Dispose();
         }
+        private static string GetPlayerKey(EntityManager em, Entity userEntity)
+        {
+            var user = em.GetComponentData<ProjectM.Network.User>(userEntity);
+            return Plugin.ServerSaveName + "-" + user.CharacterName;
+        }
+
+        /// <summary>
+        /// Whether the player owns the content this recipe requires, as last resolved by the game
+        /// at LockTechForPlayer time. Defaults to true when nothing has been captured yet (the
+        /// player's very first unlock, before anything has ever been locked for them).
+        /// </summary>
+        private static bool GetRecipeContentFlag(EntityManager em, Entity userEntity, int recipeGuid)
+        {
+            string playerKey = GetPlayerKey(em, userEntity);
+            if (PlayerDictionaries._PlayerRecipeContentFlags.TryGetValue(playerKey, out var data) &&
+                data.Flags.TryGetValue(recipeGuid, out var flag))
+                return flag;
+            return true;
+        }
+
+        private static bool GetBlueprintContentFlag(EntityManager em, Entity userEntity, int blueprintGuid)
+        {
+            string playerKey = GetPlayerKey(em, userEntity);
+            if (PlayerDictionaries._PlayerBlueprintContentFlags.TryGetValue(playerKey, out var data) &&
+                data.Flags.TryGetValue(blueprintGuid, out var flag))
+                return flag;
+            return true;
+        }
+
+        private static void SaveRecipeContentFlags(EntityManager em, Entity userEntity, Dictionary<int, bool> flags)
+        {
+            if (!Plugin.IsServer || flags.Count == 0) return;
+            string playerKey = GetPlayerKey(em, userEntity);
+            PlayerDictionaries._PlayerRecipeContentFlags.AddOrUpdate(
+                playerKey,
+                _ => new PlayerContentFlagData(new Dictionary<int, bool>(flags)),
+                (_, existing) => { foreach (var kv in flags) existing.Flags[kv.Key] = kv.Value; return existing; });
+            PlayerPersistence.SaveRecipeContentFlagData();
+        }
+
+        private static void SaveBlueprintContentFlags(EntityManager em, Entity userEntity, Dictionary<int, bool> flags)
+        {
+            if (!Plugin.IsServer || flags.Count == 0) return;
+            string playerKey = GetPlayerKey(em, userEntity);
+            PlayerDictionaries._PlayerBlueprintContentFlags.AddOrUpdate(
+                playerKey,
+                _ => new PlayerContentFlagData(new Dictionary<int, bool>(flags)),
+                (_, existing) => { foreach (var kv in flags) existing.Flags[kv.Key] = kv.Value; return existing; });
+            PlayerPersistence.SaveBlueprintContentFlagData();
+        }
+
         public static void DeduplicateBuffer<T>(DynamicBuffer<T> buffer, Func<T, PrefabGUID> getGuid)
     where T : struct
         {

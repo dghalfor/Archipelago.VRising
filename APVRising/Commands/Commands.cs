@@ -51,7 +51,17 @@ public static class ArchipelagoCommands
     {
         if (value != null)
         {
-            Archipelago.DeathLinkHandler.deathLinkEnabled = value.Value;
+            if (Plugin.APClient?.DeathLinkHandler != null)
+            {
+                Plugin.APClient.DeathLinkHandler.SetDeathLink(value.Value);
+            }
+            else
+            {
+                // Not connected yet: just record the desired state so it takes effect once
+                // DeathLinkHandler is constructed on connect (see ArchipelagoClient.HandleConnectResult).
+                Archipelago.DeathLinkHandler.deathLinkEnabled = value.Value;
+                ctx.Reply("[Archipelago] Not connected yet; death link preference saved for when you connect.");
+            }
         }
         ctx.Reply($"[Archipelago] Death link is {(Archipelago.DeathLinkHandler.deathLinkEnabled ? "on" : "off")}");
     }
@@ -77,7 +87,7 @@ public static class ArchipelagoCommands
         var entities = progQuery.ToEntityArray(Allocator.Temp);
         foreach (var entity in entities)
         {
-            DelaySystem.RestoreDeferred(Plugin.EntityManager, entity);
+            //DelaySystem.SlowRestoreDeferred(entity);
         }
         DelaySystem.StopResearchDeferred();
         //ProgressionHandler.UpdateProgression();
@@ -106,9 +116,9 @@ public static class ArchipelagoCommands
         foreach (var userEntity in userEntities)
         {
             ProgressionHandler.UnlockTechForPlayer(userEntity, new Stunlock.Core.PrefabGUID(guid));
+            ChatMessage.NotifyClientUnlock(userEntity, guid);
         }
         userEntities.Dispose();
-        ChatMessage.NotifyClientUnlock(guid);
         ctx.Reply($"Unlocking tech with GUID: {guid}");
     }
 
@@ -123,9 +133,9 @@ public static class ArchipelagoCommands
         foreach (var userEntity in userEntities)
         {
             ProgressionHandler.LockTechForPlayer(userEntity, new Stunlock.Core.PrefabGUID(guid));
+            ChatMessage.NotifyClientLockProg(userEntity, guid);
         }
         userEntities.Dispose();
-        //ChatMessage.NotifyClientLock(guid);
         ctx.Reply($"Locking tech with GUID: {guid}");
     }
 
@@ -140,9 +150,9 @@ public static class ArchipelagoCommands
         foreach (var userEntity in userEntities)
         {
             ProgressionHandler.LockSpellAbilityForPlayer(userEntity, new Stunlock.Core.PrefabGUID(guid));
+            ChatMessage.NotifyClientLockSpell(userEntity, guid);
         }
         userEntities.Dispose();
-        ChatMessage.NotifyClientLockSpell(guid);
         ctx.Reply($"Locking spell with GUID: {guid}");
     }
 
@@ -157,9 +167,9 @@ public static class ArchipelagoCommands
         foreach (var userEntity in userEntities)
         {
             ProgressionHandler.UnlockSpellAbilityForPlayer(userEntity, new Stunlock.Core.PrefabGUID(guid));
+            ChatMessage.NotifyClientUnlockSpell(userEntity, guid);
         }
         userEntities.Dispose();
-        ChatMessage.NotifyClientUnlockSpell(guid);
         ctx.Reply($"Unlock spell with GUID: {guid}");
     }
 
@@ -174,7 +184,8 @@ public static class ArchipelagoCommands
             var user = Plugin.EntityManager.GetComponentData<User>(userEntity);
 
             var entity = Helper.AddItemToInventory(user.LocalCharacter._Entity, new PrefabGUID(guid), 1, out var result);
-            if (result) {
+            if (result)
+            {
                 ctx.Reply($"Gave item with guid: {guid}");
             }
             ctx.Reply($"Could not give item with guid: {guid}");
@@ -193,13 +204,7 @@ public static class ArchipelagoCommands
         ctx.Reply($"Synced Progression");
     }
 
-    [Command("lockProg")]
-    public static void LockProgression(ICommandContext ctx, int guid)
-    {
-        ProgressionHandler.LockProg(Plugin.EntityManager, new Stunlock.Core.PrefabGUID(guid));
-        ChatMessage.NotifyClientLockProg(guid);
-        ctx.Reply($"Locked Progression");
-    }
+
 
     [Command("dedup", description: "Deduplicate progression buffers", adminOnly: true)]
     public static void APDedup(ICommandContext ctx)

@@ -1,0 +1,151 @@
+﻿using APVRising;
+using Il2CppInterop.Runtime;
+using ProjectM;
+using ProjectM.Network;
+using Unity.Collections;
+using Unity.Entities;
+
+namespace VRisingArchipelago
+{
+    /// <summary>
+    /// Sends ##ACK#{version}## from client to server using the game's native
+    /// client-to-server chat event, constructed directly (not via typed chat).
+    ///
+    /// Requires local user/character entity resolution — plug in your existing
+    /// lookup where marked below.
+    /// </summary>
+    public static class AckSender
+    {
+        private static readonly ComponentType[] NetworkEventComponents =
+        [
+            ComponentType.ReadOnly(Il2CppType.Of<FromCharacter>()),
+            ComponentType.ReadOnly(Il2CppType.Of<NetworkEventType>()),
+            ComponentType.ReadOnly(Il2CppType.Of<SendNetworkEventTag>()),
+            ComponentType.ReadOnly(Il2CppType.Of<ChatMessageEvent>())
+        ];
+
+        private static readonly NetworkEventType ChatEventType = new()
+        {
+            IsAdminEvent = false,
+            EventId = NetworkEvents.EventId_ChatMessageEvent,
+            IsDebugEvent = false,
+        };
+
+        public static void SendAck(int version)
+        {
+            // TODO: wire in your existing local user/character resolution here.
+            var localUser = LocalPlayer.LocalUser;
+            var localCharacter = LocalPlayer.LocalCharacter;
+
+            if (localUser == Entity.Null || localCharacter == Entity.Null)
+            {
+                Plugin.BepinLogger.LogWarning($"[AP] Cannot send ACK v{version}, local user not resolved yet.");
+                return;
+            }
+
+            var userNetworkId = Plugin.ClientEntityManager.GetComponentData<NetworkId>(localUser);
+            var chatMessageEvent = new ChatMessageEvent
+            {
+                MessageText = new FixedString512Bytes($"##ACK#{version}##"),
+                MessageType = ChatMessageType.Local,
+                ReceiverEntity = userNetworkId
+            };
+
+            var networkEntity = Plugin.ClientEntityManager.CreateEntity(NetworkEventComponents);
+            Plugin.ClientEntityManager.SetComponentData(networkEntity, new FromCharacter { Character = localCharacter, User = localUser });
+            Plugin.ClientEntityManager.SetComponentData(networkEntity, ChatEventType);
+            Plugin.ClientEntityManager.SetComponentData(networkEntity, chatMessageEvent);
+
+            Plugin.BepinLogger.LogInfo($"[AP] Sent ACK v{version}");
+        }
+    }
+
+    /// <summary>
+    /// Local user/character resolution using the client world from Plugin.
+    /// This caches results to avoid repeated lookups.
+    /// </summary>
+    internal static class LocalPlayer
+    {
+        private static Entity _cachedLocalUser = Entity.Null;
+        private static Entity _cachedLocalCharacter = Entity.Null;
+
+        public static Entity LocalUser
+        {
+            get
+            {
+                // Return cached if still valid
+                if (_cachedLocalUser != Entity.Null &&  Plugin.ClientEntityManager.Exists(_cachedLocalUser))
+                    return _cachedLocalUser;
+
+                _cachedLocalUser = Entity.Null;
+                try
+                {
+                    var clientWorld = Plugin.Client;
+                    var em = clientWorld.EntityManager;
+
+                    // Query for the local user in the client world
+                    var userQuery = em.CreateEntityQuery(ComponentType.ReadOnly<ProjectM.Network.User>());
+                    var users = userQuery.ToEntityArray(Allocator.Temp);
+
+                    if (users.Length > 0)
+                    {
+                        _cachedLocalUser = users[0];
+                    }
+
+                    users.Dispose();
+                }
+                catch (System.Exception ex)
+                {
+                    Plugin.BepinLogger.LogWarning($"Failed to resolve local user: {ex.Message}");
+                }
+
+                return _cachedLocalUser;
+            }
+        }
+
+        public static Entity LocalCharacter
+        {
+            get
+            {
+                // Return cached if still valid
+                if (_cachedLocalCharacter != Entity.Null && Plugin.ClientEntityManager.Exists(_cachedLocalCharacter))
+                    return _cachedLocalCharacter;
+
+                _cachedLocalCharacter = Entity.Null;
+                try
+                {
+                    var clientWorld = Plugin.Client;
+                    var em = clientWorld.EntityManager;
+
+                    // Query for local character - look for entity with FromCharacter component
+                    var charQuery = em.CreateEntityQuery(ComponentType.ReadOnly<FromCharacter>());
+                    var chars = charQuery.ToEntityArray(Allocator.Temp);
+
+                    if (chars.Length > 0)
+                    {
+                        // Get the character entity from FromCharacter component
+                        var fromChar = em.GetComponentData<FromCharacter>(chars[0]);
+                        _cachedLocalCharacter = fromChar.Character;
+                    }
+
+                    chars.Dispose();
+                }
+                catch (System.Exception ex)
+                {
+                    Plugin.BepinLogger.LogWarning($"Failed to resolve local character: {ex.Message}");
+                }
+
+                return _cachedLocalCharacter;
+            }
+        }
+
+        /// <summary>
+        /// Resets cached entities when connecting to a new server or respawning.
+        /// </summary>
+        public static void ResetCache()
+        {
+            _cachedLocalUser = Entity.Null;
+            _cachedLocalCharacter = Entity.Null;
+        }
+    }
+}

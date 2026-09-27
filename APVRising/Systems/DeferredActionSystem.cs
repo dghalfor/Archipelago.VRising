@@ -46,8 +46,9 @@ namespace VRisingArchipelago
         private static ManualLogSource _log;
 
         // Thread-safe pending list; actions are moved to _ready each frame.
+        private static long _nextSeq;
         private readonly List<DeferredAction> _pending = new();
-        private readonly List<DeferredAction> _ready   = new();
+        private readonly List<DeferredAction> _ready = new();
 
         // ── Bootstrap ────────────────────────────────────────────────────────────────
 
@@ -77,10 +78,10 @@ namespace VRisingArchipelago
         /// <param name="maxRetries">How many times to retry if the action throws. 0 = no retry.</param>
         /// <param name="group">Optional tag used with <see cref="CancelGroup"/> to bulk-cancel actions.</param>
         public static void Schedule(
-            Action  action,
-            float   delaySeconds = -1f,
-            int     maxRetries   = 0,
-            string  group        = null)
+            Action action,
+            float delaySeconds = -1f,
+            int maxRetries = 0,
+            string group = null)
         {
             if (_instance == null)
                 throw new InvalidOperationException(
@@ -90,12 +91,13 @@ namespace VRisingArchipelago
 
             var deferred = new DeferredAction
             {
-                Action      = action,
-                ExecuteAt   = Time.unscaledTime + delaySeconds,
-                MaxRetries  = maxRetries,
-                Retries     = 0,
-                Group       = group,
-                Cancelled   = false,
+                Action = action,
+                ExecuteAt = Time.unscaledTime + delaySeconds,
+                MaxRetries = maxRetries,
+                Retries = 0,
+                Group = group,
+                Cancelled = false,
+                Seq = System.Threading.Interlocked.Increment(ref _nextSeq),
             };
 
             lock (_instance._pending)
@@ -112,8 +114,8 @@ namespace VRisingArchipelago
         /// </summary>
         public static void ScheduleBatch(
             IEnumerable<Action> actions,
-            float  delaySeconds = -1f,
-            string group        = null)
+            float delaySeconds = -1f,
+            string group = null)
         {
             if (delaySeconds < 0f) delaySeconds = DefaultDelay;
 
@@ -160,34 +162,44 @@ namespace VRisingArchipelago
         {
             float now = Time.unscaledTime;
 
-            // Move ready actions out of the shared list under the lock, then execute
-            // outside the lock so action code can itself call Schedule() without deadlock.
+            // Move due actions out of the shared list under the lock (forward pass, compacting in
+            // place), then execute outside the lock so action code can itself call Schedule().
             lock (_pending)
             {
-                for (int i = _pending.Count - 1; i >= 0; i--)
+                int write = 0;
+                for (int read = 0; read < _pending.Count; read++)
                 {
-                    var a = _pending[i];
+                    var a = _pending[read];
                     if (a.Cancelled || now >= a.ExecuteAt)
-                    {
                         _ready.Add(a);
-                        _pending.RemoveAt(i);
-                    }
+                    else
+                        _pending[write++] = a;
                 }
+                _pending.RemoveRange(write, _pending.Count - write);
             }
 
-            int executed = 0;
-            for (int i = 0; i < _ready.Count && executed < MaxActionsPerFrame; i++, executed++)
+            if (_ready.Count == 0) return;
+
+            // Run in due-time order, ties broken by scheduling order (List.Sort is not stable).
+            _ready.Sort((x, y) =>
             {
-                var a = _ready[i];
-                _ready.RemoveAt(i);
-                i--;
+                int c = x.ExecuteAt.CompareTo(y.ExecuteAt);
+                return c != 0 ? c : x.Seq.CompareTo(y.Seq);
+            });
+
+            int executed = 0;
+            while (_ready.Count > 0 && executed < MaxActionsPerFrame)
+            {
+                var a = _ready[0];
+                _ready.RemoveAt(0);
 
                 if (a.Cancelled) continue;
 
+                executed++;
                 ExecuteAction(a);
             }
 
-            // If we hit the per-frame cap, push leftovers back with zero extra delay.
+            // Leftovers past the per-frame cap go back to pending; they stay due and keep their order.
             if (_ready.Count > 0)
             {
                 lock (_pending)
@@ -208,8 +220,7 @@ namespace VRisingArchipelago
                 {
                     a.Retries++;
                     float backoff = DefaultDelay * a.Retries; // linear back-off
-                    a.ExecuteAt   = Time.unscaledTime + backoff;
-                    a.Cancelled   = false;
+                    a.ExecuteAt = Time.unscaledTime + backoff;
 
                     _log?.LogWarning(
                         $"[DeferredActionSystem] Action failed (attempt {a.Retries}/{a.MaxRetries}). " +
@@ -230,11 +241,12 @@ namespace VRisingArchipelago
         private class DeferredAction
         {
             public Action Action;
-            public float  ExecuteAt;
-            public int    MaxRetries;
-            public int    Retries;
+            public float ExecuteAt;
+            public int MaxRetries;
+            public int Retries;
             public string Group;
-            public bool   Cancelled;
+            public bool Cancelled;
+            public long Seq;
         }
     }
 }

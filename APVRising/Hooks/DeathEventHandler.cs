@@ -13,7 +13,7 @@ public class DeathEventHandler
 {
     public static bool ConsumingDeathLinks = false;
 
-    public static void DoneConsumingDeathLinks ()
+    public static void DoneConsumingDeathLinks()
     {
         ConsumingDeathLinks = false;
     }
@@ -41,7 +41,7 @@ public class DeathEventHandler
                 if (__instance.EntityManager.HasComponent<PlayerCharacter>(killer))
                 {
                     var entityName = Plugin.PrefabCollectionSystem._PrefabDataLookup[Plugin.EntityManager.GetComponentData<PrefabGUID>(ev.Died)].AssetName;
-                    
+
                     string str = entityName.Value;
                     if (str.StartsWith("CHAR"))
                     {
@@ -65,7 +65,7 @@ public class DeathEventHandler
             {
                 if (!ConsumingDeathLinks)
                 {
-                    Plugin.APClient.DeathLinkHandler.SendDeathLink();
+                    Plugin.APClient?.DeathLinkHandler?.SendDeathLink();
                 }
             }
         }

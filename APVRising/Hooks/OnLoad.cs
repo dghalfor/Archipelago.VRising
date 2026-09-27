@@ -29,7 +29,19 @@ namespace APVRising.Hooks
                 ArchipelagoClient.ServerData.Uri = connectionData.IP;
                 ArchipelagoClient.ServerData.Password = connectionData.Password;
                 ArchipelagoClient.ServerData.SlotName = connectionData.SlotName;
+                if (ArchipelagoClient.Authenticated)
+                {
+                    DelaySystem.NotifyClientConfiguredLocations();
+                    var progQuery = Helper.GetEntityManager().CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
+                    var progEntities = progQuery.ToEntityArray(Allocator.Temp);
+                    DelaySystem.ResyncDeferred();
 
+                    foreach (var progEntity in progEntities)
+                    {
+                        DelaySystem.ReconcileWithAP(progEntity);
+                        DelaySystem.SlowRestoreDeferred(progEntity);
+                    }
+                }
                 ArchipelagoConnectionHelper.PerformFullArchipelagoConnect();
             }
             catch

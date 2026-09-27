@@ -76,7 +76,7 @@ namespace APVRising.Hooks
             var ProgEntities = progQuery.ToEntityArray(Allocator.Temp);
             foreach (var progEntity in ProgEntities)
             {
-                DelaySystem.RestoreDeferred(Helper.GetEntityManager(), progEntity);
+                DelaySystem.SlowRestoreDeferred(progEntity);
             }
 
             var query = Helper.GetEntityManager().CreateEntityQuery(ComponentType.ReadOnly<User>(), ComponentType.ReadOnly<ProgressionMapper>());
@@ -89,7 +89,7 @@ namespace APVRising.Hooks
             {
                 DelaySystem.UnlockAchievementDeferred(usEntity, achievementData.Reward);
             }
-            DelaySystem.StopResearchDeferred();
+            DelaySystem.StopResearchDeferredSlow();
 
             try
             {

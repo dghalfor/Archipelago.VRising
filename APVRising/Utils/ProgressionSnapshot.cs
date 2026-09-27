@@ -345,6 +345,7 @@ public static class ProgressionSnapshot
 
             Plugin.BepinLogger.LogInfo($"[Snapshot] Restore shapeshift: buffer={buf.Length}, added={added}");
         }
+        Plugin.APClient.Resync();
     }
 
     // Shared helper: collects all recipes/blueprints/shapeshifts a given tech grants

@@ -48,9 +48,9 @@ public class ArchipelagoClient
     /// </summary>
     /// <returns></returns>
     public void Connect()
-    { 
+    {
         if (Authenticated || attemptingConnection) return;
-        attemptingConnection = true; 
+        attemptingConnection = true;
 
         try
         {
@@ -60,10 +60,12 @@ public class ArchipelagoClient
         catch (Exception e)
         {
             Plugin.BepinLogger.LogError(e);
+            session = null;
+            attemptingConnection = false;
+            return;
         }
 
         TryConnect();
-        
     }
 
     /// <summary>
@@ -73,9 +75,9 @@ public class ArchipelagoClient
     {
         session.MessageLog.OnMessageReceived += (message) =>
         {
-            ArchipelagoConsole.LogMessage(message.ToString());
-            FixedString512Bytes fixedMessage = new(message.ToString());
-            PendingMessages.Enqueue(fixedMessage.ToString());
+            var text = message.ToString();
+            ArchipelagoConsole.LogMessage(text);
+            PendingMessages.Enqueue(text); // truncated to chat size on the main thread
         };
         session.Items.ItemReceived += OnItemReceived;
         session.Socket.ErrorReceived += OnSessionErrorReceived;
@@ -88,28 +90,41 @@ public class ArchipelagoClient
     /// </summary>
     private void TryConnect()
     {
-        try
+        var connectSession = session;
+        // it's safe to thread this function call but unity notoriously hates threading so do not use excessively
+        ThreadPool.QueueUserWorkItem(_ =>
         {
-            // it's safe to thread this function call but unity notoriously hates threading so do not use excessively
-            ThreadPool.QueueUserWorkItem(
-                _ => HandleConnectResult(
-                    session.TryConnectAndLogin(
+            try
+            {
+                HandleConnectResult(
+                    connectSession.TryConnectAndLogin(
                         Game,
                         ServerData.SlotName,
-                        ItemsHandlingFlags.AllItems, 
+                        ItemsHandlingFlags.AllItems,
                         new Version(APVersion),
                         password: ServerData.Password,
                         requestSlotData: true // ServerData.NeedSlotData
-                    )));
-        }
-        catch (Exception e)
-        {
-            Plugin.BepinLogger.LogError(e);
-            HandleConnectResult(new LoginFailure(e.ToString()));
-            attemptingConnection = false;
-        }
+                    ));
+            }
+            catch (Exception e)
+            {
+                // An exception escaping a thread-pool thread would take the whole process down.
+                Plugin.BepinLogger.LogError(e);
+                try { HandleConnectResult(new LoginFailure(e.ToString())); }
+                catch (Exception inner) { Plugin.BepinLogger.LogError(inner); attemptingConnection = false; }
+            }
+        });
     }
 
+    /// <summary>
+    /// Set by HandleConnectResult (thread pool) and consumed by ArchipelagoItemSystem.OnUpdate (main thread),
+    /// which does the file loads and DeferredActionSystem scheduling that must not run off-thread.
+    /// </summary>
+    internal static volatile bool PendingPostConnect;
+
+    /// <summary>
+    /// Chat text queued from any thread; ArchipelagoItemSystem.OnUpdate sends it to clients on the main thread.
+    /// </summary>
     public static System.Collections.Concurrent.ConcurrentQueue<string> PendingMessages = new();
 
     /// <summary>
@@ -144,13 +159,12 @@ public class ArchipelagoClient
             Disconnect();
         }
 
-        FixedString512Bytes outTextFixed = new(outText);
-        PendingMessages.Enqueue(outText.ToString());
+        PendingMessages.Enqueue(outText);
         ArchipelagoConsole.LogMessage(outText);
         attemptingConnection = false;
-        DataService.PlayerPersistence.LoadPlayerItemReceivedData();
-        DataService.PlayerPersistence.LoadPlayerShapeshiftData();
-        DelaySystem.NotifyClientConfiguredLocations();
+
+        // This method runs on a thread-pool thread: hand file loads and deferred scheduling to the main thread.
+        PendingPostConnect = true;
     }
 
     /// <summary>
@@ -159,8 +173,7 @@ public class ArchipelagoClient
     public void Disconnect()
     {
         Plugin.BepinLogger.LogDebug("disconnecting from server...");
-        FixedString512Bytes fixedString = new($"Disconnecting from server");
-        ServerChatUtils.SendSystemMessageToAllClients(Plugin.Server.EntityManager, ref fixedString);
+        PendingMessages.Enqueue("Disconnecting from server");
         session?.Socket.DisconnectAsync();
         session = null;
         Authenticated = false;
@@ -180,38 +193,59 @@ public class ArchipelagoClient
     {
         try
         {
-            var locationIds = new List<long>();
+            // Resolve which AP location names this game event maps to first, so unmapped
+            // (vanilla) unlocks are ignored quietly even while disconnected.
+            var locationNames = new List<string>();
 
             if (DataDicts.EntityNameToAPLocation.TryGetValue(locationName, out var primaryLocation))
-                locationIds.Add(session.Locations.GetLocationIdFromName(Game, primaryLocation));
-            CheckGoalLocation(primaryLocation);
+            {
+                locationNames.Add(primaryLocation);
+            }
 
             var bonusLocationDicts = new[]
             {
-            DataDicts.BonusVictoryLocations,
-            DataDicts.BonusSpellPointLocations,
+                DataDicts.BonusVictoryLocations,
+                DataDicts.BonusSpellPointLocations,
             };
 
             foreach (var dict in bonusLocationDicts)
                 if (dict.TryGetValue(locationName, out var bonusLocation))
-                    locationIds.Add(session.Locations.GetLocationIdFromName(Game, bonusLocation));
+                    locationNames.Add(bonusLocation);
 
-            var bonusLocationListDicts = new[]
+            if (DataDicts.BonusVBloodLocations.TryGetValue(locationName, out var bonusLocations))
+                locationNames.AddRange(bonusLocations);
+
+            if (locationNames.Count == 0)
+                return;
+
+            if (session == null)
+                throw new InvalidOperationException("not connected to Archipelago");
+
+            if (primaryLocation != null)
+                CheckGoalLocation(primaryLocation);
+
+            var locationIds = new List<long>();
+            foreach (var name in locationNames)
             {
-            DataDicts.BonusVBloodLocations
-            };
+                if (string.IsNullOrEmpty(name))
+                    continue; // placeholder entry with no AP location yet
 
-            foreach (var dict in bonusLocationListDicts)
-                if (dict.TryGetValue(locationName, out var bonusLocation))
-                    foreach (var bonusLoc in bonusLocation)
-                        locationIds.Add(session.Locations.GetLocationIdFromName(Game, bonusLoc));
+                var id = session.Locations.GetLocationIdFromName(Game, name);
+                if (id < 0)
+                {
+                    Plugin.BepinLogger.LogWarning($"[AP] Location '{name}' is not known to the AP server, skipping");
+                    continue;
+                }
+                locationIds.Add(id);
+            }
 
             if (locationIds.Count > 0)
                 session.Locations.CompleteLocationChecksAsync(locationIds.ToArray());
         }
         catch (Exception e)
         {
-            FixedString512Bytes fixedString = new($"Could not send location check, please make sure you are connected by entering the command '.connect', or exception: {e.ToString()}");
+            Plugin.BepinLogger.LogError(e);
+            var fixedString = Helper.ToFixed512($"Could not send location check, please make sure you are connected by entering the command '.connect', or exception: {e.Message}");
             ServerChatUtils.SendSystemMessageToAllClients(Plugin.Server.EntityManager, ref fixedString);
         }
     }
@@ -270,8 +304,7 @@ public class ArchipelagoClient
     private void OnSessionErrorReceived(Exception e, string message)
     {
         Plugin.BepinLogger.LogError(e);
-        FixedString512Bytes fixedString = new($"{message}");
-        ServerChatUtils.SendSystemMessageToAllClients(Plugin.Server.EntityManager, ref fixedString);
+        PendingMessages.Enqueue($"{message}");
         ArchipelagoConsole.LogMessage(message);
     }
 
@@ -282,18 +315,30 @@ public class ArchipelagoClient
     private void OnSessionSocketClosed(string reason)
     {
         Plugin.BepinLogger.LogError($"Connection to Archipelago lost: {reason}");
-        FixedString512Bytes fixedString = new($"Connection to Archipelago lost: {reason}");
-        ServerChatUtils.SendSystemMessageToAllClients(Plugin.Server.EntityManager, ref fixedString);
+        PendingMessages.Enqueue($"Connection to Archipelago lost: {reason}");
         Disconnect();
     }
 
     // Resync removes all progression unlocks for locations that are checked but not received from the player. This undoes the progression changes that occur during startup.
     public void Resync()
     {
+        if (session == null || !session.Socket.Connected)
+        {
+            Plugin.BepinLogger.LogWarning("[AP Resync] Skipped: not connected to Archipelago");
+            return;
+        }
+
         Plugin.BepinLogger.LogInfo(
         $"[AP Resync] Starting. session.Items.AllItemsReceived.Count={session.Items.AllItemsReceived.Count}, " +
         $"IsConnected={session.Socket.Connected}"); // adjust property name to whatever your client exposes
         var em = Helper.GetEntityManager();
+
+        // Hoisted from where this used to be declared (just before the grant/revoke section) so
+        // every notification below can batch-notify per connected player instead of broadcasting.
+        var userQuery = em.CreateEntityQuery(
+            ComponentType.ReadOnly<User>(),
+            ComponentType.ReadOnly<ProgressionMapper>());
+        var userEntities = userQuery.ToEntityArray(Allocator.Temp);
 
         // --- Pre-pass: acknowledge unlocks that exist in the player's buffer but are
         //     not configured for this AP session (option-gated or vanilla unlocks).
@@ -319,8 +364,11 @@ public class ArchipelagoClient
                     Plugin.BepinLogger.LogInfo($"[AP Resync] Not a configured location, acknowledging locally: {prefabName}");
                     ArchipelagoData.AddLocationCheck(progBuffer[i].UnlockedPrefab._Value);
                     ArchipelagoData.AddReceivedCheck(progBuffer[i].UnlockedPrefab._Value);
-                    ChatMessage.NotifyClientLocation(progBuffer[i].UnlockedPrefab._Value);
-                    ChatMessage.NotifyClientCheck(progBuffer[i].UnlockedPrefab._Value);
+                    foreach (var notifyUser in userEntities)
+                    {
+                        ChatMessage.NotifyClientLocation(notifyUser, progBuffer[i].UnlockedPrefab._Value);
+                        ChatMessage.NotifyClientCheck(notifyUser, progBuffer[i].UnlockedPrefab._Value);
+                    }
                 }
             }
         }
@@ -358,16 +406,12 @@ public class ArchipelagoClient
                 DataDicts.TechToPrefab.TryGetValue(entityName, out var prefab))
             {
                 ArchipelagoData.AddLocationCheck(prefab.GuidHash);
-                ChatMessage.NotifyClientLocation(prefab.GuidHash);
+                foreach (var notifyUser in userEntities)
+                    ChatMessage.NotifyClientLocation(notifyUser, prefab.GuidHash);
             }
         }
 
         // --- Per-user: grant missing, revoke extras ---
-        var userQuery = em.CreateEntityQuery(
-            ComponentType.ReadOnly<User>(),
-            ComponentType.ReadOnly<ProgressionMapper>());
-        var userEntities = userQuery.ToEntityArray(Allocator.Temp);
-
         foreach (var userEntity in userEntities)
         {
             // Snapshot what they currently have in UnlockedProgressionElement
@@ -389,7 +433,8 @@ public class ArchipelagoClient
                 {
                     Plugin.BepinLogger.LogInfo($"[AP Resync] Granting missing: {prefab.GuidHash}");
                     ArchipelagoData.AddReceivedCheck(prefab.GuidHash);
-                    ChatMessage.NotifyClientCheck(prefab.GuidHash);
+                    foreach (var notifyUser in userEntities)
+                        ChatMessage.NotifyClientCheck(notifyUser, prefab.GuidHash);
                 }
             }
 
@@ -460,7 +505,7 @@ public class ArchipelagoClient
                         if (progBuffer[i].UnlockedPrefab == prefab)
                         {
                             progBuffer.RemoveAt(i);
-                            ChatMessage.NotifyClientLockProg(prefab.GuidHash);
+                            ChatMessage.NotifyClientLockProg(userEntity, prefab.GuidHash);
                             break;
                         }
                     }
@@ -472,42 +517,22 @@ public class ArchipelagoClient
                 $"[AP Resync] User done. ShouldHave={shouldHavePrefabs.Count}, " +
                 $"DoesHave={doesHavePrefabs.Count}, " +
                 $"Revoked={toRevoke.Count}");
-            foreach (var progEntity in progEntities)
-            {
-                ProgressionSnapshot.Capture(em, progEntity);
-                ChatMessage.NotifyClientSnapshot();
-            }
             progEntities.Dispose();
+        }
 
+        // Progression entities are global, so capture and notify once rather than once per user.
+        if (userEntities.Length > 0)
+        {
+            var snapQuery = em.CreateEntityQuery(ComponentType.ReadOnly<UnlockedProgressionElement>());
+            var snapEntities = snapQuery.ToEntityArray(Allocator.Temp);
+            foreach (var progEntity in snapEntities)
+                ProgressionSnapshot.Capture(em, progEntity);
+            snapEntities.Dispose();
+            ChatMessage.NotifyClientSnapshot();
         }
 
         userEntities.Dispose();
 
         Plugin.BepinLogger.LogInfo($"[AP Resync] Complete. ShouldHave={shouldHavePrefabs.Count}");
-    }
-
-    private static Dictionary<string, string> entityNameToAPLocation;
-    /// <summary>
-    /// Fetch a dictionary of entity names and AP location names. May not be all-inclusive, check at runtime.
-    /// </summary>
-    public static Dictionary<string, string> EntityNameToAPLocation
-    {
-        get
-        {
-            if (entityNameToAPLocation == null)
-            {
-                string json = string.Empty;
-                using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("APVRising.Data.EntityNameToAPLocation.json"))
-                using (var reader = new StreamReader(stream))
-                {
-                    json = reader.ReadToEnd();
-                }
-                JsonNode node = JsonNode.Parse(json);
-                Plugin.BepinLogger.LogInfo(json);
-                entityNameToAPLocation = node.Deserialize<Dictionary<string, string>>();
-            }
-
-            return entityNameToAPLocation;
-        }
     }
 }

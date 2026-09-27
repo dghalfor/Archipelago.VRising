@@ -1,0 +1,110 @@
+﻿using APVRising;
+using Il2CppInterop.Runtime;
+using ProjectM;
+using ProjectM.Network;
+using Unity.Collections;
+using Unity.Entities;
+using XPShared.Services;
+
+namespace VRisingArchipelago
+{
+    /// <summary>
+    /// Sends ##ACK#{version}## from client to server using the game's native
+    /// client-to-server chat event, constructed directly (not via typed chat).
+    ///
+    /// Requires local user/character entity resolution — plug in your existing
+    /// lookup where marked below.
+    /// </summary>
+    public static class AckSender
+    {
+        private static readonly ComponentType[] NetworkEventComponents =
+        [
+            ComponentType.ReadOnly(Il2CppType.Of<FromCharacter>()),
+            ComponentType.ReadOnly(Il2CppType.Of<NetworkEventType>()),
+            ComponentType.ReadOnly(Il2CppType.Of<SendNetworkEventTag>()),
+            ComponentType.ReadOnly(Il2CppType.Of<ChatMessageEvent>())
+        ];
+
+        private static readonly NetworkEventType ChatEventType = new()
+        {
+            IsAdminEvent = false,
+            EventId = NetworkEvents.EventId_ChatMessageEvent,
+            IsDebugEvent = false,
+        };
+
+        public static void SendAck(int version)
+        {
+            // TODO: wire in your existing local user/character resolution here.
+            var localUser = LocalPlayer.LocalUser;
+            var localCharacter = LocalPlayer.LocalCharacter;
+
+            if (localUser == Entity.Null || localCharacter == Entity.Null)
+            {
+                Plugin.BepinLogger.LogWarning($"[AP] Cannot send ACK v{version}, local user not resolved yet.");
+                return;
+            }
+
+            var userNetworkId = Plugin.ClientEntityManager.GetComponentData<NetworkId>(localUser);
+            var chatMessageEvent = new ChatMessageEvent
+            {
+                MessageText = new FixedString512Bytes($"##ACK#{version}##"),
+                MessageType = ChatMessageType.Local,
+                ReceiverEntity = userNetworkId
+            };
+
+            var networkEntity = Plugin.ClientEntityManager.CreateEntity(NetworkEventComponents);
+            Plugin.ClientEntityManager.SetComponentData(networkEntity, new FromCharacter { Character = localCharacter, User = localUser });
+            Plugin.ClientEntityManager.SetComponentData(networkEntity, ChatEventType);
+            Plugin.ClientEntityManager.SetComponentData(networkEntity, chatMessageEvent);
+
+            Plugin.BepinLogger.LogInfo($"[AP] Sent ACK v{version}");
+        }
+    }
+
+    /// <summary>
+    /// Local user/character resolution using ConsoleShared from XPShared.Services.
+    /// This caches results to avoid repeated lookups.
+    /// </summary>
+    internal static class LocalPlayer
+    {
+        private static Entity _cachedLocalUser = Entity.Null;
+        private static Entity _cachedLocalCharacter = Entity.Null;
+
+        public static Entity LocalUser
+        {
+            get
+            {
+                if (_cachedLocalUser != Entity.Null)
+                    return _cachedLocalUser;
+
+                if (ConsoleShared.TryGetLocalUserInCurrentWorld(out _cachedLocalUser, Plugin.World))
+                    return _cachedLocalUser;
+
+                return Entity.Null;
+            }
+        }
+
+        public static Entity LocalCharacter
+        {
+            get
+            {
+                if (_cachedLocalCharacter != Entity.Null)
+                    return _cachedLocalCharacter;
+
+                if (ConsoleShared.TryGetLocalCharacterInCurrentWorld(out _cachedLocalCharacter, Plugin.World))
+                    return _cachedLocalCharacter;
+
+                return Entity.Null;
+            }
+        }
+
+        /// <summary>
+        /// Resets cached entities when connecting to a new server or respawning.
+        /// </summary>
+        public static void ResetCache()
+        {
+            _cachedLocalUser = Entity.Null;
+            _cachedLocalCharacter = Entity.Null;
+        }
+    }
+}

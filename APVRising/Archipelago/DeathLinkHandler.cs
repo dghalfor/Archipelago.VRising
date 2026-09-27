@@ -5,7 +5,7 @@ using ProjectM;
 using ProjectM.Network;
 using ProjectM.Scripting;
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using Unity.Collections;
 using Unity.Entities;
 using VRisingArchipelago;
@@ -17,7 +17,7 @@ public class DeathLinkHandler
     internal static bool deathLinkEnabled;
     private string slotName;
     private readonly DeathLinkService service;
-    private readonly Queue<DeathLink> deathLinks = new();
+    private readonly ConcurrentQueue<DeathLink> deathLinks = new();
 
     /// <summary>
     /// instantiates our death link handler, sets up the hook for receiving death links, and enables death link if needed
@@ -43,7 +43,17 @@ public class DeathLinkHandler
     /// </summary>
     public void ToggleDeathLink()
     {
-        deathLinkEnabled = !deathLinkEnabled;
+        SetDeathLink(!deathLinkEnabled);
+    }
+
+    /// <summary>
+    /// Sets death link to exactly the requested state, going through EnableDeathLink()/
+    /// DisableDeathLink() so the AP session's death-link tag actually changes. Setting the
+    /// static flag directly (as the .deathlink command used to) leaves that tag stale.
+    /// </summary>
+    public void SetDeathLink(bool enabled)
+    {
+        deathLinkEnabled = enabled;
 
         if (deathLinkEnabled)
         {
@@ -77,9 +87,7 @@ public class DeathLinkHandler
     {
         try
         {
-            if (deathLinks.Count < 1) return;
-
-            var deathLink = deathLinks.Dequeue();
+            if (!deathLinks.TryDequeue(out var deathLink)) return;
             var cause = deathLink.Cause.IsNullOrWhiteSpace() ? GetDeathLinkCause(deathLink) : deathLink.Cause;
 
             var query = Plugin.Server.EntityManager.CreateEntityQuery(ComponentType.ReadOnly<User>());
